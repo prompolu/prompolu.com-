@@ -109,5 +109,10 @@ s90r.jpg, s140rp.jpg) — coulissants.html now shows a profile-cutaway
 image for all 11 systems.
 
 The comparison guide at conseils/guide-choisir-systeme-coulissant-
-aluminium.html still only covers the original 5 systems — let me know if
-you'd like it expanded to the full catalog.
+aluminium.html has since been expanded to all 11 systems: the comparison
+table now lists every reference, a new section explains the STRUGAL P /
+R / RP naming convention, and the per-use sections cover the new systems
+(S70R, S86RP, S88R, S90P, S90R, S140RP). Two data errors in the old
+table were fixed at the same time (S70P and S125RP had vantail counts
+sitting in the "Dimensions max" column). The table is now wrapped in a
+horizontally scrollable container so it doesn't get cut off on phones.
