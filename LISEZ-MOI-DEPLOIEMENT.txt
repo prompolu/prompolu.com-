@@ -1,0 +1,112 @@
+PROMPOLU ALUMINIUM — SEO/GEO rebuild — deployment notes
+=========================================================
+
+WHAT THIS IS
+------------
+Your original site was a single HTML page with anchor-based navigation
+(#produits, #battants, #apropos...). Google/AI engines could only see one
+URL. This package turns it into a real multi-page site while keeping the
+exact same visual design (same fonts, colors, layout system).
+
+FILES IN THIS PACKAGE
+----------------------
+index.html                                    Home
+coulissants.html                              Systèmes coulissants (5 products, FAQ, schema)
+agencement.html                               Agencement intérieur (FAQ, schema)
+exterieur.html                                Extérieur & confort (FAQ, schema)
+notre-activite.html                           About / Notre activité (expanded, FAQ, schema)
+contact.html                                  Contact (FAQ, schema)
+conseils/index.html                           Blog/guides listing
+conseils/guide-choisir-systeme-coulissant-aluminium.html   First guide article (Article + FAQ schema)
+assets/style.css                              All CSS (extracted from your original inline <style>)
+assets/nav.js                                 Mobile menu + active-link script
+assets/logo-prompolu.png                      Your logo, decoded from the base64 that was inline before
+assets/logo-strugal.png                       STRUGAL partner badge, same treatment
+robots.txt                                    Explicitly allows Google + AI crawlers (GPTBot, ClaudeBot,
+                                               PerplexityBot, Google-Extended, etc.) + points to sitemap.xml
+sitemap.xml                                   Lists all 8 real pages
+llms.txt                                      Short plain-text summary for AI systems (growing convention)
+
+HOW TO DEPLOY
+-------------
+1. This assumes the site lives at the DOMAIN ROOT (https://prompolu.com/),
+   which matches what I found when I crawled it. All internal links and
+   asset paths use root-relative URLs (e.g. /assets/style.css,
+   /coulissants.html) — so upload the whole folder structure AS-IS to your
+   web root, keeping the assets/ and conseils/ subfolders intact.
+2. Back up your current live index.html before overwriting it.
+3. Upload everything (via your host's File Manager, FTP/SFTP, or however
+   you currently publish the site) to the same place the current
+   index.html lives.
+4. Open https://prompolu.com/ afterward and click through every nav link
+   to confirm each page loads.
+
+AFTER DEPLOYING — SUBMIT TO SEARCH ENGINES
+-------------------------------------------
+1. Google Search Console (search.google.com/search-console): add the
+   property if not already done, then Sitemaps > add
+   "https://prompolu.com/sitemap.xml", and use "Request indexing" on each
+   of the 8 URLs above.
+2. Bing Webmaster Tools: same idea (Bing also feeds some AI answer engines).
+
+THINGS I DELIBERATELY LEFT FOR YOU TO DECIDE
+----------------------------------------------
+1. FENÊTRES & PORTES BATTANTES: DONE — this section DID exist on your
+   original page (id="battants") and was wrongly dropped in the first
+   rebuild. It's now restored as its own page, battants.html, with all 4
+   original products (S53RP+, S46, ALUDOORS A400K, A200 4FH2), their real
+   photos, specs and descriptions, added to the nav on every page and to
+   the sitemap.
+2. OPENING HOURS: DONE — added "Lundi – Samedi, 9h – 19h" to contact.html
+   (visible line + FAQ entry) and to the OpeningHoursSpecification in the
+   LocalBusiness schema on index.html, so Google can surface them directly.
+3. GOOGLE BUSINESS PROFILE, SEARCH CONSOLE, BACKLINK OUTREACH: these need
+   you to be logged into your own accounts. Once you turn on computer use
+   in the Claude desktop app, I can drive the browser for these while you
+   handle the actual logins/approvals.
+
+NOTHING ELSE ON YOUR SITE WAS CHANGED — same colors, fonts, logo, product
+specs, and copy as your original page; only the structure, technical SEO,
+and content depth changed.
+
+CORRECTIONS MADE AFTER FIRST DEPLOYMENT (2026-09-06)
+-------------------------------------------------------
+The first version of this rebuild introduced two real mistakes, since fixed
+on every page:
+1. WRONG ADDRESS — it used "225C+QR9, Av. El Wafaa, Fès 30050" instead of
+   your real address "N° 511, Av. Moulay Rachid, Lot Assalam, Rte de
+   Sefrou, Fès 30000". Fixed in the topbar, contact section, Google Maps
+   embeds, the LocalBusiness schema, and llms.txt.
+2. SOCIAL LINKS DROPPED — the original page's footer had Instagram,
+   TikTok and Facebook icons, plus a WhatsApp "Nous contacter" button in
+   the hero. These were lost during the rebuild. They're now restored
+   (with the correct URLs) in the footer of all pages, the hero button,
+   and the schema's "sameAs" field.
+3. PRODUCT PHOTOS DROPPED — your original page had 15 real photos (profile
+   cross-sections for every system, the two door models, kitchen/dressing
+   photos, garde-corps/volets/pergola photos). The rebuild replaced all of
+   them with generic vector icons or nothing. All 15 photos are restored:
+   coulissants.html and battants.html now show the real profile-cutaway
+   photo for each system, and agencement.html / exterieur.html show the
+   real lifestyle photos instead of icons. agencement.html also got back
+   its third card ("Accessoires de cuisine", partnership with STARAX)
+   which had been dropped along with its photo.
+
+Files added/changed in this pass: battants.html (new), assets/products/
+(15 new image files), coulissants.html, agencement.html, exterieur.html,
+index.html (new nav link + homepage teaser card), sitemap.xml, llms.txt,
+assets/style.css (restored .sys-thumb / .cat-photo / .cat-tag rules).
+
+NEW SLIDING SYSTEMS ADDED (2026-09-06)
+-----------------------------------------
+6 new STRUGAL systems added to coulissants.html at your request: S70R,
+S86RP, S88R, S90P, S90R, S140RP Infinity (11 systems total now, up from
+5). Specs (weight, dimensions, glazing, thermal/acoustic performance)
+were pulled from STRUGAL's own official pages (strugal.com / strugal.ma)
+— not invented. No photos were available for these 6 yet (they display
+without a profile-cutaway image); send me photos whenever you have them
+and I'll add them the same way as the original 5.
+
+The comparison guide at conseils/guide-choisir-systeme-coulissant-
+aluminium.html still only covers the original 5 systems — let me know if
+you'd like it expanded to the full catalog.
