@@ -217,6 +217,15 @@
   .footer-top img{height:22px;filter:brightness(0) invert(1);}
   .footer-nav{display:flex;gap:26px;flex-wrap:wrap;font-size:13.5px;}
   .footer-nav a:hover{color:var(--bronze);}
+  .footer-social{
+    display:flex;gap:16px;padding:22px 0;border-bottom:1px solid #2b2d31;
+  }
+  .footer-social a{
+    width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+    border:1px solid #33363b;color:#8f939a;transition:color .2s ease, border-color .2s ease;
+  }
+  .footer-social a:hover{color:var(--bronze);border-color:var(--bronze);}
+  .footer-social svg{width:17px;height:17px;}
   .footer-bottom{
     padding-top:22px;display:flex;justify-content:space-between;
     font-family:'IBM Plex Mono', monospace;font-size:11.5px;flex-wrap:wrap;gap:10px;
