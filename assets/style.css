@@ -61,8 +61,7 @@
   /* ---------- header ---------- */
   header.site{
     position:sticky;top:0;z-index:50;
-    background:rgba(241,240,236,0.92);
-    backdrop-filter:blur(6px);
+    background:var(--paper);
     border-bottom:1px solid var(--line);
   }
   header.site .wrap{
