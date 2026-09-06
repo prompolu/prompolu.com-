@@ -103,9 +103,10 @@ NEW SLIDING SYSTEMS ADDED (2026-09-06)
 S86RP, S88R, S90P, S90R, S140RP Infinity (11 systems total now, up from
 5). Specs (weight, dimensions, glazing, thermal/acoustic performance)
 were pulled from STRUGAL's own official pages (strugal.com / strugal.ma)
-— not invented. No photos were available for these 6 yet (they display
-without a profile-cutaway image); send me photos whenever you have them
-and I'll add them the same way as the original 5.
+— not invented. Photos for all 6 were supplied by you afterward and are
+now added (assets/products/s70r.jpg, s86rp.jpg, s88r.jpg, s90p.jpg,
+s90r.jpg, s140rp.jpg) — coulissants.html now shows a profile-cutaway
+image for all 11 systems.
 
 The comparison guide at conseils/guide-choisir-systeme-coulissant-
 aluminium.html still only covers the original 5 systems — let me know if
