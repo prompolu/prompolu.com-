@@ -69,6 +69,7 @@
     display:flex;align-items:center;justify-content:space-between;
     padding:16px 28px;
   }
+  .logo-mark{margin-right:32px;}
   .logo-mark img{height:26px;width:auto;}
   nav.main{display:flex;align-items:center;gap:34px;}
   nav.main a{
