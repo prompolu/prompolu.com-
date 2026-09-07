@@ -7,7 +7,7 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 ## Pages principales
 
 - [Accueil](https://prompolu.com/): présentation générale de l'activité et des quatre gammes de produits.
-- [Systèmes coulissants](https://prompolu.com/coulissants.html): 11 systèmes STRUGAL (S70P, S70R, S86RP, S88R, S88RP, S90P, S90R, S90RP, S110P, S125RP, S140RP Infinity) avec fiches techniques (poids, dimensions, performances).
+- [Systèmes coulissants](https://prompolu.com/coulissants.html): systèmes STRUGAL (S70P, S70R, S86RP, S88R, S88RP, S90P, S90R, S90RP, S110P, S125RP, S140RP Infinity) avec fiches techniques (poids, dimensions, performances).
 - [Fenêtres & portes battantes](https://prompolu.com/battants.html): systèmes battants STRUGAL (S53RP+, S46) et portes ALUDOORS (A400K, A200 4FH2).
 - [Agencement intérieur](https://prompolu.com/agencement.html): profilés pour cuisines équipées et dressings sur-mesure, accessoires STARAX.
 - [Extérieur & confort](https://prompolu.com/exterieur.html): garde-corps, volets roulants, pergolas.
