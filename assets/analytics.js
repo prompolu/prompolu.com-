@@ -1,8 +1,14 @@
 // Mesure d'audience — Google Analytics 4 avec gestion du consentement.
+//
+// La bibliothèque Google (environ 70 Ko) n'est PAS téléchargée au chargement
+// de la page : elle ne l'est qu'après acceptation du visiteur. Celui qui refuse,
+// ou qui ne répond pas, ne paie jamais ce poids.
+//
 // Pour changer d'identifiant, une seule ligne à modifier : ID_MESURE ci-dessous.
 (function () {
   var ID_MESURE = 'G-EF8H28NFLQ';   // ID de mesure Google Analytics 4 de prompolu.com
   var CLE = 'prompolu_consentement';
+  var chargee = false;
 
   // --- Consent Mode : rien n'est stocké tant que le visiteur n'a pas accepté ---
   window.dataLayer = window.dataLayer || [];
@@ -17,14 +23,19 @@
     wait_for_update: 500
   });
 
-  gtag('js', new Date());
-  gtag('config', ID_MESURE, { anonymize_ip: true });
+  // --- Chargement différé : uniquement après acceptation ---
+  function charger() {
+    if (chargee) return;
+    chargee = true;
 
-  // Charge la bibliothèque Google
-  var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID_MESURE;
-  document.head.appendChild(s);
+    gtag('js', new Date());
+    gtag('config', ID_MESURE, { anonymize_ip: true });
+
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID_MESURE;
+    document.head.appendChild(s);
+  }
 
   function lire() {
     try { return localStorage.getItem(CLE); } catch (e) { return null; }
@@ -35,6 +46,7 @@
 
   function accorder() {
     gtag('consent', 'update', { analytics_storage: 'granted' });
+    charger();
   }
 
   // --- Bandeau de consentement ---
@@ -69,6 +81,8 @@
   }
 
   // --- Suivi des prises de contact (les vraies conversions) ---
+  // Les événements sont poussés dans dataLayer même si la bibliothèque n'est pas
+  // chargée : sans consentement, ils restent simplement sans effet.
   function suivi() {
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a');
