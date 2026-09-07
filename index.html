@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROMPOLU ALUMINIUM — Distributeur agréé STRUGAL à Fès</title>
-<meta name="description" content="Grossiste en profilés aluminium STRUGAL à Fès : coulissants, battants, agencement, garde-corps et pergolas pour menuisiers et fabricants. 18 ans d'expérience.">
+<meta name="description" content="Grossiste en profilés aluminium STRUGAL à Fès, point de distribution à Sefrou : coulissants, battants, agencement, garde-corps, pergolas. 18 ans d'expérience.">
 <link rel="canonical" href="https://prompolu.com/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="PROMPOLU ALUMINIUM — Distributeur agréé STRUGAL à Fès">
-<meta property="og:description" content="Profilés et systèmes aluminium STRUGAL pour menuisiers et fabricants : coulissants, agencement intérieur, garde-corps, volets roulants, pergolas.">
+<meta property="og:description" content="Profilés et systèmes aluminium STRUGAL pour menuisiers et fabricants, à Fès et à Sefrou : coulissants, agencement intérieur, garde-corps, volets roulants, pergolas.">
 <meta property="og:url" content="https://prompolu.com/">
 <meta property="og:image" content="https://prompolu.com/assets/logo-prompolu.png">
 <meta property="og:locale" content="fr_MA">
@@ -19,33 +19,76 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
-  "@id": "https://prompolu.com/#organization",
-  "name": "PROMPOLU ALUMINIUM",
-  "description": "Distributeur agréé STRUGAL à Fès : profilés et systèmes aluminium pour coulissants, agencement intérieur, garde-corps, volets roulants et pergolas, destinés aux menuisiers et fabricants.",
-  "url": "https://prompolu.com/",
-  "logo": "https://prompolu.com/assets/logo-prompolu.png",
-  "image": "https://prompolu.com/assets/logo-prompolu.png",
-  "telephone": ["+212668378538", "+212669594774"],
-  "email": "PROMPOLU@LIVE.FR",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "N° 511, Av. Moulay Rachid, Lot Assalam, Rte de Sefrou",
-    "addressLocality": "Fès",
-    "postalCode": "30000",
-    "addressCountry": "MA"
-  },
-  "areaServed": "Fès, Maroc",
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    "opens": "09:00",
-    "closes": "19:00"
-  },
-  "sameAs": [
-    "https://www.facebook.com/share/1Dht8MMwGS/?mibextid=wwXIfr",
-    "https://www.instagram.com/fesal.aluminium",
-    "https://www.tiktok.com/@fesal.aluminium"
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://prompolu.com/#organization",
+      "name": "PROMPOLU ALUMINIUM",
+      "description": "Entreprise fassie, distributeur agréé STRUGAL : profilés et systèmes aluminium pour coulissants, fenêtres et portes battantes, agencement intérieur, garde-corps, volets roulants et pergolas, destinés aux menuisiers et fabricants. Magasin historique à Fès, point de distribution sous convention STRUGAL à Sefrou.",
+      "url": "https://prompolu.com/",
+      "logo": "https://prompolu.com/assets/logo-prompolu.png",
+      "image": "https://prompolu.com/assets/logo-prompolu.png",
+      "telephone": ["+212668378538", "+212669594774"],
+      "email": "PROMPOLU@LIVE.FR",
+      "areaServed": ["Fès, Maroc", "Sefrou, Maroc"],
+      "sameAs": [
+        "https://www.facebook.com/share/1Dht8MMwGS/?mibextid=wwXIfr",
+        "https://www.instagram.com/fesal.aluminium",
+        "https://www.tiktok.com/@fesal.aluminium"
+      ],
+      "subOrganization": [
+        {"@id": "https://prompolu.com/#magasin-fes"},
+        {"@id": "https://prompolu.com/#magasin-sefrou"}
+      ]
+    },
+    {
+      "@type": "HomeAndConstructionBusiness",
+      "@id": "https://prompolu.com/#magasin-fes",
+      "name": "PROMPOLU ALUMINIUM — Fès",
+      "description": "Magasin historique de PROMPOLU ALUMINIUM, Av. Moulay Rachid à Fès. Profilés et systèmes aluminium STRUGAL en matière première pour menuisiers et fabricants.",
+      "parentOrganization": {"@id": "https://prompolu.com/#organization"},
+      "url": "https://prompolu.com/contact.html",
+      "image": "https://prompolu.com/assets/logo-prompolu.png",
+      "telephone": ["+212668378538", "+212669594774"],
+      "email": "PROMPOLU@LIVE.FR",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "N° 511, Av. Moulay Rachid, Lot Assalam, Rte de Sefrou",
+        "addressLocality": "Fès",
+        "postalCode": "30000",
+        "addressCountry": "MA"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      }
+    },
+    {
+      "@type": "HomeAndConstructionBusiness",
+      "@id": "https://prompolu.com/#magasin-sefrou",
+      "name": "PROMPOLU ALUMINIUM — Sefrou",
+      "description": "Point de distribution de PROMPOLU ALUMINIUM en convention avec STRUGAL, Route Sidi Boumdine à Sefrou. Même gamme et mêmes conditions qu'à Fès.",
+      "parentOrganization": {"@id": "https://prompolu.com/#organization"},
+      "url": "https://prompolu.com/contact.html",
+      "image": "https://prompolu.com/assets/logo-prompolu.png",
+      "telephone": ["+212668378538", "+212669594774"],
+      "email": "PROMPOLU@LIVE.FR",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "N° 27, Dar Belghazi, Route Sidi Boumdine",
+        "addressLocality": "Sefrou",
+        "postalCode": "31000",
+        "addressCountry": "MA"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      }
+    }
   ]
 }
 </script>
@@ -55,7 +98,7 @@
 
 <div class="topbar">
   <div class="wrap">
-    <span>Fès, Maroc — Av. Moulay Rachid</span>
+    <span>Fès — Av. Moulay Rachid&nbsp;&nbsp;/&nbsp;&nbsp;Sefrou — Rte Sidi Boumdine</span>
     <span>
       <a href="tel:+212668378538">06 68 37 85 38</a>
       <span class="sep">/</span>
@@ -86,7 +129,7 @@
       <div class="hero-copy">
         <span class="kicker"><span class="dash"></span>Profilés &amp; systèmes aluminium</span>
         <h1 class="hero-title">La qualité,<br>notre meilleur profil.</h1>
-        <p class="hero-sub">PROMPOLU ALUMINIUM fournit aux menuisiers et fabricants de Fès les profilés et systèmes aluminium STRUGAL — coulissants, agencement intérieur, sécurité et confort extérieur. Plus de 18 ans d'expérience au service des professionnels.</p>
+        <p class="hero-sub">PROMPOLU ALUMINIUM fournit aux menuisiers et fabricants de Fès et de sa région les profilés et systèmes aluminium STRUGAL — coulissants, agencement intérieur, sécurité et confort extérieur. Plus de 18 ans d'expérience au service des professionnels.</p>
         <div class="hero-actions">
           <a href="/coulissants.html" class="btn btn-solid">Voir nos produits</a>
           <a href="https://wa.me/212668378538?text=Bonjour%20PROMPOLU%2C%20je%20souhaite%20avoir%20des%20informations%20sur%20vos%20produits." class="btn btn-outline" target="_blank" rel="noopener">Nous contacter</a>
@@ -99,7 +142,7 @@
     <div class="wrap">
       <span class="plabel">Distributeur agréé</span>
       <img src="/assets/logo-strugal.png" alt="STRUGAL" width="90" height="23">
-      <span class="plabel">— systèmes aluminium espagnols testés aux normes européennes EN 12207 / 12208 / 12210</span>
+      <span class="plabel">— systèmes aluminium espagnols testés aux normes européennes EN 12207 / 12208 / 12210. Point de distribution sous convention à Sefrou.</span>
     </div>
   </div>
 
@@ -197,8 +240,12 @@
       <div class="contact-grid">
         <div class="contact-lines">
           <div class="contact-line">
-            <span class="k">ADRESSE</span>
+            <span class="k">FÈS</span>
             <span class="v">N° 511, Av. Moulay Rachid<br>Lot Assalam, Rte de Sefrou<br>Fès 30000, Maroc</span>
+          </div>
+          <div class="contact-line">
+            <span class="k">SEFROU</span>
+            <span class="v">N° 27, Dar Belghazi<br>Route Sidi Boumdine<br>Sefrou 31000, Maroc</span>
           </div>
           <div class="contact-line">
             <span class="k">TÉLÉPHONE</span>
@@ -210,7 +257,7 @@
           </div>
         </div>
         <div class="map-wrap">
-          <iframe src="https://www.google.com/maps?q=N%C2%B0+511+Avenue+Moulay+Rachid%2C+Lot+Assalam%2C+Route+de+Sefrou%2C+F%C3%A8s+30000%2C+Maroc&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Localisation PROMPOLU ALUMINIUM"></iframe>
+          <iframe src="https://www.google.com/maps?q=N%C2%B0+511+Avenue+Moulay+Rachid%2C+Lot+Assalam%2C+Route+de+Sefrou%2C+F%C3%A8s+30000%2C+Maroc&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Localisation du magasin PROMPOLU de Fès"></iframe>
         </div>
       </div>
     </div>
@@ -246,7 +293,7 @@
       </a>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 PROMPOLU ALUMINIUM — Fès, Maroc</span>
+      <span>© 2026 PROMPOLU ALUMINIUM — Fès &amp; Sefrou, Maroc</span>
       <span>La qualité, notre meilleur profil</span>
     </div>
   </div>

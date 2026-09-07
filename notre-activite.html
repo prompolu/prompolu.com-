@@ -32,7 +32,7 @@
   "@type": "FAQPage",
   "mainEntity": [
     {"@type": "Question", "name": "Depuis combien de temps PROMPOLU exerce-t-il ?", "acceptedAnswer": {"@type": "Answer", "text": "PROMPOLU ALUMINIUM compte plus de 18 ans d'expérience dans la fourniture de matière première aluminium aux menuisiers et fabricants de la région de Fès."}},
-    {"@type": "Question", "name": "Qu'est-ce que STRUGAL ?", "acceptedAnswer": {"@type": "Answer", "text": "STRUGAL est un fabricant espagnol de systèmes aluminium pour la menuiserie, testés aux normes européennes EN 12207, EN 12208 et EN 12210. PROMPOLU en est le distributeur agréé à Fès."}},
+    {"@type": "Question", "name": "Qu'est-ce que STRUGAL ?", "acceptedAnswer": {"@type": "Answer", "text": "STRUGAL est un fabricant espagnol de systèmes aluminium pour la menuiserie, testés aux normes européennes EN 12207, EN 12208 et EN 12210. PROMPOLU en est le distributeur agréé, avec son point de distribution sous convention STRUGAL à Sefrou et son magasin historique à Fès."}},
     {"@type": "Question", "name": "PROMPOLU travaille-t-il avec des particuliers ou uniquement des professionnels ?", "acceptedAnswer": {"@type": "Answer", "text": "PROMPOLU fournit de la matière première aluminium principalement aux menuisiers et fabricants, qui réalisent ensuite les ouvrages finis pour leurs propres clients."}}
   ]
 }
@@ -40,21 +40,77 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
-  "@id": "https://prompolu.com/#organization",
-  "name": "PROMPOLU ALUMINIUM",
-  "url": "https://prompolu.com/",
-  "logo": "https://prompolu.com/assets/logo-prompolu.png",
-  "telephone": ["+212668378538", "+212669594774"],
-  "email": "PROMPOLU@LIVE.FR",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "N\u00b0 511, Av. Moulay Rachid, Lot Assalam, Rte de Sefrou",
-    "addressLocality": "F\u00e8s",
-    "postalCode": "30000",
-    "addressCountry": "MA"
-  },
-  "areaServed": "F\u00e8s, Maroc"
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://prompolu.com/#organization",
+      "name": "PROMPOLU ALUMINIUM",
+      "description": "Entreprise fassie, distributeur agréé STRUGAL : profilés et systèmes aluminium pour coulissants, fenêtres et portes battantes, agencement intérieur, garde-corps, volets roulants et pergolas, destinés aux menuisiers et fabricants. Magasin historique à Fès, point de distribution sous convention STRUGAL à Sefrou.",
+      "url": "https://prompolu.com/",
+      "logo": "https://prompolu.com/assets/logo-prompolu.png",
+      "image": "https://prompolu.com/assets/logo-prompolu.png",
+      "telephone": ["+212668378538", "+212669594774"],
+      "email": "PROMPOLU@LIVE.FR",
+      "areaServed": ["Fès, Maroc", "Sefrou, Maroc"],
+      "sameAs": [
+        "https://www.facebook.com/share/1Dht8MMwGS/?mibextid=wwXIfr",
+        "https://www.instagram.com/fesal.aluminium",
+        "https://www.tiktok.com/@fesal.aluminium"
+      ],
+      "subOrganization": [
+        {"@id": "https://prompolu.com/#magasin-fes"},
+        {"@id": "https://prompolu.com/#magasin-sefrou"}
+      ]
+    },
+    {
+      "@type": "HomeAndConstructionBusiness",
+      "@id": "https://prompolu.com/#magasin-fes",
+      "name": "PROMPOLU ALUMINIUM — Fès",
+      "description": "Magasin historique de PROMPOLU ALUMINIUM, Av. Moulay Rachid à Fès. Profilés et systèmes aluminium STRUGAL en matière première pour menuisiers et fabricants.",
+      "parentOrganization": {"@id": "https://prompolu.com/#organization"},
+      "url": "https://prompolu.com/contact.html",
+      "image": "https://prompolu.com/assets/logo-prompolu.png",
+      "telephone": ["+212668378538", "+212669594774"],
+      "email": "PROMPOLU@LIVE.FR",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "N° 511, Av. Moulay Rachid, Lot Assalam, Rte de Sefrou",
+        "addressLocality": "Fès",
+        "postalCode": "30000",
+        "addressCountry": "MA"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      }
+    },
+    {
+      "@type": "HomeAndConstructionBusiness",
+      "@id": "https://prompolu.com/#magasin-sefrou",
+      "name": "PROMPOLU ALUMINIUM — Sefrou",
+      "description": "Point de distribution de PROMPOLU ALUMINIUM en convention avec STRUGAL, Route Sidi Boumdine à Sefrou. Même gamme et mêmes conditions qu'à Fès.",
+      "parentOrganization": {"@id": "https://prompolu.com/#organization"},
+      "url": "https://prompolu.com/contact.html",
+      "image": "https://prompolu.com/assets/logo-prompolu.png",
+      "telephone": ["+212668378538", "+212669594774"],
+      "email": "PROMPOLU@LIVE.FR",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "N° 27, Dar Belghazi, Route Sidi Boumdine",
+        "addressLocality": "Sefrou",
+        "postalCode": "31000",
+        "addressCountry": "MA"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      }
+    }
+  ]
 }
 </script>
 </head>
@@ -63,7 +119,7 @@
 
 <div class="topbar">
   <div class="wrap">
-    <span>Fès, Maroc — Av. Moulay Rachid</span>
+    <span>Fès — Av. Moulay Rachid&nbsp;&nbsp;/&nbsp;&nbsp;Sefrou — Rte Sidi Boumdine</span>
     <span>
       <a href="tel:+212668378538">06 68 37 85 38</a>
       <span class="sep">/</span>
@@ -98,15 +154,16 @@
   <section class="page-hero">
     <div class="wrap">
       <h1>Notre activité</h1>
-      <p class="lead">Le fournisseur de matière première aluminium des menuisiers et fabricants de Fès, depuis plus de 18 ans.</p>
+      <p class="lead">Entreprise fassie, fournisseur de matière première aluminium des menuisiers et fabricants depuis plus de 18 ans. Deux magasins : Fès, notre implantation d'origine, et Sefrou, notre point de distribution STRUGAL.</p>
     </div>
   </section>
 
   <section id="histoire">
     <div class="wrap">
       <article class="post">
-        <h2>Un distributeur agréé STRUGAL à Fès</h2>
-        <p>PROMPOLU ALUMINIUM accompagne depuis plus de 18 ans les menuisiers et fabricants de la région de Fès en leur fournissant des profilés et systèmes aluminium en matière première. En tant que distributeur agréé de la marque espagnole STRUGAL, PROMPOLU donne accès à des systèmes aluminium testés aux normes européennes EN 12207 (perméabilité à l'air), EN 12208 (étanchéité à l'eau) et EN 12210 (résistance au vent).</p>
+        <h2>Une maison de Fès, distributeur agréé STRUGAL</h2>
+        <p>PROMPOLU ALUMINIUM est une entreprise fassie. Elle accompagne depuis plus de 18 ans les menuisiers et fabricants de la région en leur fournissant des profilés et systèmes aluminium en matière première, depuis son magasin historique de l'Av. Moulay Rachid, à Fès.</p>
+        <p>En tant que distributeur agréé de la marque espagnole STRUGAL, PROMPOLU donne accès à des systèmes aluminium testés aux normes européennes EN 12207 (perméabilité à l'air), EN 12208 (étanchéité à l'eau) et EN 12210 (résistance au vent). <strong>Notre point de distribution en convention avec STRUGAL se trouve à Sefrou</strong>, Route Sidi Boumdine — la gamme reste disponible dans nos deux magasins, aux mêmes conditions.</p>
         <p>Notre catalogue couvre l'ensemble des besoins d'un atelier de menuiserie aluminium : systèmes coulissants du résidentiel au grand format architectural, profilés d'agencement intérieur pour cuisines et dressings, et solutions extérieures pour la sécurité et le confort — garde-corps, volets roulants et pergolas.</p>
 
         <h2>Notre positionnement : la matière première, pas l'ouvrage fini</h2>
@@ -116,7 +173,7 @@
         <p>Chaque système proposé — du S70P standard au S110P grand format — répond à des exigences précises de performance thermique, acoustique et mécanique. Le système S125RP est fabriqué sous certification ISO 9001. Notre équipe conseille les menuisiers sur le choix du système le plus adapté à chaque projet : dimensions, poids de vantail, finition, budget.</p>
 
         <h2>Nos clients</h2>
-        <p>PROMPOLU travaille principalement avec des menuisiers, des fabricants de menuiserie aluminium et, pour les projets de grand format, des architectes et bureaux d'études basés à Fès et dans sa région.</p>
+        <p>PROMPOLU travaille principalement avec des menuisiers, des fabricants de menuiserie aluminium et, pour les projets de grand format, des architectes et bureaux d'études basés à Fès, à Sefrou et dans leur région. Nos deux magasins — Av. Moulay Rachid à Fès, notre implantation d'origine, et Route Sidi Boumdine à Sefrou, notre point de distribution STRUGAL — proposent la même gamme, aux mêmes conditions et aux mêmes horaires.</p>
       </article>
     </div>
   </section>
@@ -133,7 +190,7 @@
         </details>
         <details class="faq-item">
           <summary>Qu'est-ce que STRUGAL ?<span class="q-mark">+</span></summary>
-          <p class="faq-a">STRUGAL est un fabricant espagnol de systèmes aluminium pour la menuiserie, testés aux normes européennes EN 12207, EN 12208 et EN 12210. PROMPOLU en est le distributeur agréé à Fès.</p>
+          <p class="faq-a">STRUGAL est un fabricant espagnol de systèmes aluminium pour la menuiserie, testés aux normes européennes EN 12207, EN 12208 et EN 12210. PROMPOLU en est le distributeur agréé, avec son point de distribution sous convention STRUGAL à Sefrou et son magasin historique à Fès.</p>
         </details>
         <details class="faq-item">
           <summary>PROMPOLU travaille-t-il avec des particuliers ou uniquement des professionnels ?<span class="q-mark">+</span></summary>
@@ -173,7 +230,7 @@
       </a>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 PROMPOLU ALUMINIUM — Fès, Maroc</span>
+      <span>© 2026 PROMPOLU ALUMINIUM — Fès &amp; Sefrou, Maroc</span>
       <span>La qualité, notre meilleur profil</span>
     </div>
   </div>
