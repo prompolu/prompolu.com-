@@ -68,8 +68,18 @@
     display:flex;align-items:center;justify-content:space-between;
     padding:16px 28px;
   }
-  .logo-mark{margin-right:32px;}
-  .logo-mark img{height:26px;width:auto;}
+  .brand{display:flex;align-items:center;gap:14px;margin-right:30px;}
+  .logo-mark{display:block;}
+  .logo-mark img{height:26px;width:auto;display:block;}
+  .partner-badge{
+    display:flex;align-items:center;gap:9px;
+    border:1px solid var(--line);background:#fff;padding:6px 11px;
+  }
+  .partner-badge .lbl{
+    font-family:'IBM Plex Mono', monospace;font-size:8px;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--bronze-dark);line-height:1.25;
+  }
+  .partner-badge img{height:12px;width:auto;display:block;}
   nav.main{display:flex;align-items:center;gap:34px;}
   nav.main a{
     font-size:14.5px;font-weight:500;color:var(--ink);
@@ -245,6 +255,12 @@
   }
 
   /* responsive */
+  @media (max-width:1120px){
+    /* la mention prend trop de place quand le menu complet est affiche */
+    .partner-badge .lbl{display:none;}
+    .partner-badge{padding:6px 10px;}
+    .brand{gap:12px;}
+  }
   @media (max-width:900px){
     .cat-grid.two, .cat-grid.three{grid-template-columns:1fr;}
     .adv-grid{grid-template-columns:repeat(3,1fr);}
@@ -266,6 +282,14 @@
     .adv-grid{grid-template-columns:1fr;}
     .adv{border-bottom:1px solid var(--line);}
     .topbar .wrap{font-size:11px;}
+  }
+  @media (max-width:480px){
+    /* laisser respirer le logo et le cartouche a cote du bouton menu */
+    .logo-mark img{height:22px;}
+    .partner-badge{padding:5px 8px;}
+    .partner-badge img{height:11px;}
+    .brand{gap:10px;margin-right:12px;}
+    header.site .wrap{padding:14px 20px;}
   }
 
 /* ============================================================
