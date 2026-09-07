@@ -465,3 +465,21 @@ article.post table th{background:var(--panel);font-family:'IBM Plex Mono', monos
 .map-open:hover{color:#C79768;text-decoration:underline;}
 .map-open svg{width:13px;height:13px;flex-shrink:0;}
 .stores-grid .map-open,.maps-stack .map-open{margin-bottom:2px;}
+
+/* ── Étapes d'une commande ────────────────────────────────────── */
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
+.step{padding:30px 26px 30px 0;border-right:1px solid var(--line);}
+.step:last-child{border-right:none;}
+.step .step-num{
+  font-family:'IBM Plex Mono', monospace;color:var(--bronze-dark);font-size:12px;
+  display:block;margin-bottom:14px;
+}
+.step h3{font-size:1rem;margin-bottom:8px;}
+.step p{font-size:13.5px;color:#54585E;}
+@media (max-width:900px){
+  .steps-grid{grid-template-columns:repeat(2,1fr);}
+  .step{border-right:none;border-bottom:1px solid var(--line);padding:26px 0;}
+}
+@media (max-width:560px){
+  .steps-grid{grid-template-columns:1fr;}
+}
