@@ -455,3 +455,13 @@ article.post table th{background:var(--panel);font-family:'IBM Plex Mono', monos
 .ship-band h3{font-size:1.15rem;margin-bottom:8px;}
 .ship-band p{font-size:15px;color:#54585E;line-height:1.7;max-width:64ch;margin:0;}
 @media (max-width:620px){ .ship-band{flex-direction:column;gap:14px;padding:22px;} }
+
+/* ── Lien « ouvrir dans Google Maps » sous chaque carte ───────── */
+.map-open{
+  display:inline-flex;align-items:center;gap:7px;margin-top:12px;
+  font-family:'IBM Plex Mono', monospace;font-size:12.5px;letter-spacing:.02em;
+  color:var(--bronze);text-decoration:none;
+}
+.map-open:hover{color:#C79768;text-decoration:underline;}
+.map-open svg{width:13px;height:13px;flex-shrink:0;}
+.stores-grid .map-open,.maps-stack .map-open{margin-bottom:2px;}
