@@ -396,3 +396,62 @@ article.post table th{background:var(--panel);font-family:'IBM Plex Mono', monos
 .teaser-card p{font-size:14.5px;color:#54585E;flex-grow:1;}
 .teaser-card a.more{margin-top:18px;font-family:'IBM Plex Mono', monospace;font-size:13px;color:var(--bronze-dark);}
 @media (max-width:900px){ .teaser-grid{grid-template-columns:1fr;} }
+
+/* ── Formulaire de demande de devis ───────────────────────────── */
+.quote-form{max-width:760px;}
+.quote-form .qf-intro{font-size:15.5px;color:#41454B;line-height:1.75;max-width:68ch;margin-bottom:30px;}
+.qf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+.qf-field{background:var(--panel);padding:20px 22px;display:flex;flex-direction:column;}
+.qf-field.qf-full{grid-column:1 / -1;}
+.qf-field label{
+  font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--bronze-dark);margin-bottom:9px;
+}
+.qf-field label .opt{color:var(--aluminium);letter-spacing:0;text-transform:none;font-size:11px;}
+.qf-field input,.qf-field select,.qf-field textarea{
+  font-family:'IBM Plex Sans', sans-serif;font-size:15px;color:var(--ink);
+  background:transparent;border:0;border-bottom:1px solid var(--line);
+  padding:6px 0;width:100%;border-radius:0;-webkit-appearance:none;appearance:none;
+}
+.qf-field select{background-image:none;cursor:pointer;}
+.qf-field textarea{resize:vertical;min-height:96px;line-height:1.6;}
+.qf-field input:focus,.qf-field select:focus,.qf-field textarea:focus{
+  outline:none;border-bottom-color:var(--bronze);
+}
+.qf-field input::placeholder,.qf-field textarea::placeholder{color:#B4B7BB;}
+.qf-field.qf-error input,.qf-field.qf-error select,.qf-field.qf-error textarea{border-bottom-color:#B33A2B;}
+.qf-err{font-size:12.5px;color:#B33A2B;margin-top:7px;display:none;}
+.qf-field.qf-error .qf-err{display:block;}
+
+.qf-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px;align-items:center;}
+.qf-btn{
+  font-family:'IBM Plex Mono', monospace;font-size:13px;letter-spacing:.04em;
+  padding:14px 22px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);
+  cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:background .18s ease,border-color .18s ease,color .18s ease;
+}
+.qf-btn:hover{background:var(--bronze);border-color:var(--bronze);}
+.qf-btn.qf-alt{background:transparent;color:var(--ink);}
+.qf-btn.qf-alt:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.qf-btn svg{width:16px;height:16px;flex-shrink:0;}
+.qf-note{font-size:13.5px;color:#6B6F75;margin-top:16px;max-width:60ch;line-height:1.6;}
+.qf-sent{
+  margin-top:18px;padding:14px 18px;border-left:3px solid var(--bronze);
+  background:var(--panel);font-size:14.5px;color:#41454B;display:none;
+}
+.qf-sent.on{display:block;}
+@media (max-width:760px){
+  .qf-grid{grid-template-columns:1fr;}
+  .qf-actions .qf-btn{flex:1 1 100%;justify-content:center;}
+}
+
+/* ── Bandeau livraison ────────────────────────────────────────── */
+.ship-band{
+  border:1px solid var(--line);background:var(--panel);
+  padding:26px 30px;display:flex;gap:22px;align-items:flex-start;margin-top:6px;
+}
+.ship-band .ship-icon{
+  width:34px;height:34px;flex-shrink:0;color:var(--bronze-dark);
+}
+.ship-band h3{font-size:1.15rem;margin-bottom:8px;}
+.ship-band p{font-size:15px;color:#54585E;line-height:1.7;max-width:64ch;margin:0;}
+@media (max-width:620px){ .ship-band{flex-direction:column;gap:14px;padding:22px;} }
