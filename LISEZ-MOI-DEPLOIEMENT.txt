@@ -1,118 +1,94 @@
-PROMPOLU ALUMINIUM — SEO/GEO rebuild — deployment notes
-=========================================================
+DÉPLOIEMENT — mise à jour du 7 septembre 2026
+=============================================
 
-WHAT THIS IS
-------------
-Your original site was a single HTML page with anchor-based navigation
-(#produits, #battants, #apropos...). Google/AI engines could only see one
-URL. This package turns it into a real multi-page site while keeping the
-exact same visual design (same fonts, colors, layout system).
+Dépôt GitHub : prompolu/prompolu.com-      (attention au tiret final)
+Branche      : main
 
-FILES IN THIS PACKAGE
-----------------------
-index.html                                    Home
-coulissants.html                              Systèmes coulissants (5 products, FAQ, schema)
-agencement.html                               Agencement intérieur (FAQ, schema)
-exterieur.html                                Extérieur & confort (FAQ, schema)
-notre-activite.html                           About / Notre activité (expanded, FAQ, schema)
-contact.html                                  Contact (FAQ, schema)
-conseils/index.html                           Blog/guides listing
-conseils/guide-choisir-systeme-coulissant-aluminium.html   First guide article (Article + FAQ schema)
-assets/style.css                              All CSS (extracted from your original inline <style>)
-assets/nav.js                                 Mobile menu + active-link script
-assets/logo-prompolu.png                      Your logo, decoded from the base64 that was inline before
-assets/logo-strugal.png                       STRUGAL partner badge, same treatment
-robots.txt                                    Explicitly allows Google + AI crawlers (GPTBot, ClaudeBot,
-                                               PerplexityBot, Google-Extended, etc.) + points to sitemap.xml
-sitemap.xml                                   Lists all 8 real pages
-llms.txt                                      Short plain-text summary for AI systems (growing convention)
+────────────────────────────────────────────────────────────────────
+CE QUI CHANGE DANS CETTE LIVRAISON
+────────────────────────────────────────────────────────────────────
 
-HOW TO DEPLOY
--------------
-1. This assumes the site lives at the DOMAIN ROOT (https://prompolu.com/),
-   which matches what I found when I crawled it. All internal links and
-   asset paths use root-relative URLs (e.g. /assets/style.css,
-   /coulissants.html) — so upload the whole folder structure AS-IS to your
-   web root, keeping the assets/ and conseils/ subfolders intact.
-2. Back up your current live index.html before overwriting it.
-3. Upload everything (via your host's File Manager, FTP/SFTP, or however
-   you currently publish the site) to the same place the current
-   index.html lives.
-4. Open https://prompolu.com/ afterward and click through every nav link
-   to confirm each page loads.
+1. ADRESSE DU MAGASIN DE FÈS — corrigée partout
+   Ancienne : N° 511, Av. Moulay Rachid, Lot Assalam, Rte de Sefrou — Fès 30000
+   Nouvelle : N° 21, Rue Pékin, Av. El Wafaa 2, Rte de Sefrou — Fès 30050
 
-AFTER DEPLOYING — SUBMIT TO SEARCH ENGINES
--------------------------------------------
-1. Google Search Console (search.google.com/search-console): add the
-   property if not already done, then Sitemaps > add
-   "https://prompolu.com/sitemap.xml", and use "Request indexing" on each
-   of the 8 URLs above.
-2. Bing Webmaster Tools: same idea (Bing also feeds some AI answer engines).
+   Corrigée dans : la barre supérieure des 12 pages, l'encadré des deux
+   magasins (accueil et contact), la carte Google, les données structurées
+   JSON-LD des 11 pages, les questions fréquentes, et llms.txt.
 
-THINGS I DELIBERATELY LEFT FOR YOU TO DECIDE
-----------------------------------------------
-1. FENÊTRES & PORTES BATTANTES: DONE — this section DID exist on your
-   original page (id="battants") and was wrongly dropped in the first
-   rebuild. It's now restored as its own page, battants.html, with all 4
-   original products (S53RP+, S46, ALUDOORS A400K, A200 4FH2), their real
-   photos, specs and descriptions, added to the nav on every page and to
-   the sitemap.
-2. OPENING HOURS: DONE — added "Lundi – Samedi, 9h – 19h" to contact.html
-   (visible line + FAQ entry) and to the OpeningHoursSpecification in the
-   LocalBusiness schema on index.html, so Google can surface them directly.
-3. GOOGLE BUSINESS PROFILE, SEARCH CONSOLE, BACKLINK OUTREACH: these need
-   you to be logged into your own accounts. Once you turn on computer use
-   in the Claude desktop app, I can drive the browser for these while you
-   handle the actual logins/approvals.
+2. FORMULAIRE DE DEMANDE DE DEVIS  →  contact.html#formulaire
+   Le visiteur remplit, puis choisit WhatsApp ou e-mail. Rien n'est envoyé
+   automatiquement : le message s'ouvre pré-rempli, il l'expédie lui-même.
+   Aucun serveur, aucun compte à créer, aucun abonnement.
+   Deux champs obligatoires seulement : nom et téléphone.
 
-NOTHING ELSE ON YOUR SITE WAS CHANGED — same colors, fonts, logo, product
-specs, and copy as your original page; only the structure, technical SEO,
-and content depth changed.
+3. LIVRAISON PARTOUT AU MAROC
+   Nouvelle section sur contact.html, nouveau bloc « Livraison nationale »
+   sur l'accueil, nouvelle section sur notre-activite.html, question ajoutée
+   à la FAQ, zone desservie élargie au Royaume dans le JSON-LD, et llms.txt.
 
-CORRECTIONS MADE AFTER FIRST DEPLOYMENT (2026-09-06)
--------------------------------------------------------
-The first version of this rebuild introduced two real mistakes, since fixed
-on every page:
-1. WRONG ADDRESS — it used "225C+QR9, Av. El Wafaa, Fès 30050" instead of
-   your real address "N° 511, Av. Moulay Rachid, Lot Assalam, Rte de
-   Sefrou, Fès 30000". Fixed in the topbar, contact section, Google Maps
-   embeds, the LocalBusiness schema, and llms.txt.
-2. SOCIAL LINKS DROPPED — the original page's footer had Instagram,
-   TikTok and Facebook icons, plus a WhatsApp "Nous contacter" button in
-   the hero. These were lost during the rebuild. They're now restored
-   (with the correct URLs) in the footer of all pages, the hero button,
-   and the schema's "sameAs" field.
-3. PRODUCT PHOTOS DROPPED — your original page had 15 real photos (profile
-   cross-sections for every system, the two door models, kitchen/dressing
-   photos, garde-corps/volets/pergola photos). The rebuild replaced all of
-   them with generic vector icons or nothing. All 15 photos are restored:
-   coulissants.html and battants.html now show the real profile-cutaway
-   photo for each system, and agencement.html / exterieur.html show the
-   real lifestyle photos instead of icons. agencement.html also got back
-   its third card ("Accessoires de cuisine", partnership with STARAX)
-   which had been dropped along with its photo.
+4. DEUX NOUVEAUX GUIDES
+   /conseils/coulissant-ou-battant-comment-choisir.html
+   /conseils/rupture-de-pont-thermique-aluminium.html
+   Tous deux référencés dans /conseils/index.html et dans sitemap.xml,
+   avec liens croisés depuis coulissants.html et battants.html.
 
-Files added/changed in this pass: battants.html (new), assets/products/
-(15 new image files), coulissants.html, agencement.html, exterieur.html,
-index.html (new nav link + homepage teaser card), sitemap.xml, llms.txt,
-assets/style.css (restored .sys-thumb / .cat-photo / .cat-tag rules).
+5. FACEBOOK
+   Le lien de partage a été remplacé par l'adresse propre
+   https://www.facebook.com/PROMPOLU/ dans le pied de page et le JSON-LD.
 
-NEW SLIDING SYSTEMS ADDED (2026-09-06)
------------------------------------------
-6 new STRUGAL systems added to coulissants.html at your request: S70R,
-S86RP, S88R, S90P, S90R, S140RP Infinity (11 systems total now, up from
-5). Specs (weight, dimensions, glazing, thermal/acoustic performance)
-were pulled from STRUGAL's own official pages (strugal.com / strugal.ma)
-— not invented. Photos for all 6 were supplied by you afterward and are
-now added (assets/products/s70r.jpg, s86rp.jpg, s88r.jpg, s90p.jpg,
-s90r.jpg, s140rp.jpg) — coulissants.html now shows a profile-cutaway
-image for all 11 systems.
+────────────────────────────────────────────────────────────────────
+COMMENT DÉPLOYER (glisser-déposer)
+────────────────────────────────────────────────────────────────────
 
-The comparison guide at conseils/guide-choisir-systeme-coulissant-
-aluminium.html has since been expanded to all 11 systems: the comparison
-table now lists every reference, a new section explains the STRUGAL P /
-R / RP naming convention, and the per-use sections cover the new systems
-(S70R, S86RP, S88R, S90P, S90R, S140RP). Two data errors in the old
-table were fixed at the same time (S70P and S125RP had vantail counts
-sitting in the "Dimensions max" column). The table is now wrapped in a
-horizontally scrollable container so it doesn't get cut off on phones.
+ÉTAPE 1 — la racine
+  Ouvrir  https://github.com/prompolu/prompolu.com-/upload/main
+  Glisser ces 12 fichiers depuis le dossier « racine » :
+
+     404.html            contact.html         index.html
+     agencement.html     coulissants.html     llms.txt
+     battants.html       exterieur.html       notre-activite.html
+     sitemap.xml         COURRIER-STRUGAL.md  LISEZ-MOI-DEPLOIEMENT.txt
+
+  Message de commit : « Adresse Fès corrigée, formulaire de devis, livraison Maroc »
+  Puis « Commit changes ».
+
+ÉTAPE 2 — le dossier assets
+  Ouvrir  https://github.com/prompolu/prompolu.com-/upload/main/assets
+  Glisser ces 2 fichiers depuis le dossier « assets » :
+
+     style.css     devis.js
+
+  Commit.
+
+ÉTAPE 3 — le dossier conseils
+  Ouvrir  https://github.com/prompolu/prompolu.com-/upload/main/conseils
+  Glisser ces 4 fichiers depuis le dossier « conseils » :
+
+     index.html
+     guide-choisir-systeme-coulissant-aluminium.html
+     coulissant-ou-battant-comment-choisir.html
+     rupture-de-pont-thermique-aluminium.html
+
+  Commit.
+
+ATTENTION — ne jamais glisser un DOSSIER et son CONTENU dans la même
+opération : GitHub crée alors des doublons à la racine. Un dossier à la
+fois, en ouvrant la bonne adresse /upload/main/<dossier> à chaque étape.
+
+────────────────────────────────────────────────────────────────────
+APRÈS LE DÉPLOIEMENT
+────────────────────────────────────────────────────────────────────
+
+• Attendre 1 à 2 minutes, puis vérifier :
+  https://prompolu.com/contact.html#formulaire  (remplir et tester WhatsApp)
+  https://prompolu.com/conseils/index.html      (trois guides listés)
+
+• Search Console → Sitemaps → renvoyer https://prompolu.com/sitemap.xml
+  puis demander l'indexation des deux nouvelles URL de guides.
+
+• Corriger l'adresse sur la page Facebook PROMPOLU (elle affiche encore
+  « Av. Al Wafae 2, Rue Pékin N° 21 » — l'ordre diffère de celui du site,
+  autant l'uniformiser) et y ajouter le lien prompolu.com, qui manque.
+
+• Envoyer le courrier à STRUGAL : voir COURRIER-STRUGAL.md
