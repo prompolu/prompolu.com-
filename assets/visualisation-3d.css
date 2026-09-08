@@ -157,3 +157,16 @@
   .v3d-phone iframe{height:560px}
   .v3d-teaser-copy h3{font-size:25px}
 }
+
+/* --- 4. les deux produits configurables --- */
+.v3d-prods{
+  margin:0 0 18px;
+  font-size:14.5px;
+  line-height:1.9;
+}
+.v3d-prods a{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:13px;
+  color:var(--bronze-dark);
+}
+.v3d-prods a:hover{text-decoration:underline}
