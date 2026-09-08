@@ -31,7 +31,7 @@ body{margin:0;background:var(--bg);color:var(--txt);
 
 /* ---------- selecteur de produit ---------- */
 .prod{display:flex;gap:2px;background:var(--panel);border-bottom:1px solid var(--line)}
-.prod a{flex:1;text-align:center;padding:11px 6px;font-size:13.5px;font-weight:600;
+.prod a{flex:1;text-align:center;padding:11px 4px;font-size:12.5px;font-weight:600;
   color:var(--dim);text-decoration:none;border-bottom:2px solid transparent}
 .prod a[aria-current]{color:var(--txt);border-bottom-color:var(--accent)}
 
@@ -161,6 +161,7 @@ model-viewer{width:100%;height:60vh;min-height:330px;max-height:460px;
   <nav class="prod">
     <a href="./" aria-current="page">Pergola</a>
     <a href="garde-corps/" id="lnkGC">Garde-corps</a>
+    <a href="coulissants/" id="lnkCO">Coulissant</a>
   </nav>
 
   <div class="stage">
@@ -360,8 +361,9 @@ function paint(){
   document.getElementById('wa').style.display = partner.phone ? 'grid' : 'none';
   /* le lien vers l'autre produit doit garder le partenaire */
   const slug = qs.get('p');
-  document.getElementById('lnkGC').href =
-    'garde-corps/' + (slug ? '?p=' + encodeURIComponent(slug) : '');
+  const q = slug ? '?p=' + encodeURIComponent(slug) : '';
+  document.getElementById('lnkGC').href = 'garde-corps/' + q;
+  document.getElementById('lnkCO').href = 'coulissants/' + q;
 }
 
 /* ---------- construction des contrôles ---------- */

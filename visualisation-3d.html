@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Visualisation 3D — vos clients voient le produit chez eux | PROMPOLU</title>
-<meta name="description" content="Outil de réalité augmentée réservé aux menuisiers clients de PROMPOLU : votre client visualise la pergola ou le garde-corps aluminium à taille réelle chez lui, à votre nom, depuis son téléphone. Sans application.">
+<meta name="description" content="Outil de réalité augmentée réservé aux menuisiers clients de PROMPOLU : votre client visualise la pergola, le garde-corps ou la baie coulissante aluminium à taille réelle chez lui, à votre nom, depuis son téléphone. Sans application.">
 <link rel="icon" href="/assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
@@ -12,7 +12,7 @@
 <link rel="canonical" href="https://prompolu.com/visualisation-3d.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Visualisation 3D — PROMPOLU ALUMINIUM">
-<meta property="og:description" content="Vos clients voient la pergola ou le garde-corps aluminium à taille réelle chez eux, avant de signer. Outil en marque blanche pour les menuisiers clients de PROMPOLU.">
+<meta property="og:description" content="Vos clients voient la pergola, le garde-corps ou la baie coulissante aluminium à taille réelle chez eux, avant de signer. Outil en marque blanche pour les menuisiers clients de PROMPOLU.">
 <meta property="og:url" content="https://prompolu.com/visualisation-3d.html">
 <meta property="og:image" content="https://prompolu.com/assets/og-image.jpg">
 <meta property="og:image:width" content="1200">
@@ -66,14 +66,14 @@
     <div class="hero-copy">
       <span class="kicker"><span class="dash"></span>Outil réservé à nos clients professionnels</span>
       <h1 class="hero-title">Votre client le voit<br>chez lui. Avant de signer.</h1>
-      <p class="hero-sub">Le plus dur, sur une pergola ou un garde-corps, c'est de le faire
+      <p class="hero-sub">Le plus dur, sur une pergola, un garde-corps ou une baie coulissante, c'est de le faire
         imaginer. Votre client regarde un catalogue et hésite&nbsp;: trop grand&nbsp;? trop
         foncé&nbsp;? Avec la visualisation 3D, il pointe son téléphone vers sa terrasse ou son
         balcon, et le produit s'y trouve, à taille réelle, aux cotes et dans la teinte qu'il a
         choisies. Il tourne autour. Il décide. Aucune application à installer.</p>
       <div class="hero-actions">
         <a href="/ar/?p=demo" class="btn btn-solid">Essayer sur une pergola</a>
-        <a href="/ar/garde-corps/?p=demo" class="btn btn-outline">Essayer sur un garde-corps</a>
+        <a href="/ar/coulissants/?p=demo" class="btn btn-outline">Essayer sur une baie coulissante</a>
       </div>
     </div>
   </div>
@@ -82,7 +82,7 @@
 <section id="produits-3d">
   <div class="wrap">
     <div class="section-head">
-      <h2>Deux produits configurables</h2>
+      <h2>Trois produits configurables</h2>
       <p>Un seul lien pour votre client&nbsp;: il passe de l'un à l'autre depuis la page.</p>
     </div>
     <div class="v3d-products">
@@ -112,6 +112,19 @@
           <span class="more">Configurer un garde-corps →</span>
         </span>
       </a>
+      <a class="v3d-prod" href="/ar/coulissants/?p=demo">
+        <span class="v3d-prod-img">
+          <img src="/assets/coulissant-teaser.jpg" alt="Baie coulissante aluminium STRUGAL"
+               width="1200" height="900" loading="lazy">
+        </span>
+        <span class="v3d-prod-body">
+          <span class="adv-mark mono">BAIE VITRÉE</span>
+          <h3>Baie coulissante</h3>
+          <p>Les 11 systèmes STRUGAL, du S70P au S140RP Infinity. 2, 3 ou 4 vantaux,
+             cotes libres, et une alerte si le vantail dépasse la capacité du système.</p>
+          <span class="more">Configurer une baie →</span>
+        </span>
+      </a>
     </div>
   </div>
 </section>
@@ -132,6 +145,7 @@
         <div class="v3d-switch" role="group" aria-label="Produit affiché">
           <button type="button" data-url="/ar/?p=demo" aria-pressed="true">Pergola</button>
           <button type="button" data-url="/ar/garde-corps/?p=demo" aria-pressed="false">Garde-corps</button>
+          <button type="button" data-url="/ar/coulissants/?p=demo" aria-pressed="false">Coulissant</button>
         </div>
         <span class="adv-mark mono">SUR VOTRE TÉLÉPHONE</span>
         <h3>Scannez pour la vue réelle</h3>
@@ -281,7 +295,7 @@
 
 <script src="/ar/vendor/qrcode.js"></script>
 <script>
-/* Demonstration : bascule pergola / garde-corps, le QR suit le produit. */
+/* Demonstration : bascule pergola / garde-corps / coulissant, le QR suit le produit. */
 (function(){
   var host  = document.getElementById('v3dQr');
   var frame = document.querySelector('.v3d-phone iframe');
