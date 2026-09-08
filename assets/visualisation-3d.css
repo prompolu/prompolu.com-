@@ -146,6 +146,7 @@
 .v3d-teaser-media img{width:100%;height:100%;object-fit:cover;display:block}
 
 @media (max-width:900px){
+  .v3d-products{grid-template-columns:1fr}
   .v3d-demo{grid-template-columns:1fr;gap:34px}
   .v3d-phone{max-width:380px}
   .v3d-phone iframe{height:600px}
@@ -159,14 +160,48 @@
 }
 
 /* --- 4. les deux produits configurables --- */
-.v3d-prods{
-  margin:0 0 18px;
-  font-size:14.5px;
-  line-height:1.9;
+.v3d-products{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
 }
-.v3d-prods a{
+.v3d-prod{
+  display:flex;
+  flex-direction:column;
+  background:var(--panel);
+  color:inherit;
+  transition:background .2s ease;
+}
+.v3d-prod:hover{background:#fbfaf8}
+.v3d-prod-img{display:block;aspect-ratio:4/3;overflow:hidden;background:#e7e5df}
+.v3d-prod-img img{width:100%;height:100%;object-fit:cover;display:block}
+.v3d-prod-body{display:flex;flex-direction:column;padding:26px 28px 30px}
+.v3d-prod-body h3{font-size:1.2rem;margin:10px 0 10px}
+.v3d-prod-body p{font-size:14.5px;color:#54585E;flex-grow:1;margin:0}
+.v3d-prod-body .more{
+  margin-top:18px;
   font-family:'IBM Plex Mono', monospace;
   font-size:13px;
   color:var(--bronze-dark);
 }
-.v3d-prods a:hover{text-decoration:underline}
+.v3d-prod:hover .more{text-decoration:underline}
+
+/* --- 5. bascule pergola / garde-corps dans la demonstration --- */
+.v3d-switch{
+  display:inline-flex;
+  border:1px solid rgba(21,23,26,.18);
+  margin-bottom:22px;
+}
+.v3d-switch button{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12.5px;
+  padding:9px 16px;
+  border:0;
+  background:transparent;
+  color:#54585E;
+  cursor:pointer;
+}
+.v3d-switch button+button{border-left:1px solid rgba(21,23,26,.18)}
+.v3d-switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
