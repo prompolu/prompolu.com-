@@ -1,19 +1,19 @@
 {
-  "_comment": "Un bloc par menuisier partenaire. Le lien à lui donner est : https://prompolu.com/ar/?p=SLUG — remplacez SLUG par la clé ci-dessous. Supprimez les exemples et ajoutez vos vrais partenaires.",
+  "_comment": "Un bloc par menuisier partenaire. Le lien à lui donner est : https://prompolu.com/ar/?p=SLUG — remplacez SLUG par la clé ci-dessous. Le téléphone est au format international SANS + ni espaces. N'inscrivez jamais un numéro fictif ici : le bouton WhatsApp appellerait un inconnu.",
 
   "demo": {
-    "name": "Menuiserie Exemple",
+    "name": "PROMPOLU ALUMINIUM",
     "logo": "",
-    "phone": "212600000000",
-    "email": "contact@example.ma",
-    "accent": "#c8a253"
+    "phone": "212668378538",
+    "email": "PROMPOLU@LIVE.FR",
+    "accent": "#8A6541"
   },
 
-  "atlas-alu": {
-    "name": "Atlas Aluminium — Fès",
-    "logo": "",
-    "phone": "212600000001",
+  "_exemple-a-copier": {
+    "name": "Menuiserie Bennani — Sefrou",
+    "logo": "logos/bennani.png",
+    "phone": "",
     "email": "",
-    "accent": "#2e7d9a"
+    "accent": "#1f6f8b"
   }
 }
