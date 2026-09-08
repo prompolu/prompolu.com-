@@ -183,6 +183,12 @@ select:focus{outline:none;border-color:var(--accent)}
   </div>
 
   <div class="sec">
+    <div class="lab">Vantail manœuvrant</div>
+    <div class="seg" id="opening"></div>
+    <p class="hint" id="openHint"></p>
+  </div>
+
+  <div class="sec">
     <div class="row">
       <div>
         <div class="lab">Largeur</div>
@@ -257,6 +263,7 @@ const TINTS = [
   {id:'depoli', nm:'Dépoli', lin:[0.84,0.88,0.90], a:0.66, r:0.45},
 ];
 const LEAVES = [2,3,4];
+const OPENINGS = [{id:0,nm:'Fermé'},{id:1,nm:'Ouvert'}];
 const W_MIN=100, W_MAX=1200, H_MIN=150, H_MAX=320;
 
 const qs = new URLSearchParams(location.search);
@@ -268,6 +275,7 @@ const st = {
   W   : clamp(parseInt(qs.get('w'),10), W_MIN, W_MAX, 360),
   H   : clamp(parseInt(qs.get('h'),10), H_MIN, H_MAX, 220),
   lv  : pick(parseInt(qs.get('v'),10), LEAVES, 3),
+  op  : qs.get('o')==='1' ? 1 : 0,
   fin : FINISHES.find(f=>f.id===qs.get('f')) || FINISHES[0],
   tint: TINTS.find(t=>t.id===qs.get('t')) || TINTS[0],
 };
@@ -275,7 +283,7 @@ const st = {
 function writeURL(){
   const u=new URLSearchParams();
   const p=qs.get('p'); if(p) u.set('p',p);
-  u.set('sys',st.sys); u.set('w',st.W); u.set('h',st.H); u.set('v',st.lv);
+  u.set('sys',st.sys); u.set('w',st.W); u.set('h',st.H); u.set('v',st.lv); u.set('o',st.op);
   u.set('f',st.fin.id); u.set('t',st.tint.id);
   history.replaceState(null,'',location.pathname+'?'+u.toString());
   renderQR();
@@ -323,6 +331,7 @@ function seg(host,items,get,set){
 }
 seg(document.getElementById('leaves'),
     LEAVES.map(v=>({id:v,nm:v+' vantaux'})), ()=>st.lv, v=>st.lv=+v);
+seg(document.getElementById('opening'), OPENINGS, ()=>st.op, v=>st.op=+v);
 seg(document.getElementById('tints'), TINTS, ()=>st.tint.id,
     v=>st.tint=TINTS.find(t=>t.id===v));
 
@@ -359,7 +368,7 @@ let blobURL=null;
 function refresh(){
   if(blobURL){URL.revokeObjectURL(blobURL);blobURL=null;}
   blobURL=Coulissant.makeURL(
-    {system:st.sys, width:st.W/100, height:st.H/100, leaves:st.lv},
+    {system:st.sys, width:st.W/100, height:st.H/100, leaves:st.lv, opening:st.op},
     {lin:hexLin(st.fin.hex.substr(1)), m:st.fin.m, r:st.fin.r},
     {lin:st.tint.lin, a:st.tint.a, r:st.tint.r});
   mv.src=blobURL;
@@ -367,7 +376,8 @@ function refresh(){
 }
 function syncAR(){
   mv.setAttribute('ios-src',
-    `../models-co/co-${Coulissant.arSystem(st.sys)}-${st.lv}-${st.fin.id}.usdz`);
+    `../models-co/co-${Coulissant.arSystem(st.sys)}-${st.lv}-${st.fin.id}`
+    + (st.op ? '-ouvert' : '') + '.usdz');
 }
 
 const fr=v=>v.toFixed(2).replace('.',',');
@@ -383,6 +393,12 @@ function specs(){
     + (sys.exact ? ' (cote publiée par STRUGAL).' : ' (masse vue reconstituée).')
     + ' Maxi <b>'+sys.vmax[0]+' × '+sys.vmax[1]+' mm</b> et <b>'+sys.kg+' kg</b> par vantail, vitrage '
     + sys.glass+' mm.';
+
+  /* ouvrir un vantail degage exactement une largeur de vantail */
+  document.getElementById('openHint').innerHTML = st.op
+    ? 'Le vantail qui porte la poignée coulisse derrière son voisin et dégage un '
+      + '<b>passage libre de '+Math.round(leafW*1000)+' mm</b> — la largeur d\'un vantail.'
+    : 'Affichez la baie ouverte pour montrer au client le passage réellement dégagé.';
 
   /* le controle qui compte : un vantail trop large pour le systeme */
   const a=document.getElementById('alert');
@@ -412,6 +428,7 @@ function summary(){
   return ['Baie coulissante — '+fr(st.W/100)+' × '+fr(st.H/100)+' m',
     'Système : '+st.sys+' — '+sys.tag,
     'Vantaux : '+st.lv+' — '+Math.round(leafW*1000)+' mm par vantail',
+    'Passage libre, un vantail ouvert : '+Math.round(leafW*1000)+' mm',
     'Finition : '+st.fin.nm,
     'Vitrage : '+sys.glass+' mm, teinte '+st.tint.nm.toLowerCase(),
     'Cotes à confirmer par relevé sur site.'].join('\n');

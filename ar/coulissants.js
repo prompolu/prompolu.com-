@@ -126,9 +126,14 @@ function build(o){
   const leafW=(clearW+(leaves-1)*C)/leaves;
   const lt=pitch*0.72;
   const lsecV=frameSection(C,lt), lsecH=frameSection(lt,C);
+  /* ouverture : le vantail 0 (celui qui porte la poignee) coulisse sur son
+     propre rail et vient se ranger derriere son voisin. Course : leafW - C. */
+  const op=Math.min(1, Math.max(0, +o.opening || 0));
   for(let i=0;i<leaves;i++){
     const x0=-clearW/2 + i*(leafW-C);
-    const cx=x0+leafW/2, cz=z0+(i%ntr)*pitch;
+    let cx=x0+leafW/2;
+    if(i===0 && op>0) cx += (leafW-C)*op;
+    const cz=z0+(i%ntr)*pitch;
     for(const sx of [-1,1])
       alu.extrude(lsecV, clearH,
         M.mul(M.T(cx+sx*(leafW/2-C/2), F+clearH/2, cz), M.RX(-PI/2)));
@@ -137,7 +142,7 @@ function build(o){
     glz.box(leafW-2*C, clearH-2*C, gt, M.T(cx, height/2, cz));
     if(i===0)
       alu.box(20*MM, 190*MM, 22*MM,
-        M.T(x0+leafW-C/2, height*0.45, cz+lt/2+11*MM));
+        M.T(cx+leafW/2-C/2, height*0.45, cz+lt/2+11*MM));
   }
   return {alu, glz, leafW};
 }
