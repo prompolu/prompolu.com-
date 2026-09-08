@@ -7,6 +7,7 @@
 <meta name="description" content="Visualisez votre pergola bioclimatique en aluminium, à taille réelle, chez vous, avec votre téléphone.">
 <script type="module" src="vendor/model-viewer.min.js"></script>
 <script src="vendor/qrcode.js"></script>
+<script src="pergola.js"></script>
 <style>
 :root{
   --bg:#0e1116; --panel:#161b22; --line:#242c37; --txt:#e8edf3;
@@ -71,6 +72,18 @@ model-viewer{width:100%;height:60vh;min-height:330px;max-height:460px;
 .seg button{flex:1;background:none;border:0;color:var(--dim);padding:10px 4px;
   border-radius:8px;font-size:13.5px;font-weight:600;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-txt)}
+.num{display:flex;align-items:center;gap:8px;background:#0b0e13;
+  border:1px solid var(--line);border-radius:10px;padding:2px 12px 2px 4px}
+.num input{flex:1;min-width:0;background:none;border:0;color:var(--txt);
+  font:600 19px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  padding:11px 8px;-moz-appearance:textfield}
+.num input::-webkit-outer-spin-button,.num input::-webkit-inner-spin-button{
+  -webkit-appearance:none;margin:0}
+.num input:focus{outline:none}
+.num.bad{border-color:#c0524a}
+.num span{font-size:12px;color:var(--dim);flex:0 0 auto}
+.hint{font-size:11.5px;color:var(--dim);margin-top:8px;line-height:1.45}
+.hint b{color:var(--accent);font-weight:600}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .switch{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .switch p{margin:0;font-size:14px;font-weight:600}
@@ -187,13 +200,16 @@ model-viewer{width:100%;height:60vh;min-height:330px;max-height:460px;
     <div class="row">
       <div>
         <div class="lab">Largeur</div>
-        <div class="seg" id="widths"></div>
+        <div class="num"><input id="wIn" type="number" inputmode="numeric"
+             min="200" max="420" step="1" value="420"><span>cm</span></div>
       </div>
       <div>
         <div class="lab">Avancée</div>
-        <div class="seg" id="depths"></div>
+        <div class="num"><input id="dIn" type="number" inputmode="numeric"
+             min="200" max="600" step="1" value="420"><span>cm</span></div>
       </div>
     </div>
+    <p class="hint" id="sizeHint"></p>
   </div>
 
   <div class="sec">
@@ -269,8 +285,19 @@ const FINISHES = [
   {id:'bronze-anodised',    hex:'#4A3B2A', m:.85, r:.32, nm:'Bronze'},
   {id:'ral9005-black',      hex:'#0A0A0D', m:.55, r:.40, nm:'RAL 9005'},
 ];
-const WIDTHS = [300, 360, 420];
-const DEPTHS = [300, 420, 600];
+/* Cotes libres, en centimetres. Les bornes ne sont pas arbitraires :
+   4,20 x 6,00 m est le module maximal d'une Climatika. Au-dela il faut
+   plusieurs modules — laisser configurer 7 m dessinerait un produit
+   qui n'existe pas.                                                   */
+const W_MIN=200, W_MAX=420, D_MIN=200, D_MAX=600;
+
+/* Tailles reellement pre-generees : utilisees pour la vue en realite
+   augmentee, qui charge un fichier fabrique a l'avance.               */
+const STD_W = [300, 360, 420];
+const STD_D = [300, 420, 600];
+const nearest = (v, list) =>
+  list.reduce((a,b) => Math.abs(b-v) < Math.abs(a-v) ? b : a);
+const isStd = (w,d) => STD_W.includes(w) && STD_D.includes(d);
 const SLATS  = [{id:'closed',nm:'Fermé', pos:'fermées'},
                 {id:'mid',   nm:'Incliné',pos:'inclinées'},
                 {id:'open',  nm:'Ouvert', pos:'ouvertes'}];
@@ -280,11 +307,13 @@ const SLATS  = [{id:'closed',nm:'Fermé', pos:'fermées'},
    configuration sur le téléphone du client.                        */
 const qs = new URLSearchParams(location.search);
 const pick = (v, list, dflt) => list.includes(v) ? v : dflt;
+const clamp = (v, lo, hi, dflt) =>
+  Number.isFinite(v) ? Math.min(hi, Math.max(lo, Math.round(v))) : dflt;
 
 const st = {
   fin : FINISHES.find(f => f.id === qs.get('f')) || FINISHES[0],
-  w   : pick(parseInt(qs.get('w'),10), WIDTHS, 420),
-  d   : pick(parseInt(qs.get('d'),10), DEPTHS, 420),
+  w   : clamp(parseInt(qs.get('w'),10), W_MIN, W_MAX, 420),
+  d   : clamp(parseInt(qs.get('d'),10), D_MIN, D_MAX, 420),
   slat: pick(qs.get('s'), SLATS.map(s=>s.id), 'mid'),
   led : qs.get('led') === '1',
 };
@@ -340,13 +369,31 @@ function seg(host, items, get, set){
     host.appendChild(b);
   });
 }
-seg(document.getElementById('widths'),
-    WIDTHS.map(w=>({id:w, nm:(w/100).toFixed(2).replace('.',',')+' m'})),
-    ()=>st.w, v=>st.w=+v);
-seg(document.getElementById('depths'),
-    DEPTHS.map(d=>({id:d, nm:(d/100).toFixed(2).replace('.',',')+' m'})),
-    ()=>st.d, v=>st.d=+v);
 seg(document.getElementById('slats'), SLATS, ()=>st.slat, v=>st.slat=v);
+
+/* ---------- cotes libres ---------- */
+const wIn = document.getElementById('wIn'), dIn = document.getElementById('dIn');
+wIn.value = st.w; dIn.value = st.d;
+
+let sizeTimer = null;
+function onSize(){
+  const w = parseInt(wIn.value, 10), d = parseInt(dIn.value, 10);
+  const wOK = Number.isFinite(w) && w>=W_MIN && w<=W_MAX;
+  const dOK = Number.isFinite(d) && d>=D_MIN && d<=D_MAX;
+  wIn.parentElement.classList.toggle('bad', !wOK);
+  dIn.parentElement.classList.toggle('bad', !dOK);
+  if(!wOK || !dOK) return;                 /* on ne redessine pas a moitie */
+  st.w = w; st.d = d;
+  clearTimeout(sizeTimer);
+  sizeTimer = setTimeout(load, 220);       /* anti-rebond pendant la frappe */
+}
+[wIn,dIn].forEach(i=>{ i.addEventListener('input', onSize); });
+/* au blur on recadre dans les bornes plutot que de laisser un champ rouge */
+[wIn,dIn].forEach(i=>i.addEventListener('blur', ()=>{
+  const lo = i===wIn?W_MIN:D_MIN, hi = i===wIn?W_MAX:D_MAX;
+  i.value = clamp(parseInt(i.value,10), lo, hi, i===wIn?420:420);
+  onSize();
+}));
 
 function mark(host, btn){
   [...host.children].forEach(c=>c.setAttribute('aria-pressed', c===btn));
@@ -369,16 +416,43 @@ ledBtn.onclick = ()=>{
 paintLed();   /* l'état peut venir de l'URL */
 
 /* ---------- chargement du modèle ---------- */
+let blobURL = null;
+const ANGLE = {closed:2, mid:38, open:88};
+
 function load(){
-  const base = `models/pergola-${st.w}x${st.d}`;
-  mv.src = `${base}-${st.slat}.glb`;
+  if (blobURL) { URL.revokeObjectURL(blobURL); blobURL = null; }
+
+  if (isStd(st.w, st.d)) {
+    /* taille standard : on sert le fichier pre-genere, toutes les
+       modalites de realite augmentee restent disponibles.            */
+    mv.src = `models/pergola-${st.w}x${st.d}-${st.slat}.glb`;
+    mv.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
+  } else {
+    /* cotes libres : la pergola est construite ici, dans le navigateur,
+       a partir des memes sections extrudees que le generateur.        */
+    const r = Pergola.makeURL(
+      {width: st.w/100, depth: st.d/100, angleDeg: ANGLE[st.slat], led: true},
+      {lin: hexLin(st.fin.hex.substr(1)), m: st.fin.m, r: st.fin.r},
+      st.led);
+    blobURL = r.url;
+    mv.src = blobURL;
+    /* Scene Viewer telecharge une URL http : il ne sait pas lire un
+       modele genere en memoire. On ne l'annonce donc pas, sinon le
+       bouton RA echouerait sans message.                             */
+    mv.setAttribute('ar-modes', 'webxr quick-look');
+  }
   syncAR();
   specs();
   writeURL();
 }
+
+/* iPhone : Quick Look charge un fichier fige, donc la vue reelle utilise
+   la taille standard la plus proche. Le devis, lui, garde les cotes
+   exactes saisies par le client.                                      */
+function arSize(){ return [nearest(st.w, STD_W), nearest(st.d, STD_D)]; }
 function syncAR(){
-  mv.iosSrc = `models/pergola-${st.w}x${st.d}-${st.fin.id}.usdz`;
-  mv.setAttribute('ios-src', mv.iosSrc);
+  const [aw, ad] = arSize();
+  mv.setAttribute('ios-src', `models/pergola-${aw}x${ad}-${st.fin.id}.usdz`);
 }
 function applyMaterial(){
   const mats = mv.model && mv.model.materials;
@@ -406,13 +480,24 @@ mv.addEventListener('load', ()=>{
 });
 
 /* ---------- fiche technique ---------- */
-function nSlats(dcm){ return Math.round((dcm/100 - 0.16) / 0.208); }
+function nSlats(dcm){ return Math.max(1, Math.round((dcm/100 - 0.16) / 0.208)); }
+const fr = v => v.toFixed(2).replace('.', ',');
 function specs(){
   const w = st.w/100, d = st.d/100;
-  document.getElementById('sDim').textContent =
-    w.toFixed(2).replace('.',',') + ' × ' + d.toFixed(2).replace('.',',');
+  document.getElementById('sDim').textContent  = fr(w) + ' × ' + fr(d);
   document.getElementById('sSurf').textContent = (w*d).toFixed(1).replace('.',',');
-  document.getElementById('sLam').textContent = nSlats(st.d);
+  document.getElementById('sLam').textContent  = nSlats(st.d);
+
+  const hint = document.getElementById('sizeHint');
+  if (isStd(st.w, st.d)) {
+    hint.innerHTML = 'Taille standard — la vue réelle est disponible à ces cotes exactes.';
+  } else {
+    const [aw, ad] = arSize();
+    hint.innerHTML = 'Cotes libres, de 2,00 m à ' + fr(W_MAX/100) + ' m de large et ' +
+      fr(D_MAX/100) + ' m d\'avancée (module maximal). La vue en réalité augmentée ' +
+      'utilisera la taille standard la plus proche, <b>' + fr(aw/100) + ' × ' + fr(ad/100) +
+      ' m</b> — le devis, lui, reprend vos cotes exactes.';
+  }
 }
 
 /* ---------- devis ---------- */
