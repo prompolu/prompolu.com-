@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visualisation 3D — vos clients voient la pergola chez eux | PROMPOLU</title>
+<meta name="description" content="Outil de réalité augmentée réservé aux menuisiers clients de PROMPOLU : votre client visualise la pergola aluminium à taille réelle chez lui, à votre nom, depuis son téléphone. Sans application.">
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="canonical" href="https://prompolu.com/visualisation-3d.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Visualisation 3D — PROMPOLU ALUMINIUM">
+<meta property="og:description" content="Vos clients voient la pergola aluminium à taille réelle chez eux, avant de signer. Outil en marque blanche pour les menuisiers clients de PROMPOLU.">
+<meta property="og:url" content="https://prompolu.com/visualisation-3d.html">
+<meta property="og:image" content="https://prompolu.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="fr_MA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/visualisation-3d.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span>Fès — Av. El Wafaa&nbsp;&nbsp;/&nbsp;&nbsp;Sefrou — Rte Sidi Boumdine</span>
+    <span>
+      <a href="tel:+212668378538">06 68 37 85 38</a>
+      <span class="sep">/</span>
+      <a href="mailto:PROMPOLU@LIVE.FR">PROMPOLU@LIVE.FR</a>
+    </span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">
+      <a href="/" class="logo-mark"><img src="/assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="150" height="21"></a>
+      <span class="partner-badge">
+        <span class="lbl">Distributeur<br>officiel</span>
+        <img src="/assets/logo-strugal.png" alt="STRUGAL" width="149" height="38">
+      </span>
+    </div>
+    <nav class="main" id="mainNav">
+      <a href="/coulissants.html">Coulissants</a>
+      <a href="/battants.html">Battants</a>
+      <a href="/agencement.html">Agencement</a>
+      <a href="/exterieur.html">Extérieur</a>
+      <a href="/visualisation-3d.html" aria-current="page">Visualisation 3D</a>
+      <a href="/conseils/index.html">Conseils</a>
+      <a href="/notre-activite.html">Notre activité</a>
+      <a href="/contact.html" class="cta">Demander un devis</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="kicker"><span class="dash"></span>Outil réservé à nos clients professionnels</span>
+      <h1 class="hero-title">Votre client voit la pergola<br>chez lui. Avant de signer.</h1>
+      <p class="hero-sub">Le plus dur, dans une pergola, c'est de la faire imaginer. Votre client
+        regarde un catalogue et hésite : trop grand&nbsp;? trop foncé&nbsp;? Avec la visualisation 3D,
+        il pointe son téléphone vers sa terrasse et la pergola s'y trouve, à taille réelle,
+        dans la teinte qu'il a choisie. Il tourne autour. Il décide. Aucune application à installer.</p>
+      <div class="hero-actions">
+        <a href="/ar/?p=demo" class="btn btn-solid">Essayer la démonstration</a>
+        <a href="/contact.html" class="btn btn-outline">Obtenir mon lien personnalisé</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="demo-3d">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>La démonstration, en direct</h2>
+      <p>C'est l'outil réel, pas une vidéo. Changez la teinte, les cotes, la position des lames.
+         Sur un ordinateur, scannez le QR code pour poursuivre sur votre téléphone et passer en vue réelle.</p>
+    </div>
+    <div class="v3d-demo">
+      <div class="v3d-phone">
+        <iframe src="/ar/?p=demo" title="Configurateur pergola en 3D"
+                loading="lazy" allow="xr-spatial-tracking; camera; fullscreen; accelerometer; gyroscope; magnetometer"></iframe>
+      </div>
+      <div class="v3d-side">
+        <span class="adv-mark mono">SUR VOTRE TÉLÉPHONE</span>
+        <h3>Scannez pour la vue réelle</h3>
+        <p>La réalité augmentée n'existe pas sur un ordinateur : il n'a pas de caméra
+           qui comprend l'espace. Scannez ce code et la pergola s'ouvre sur votre téléphone,
+           prête à être posée sur votre terrasse.</p>
+        <div class="v3d-qr" id="v3dQr" aria-label="QR code vers la démonstration"></div>
+        <a class="more" href="/ar/?p=demo">Ouvrir la démonstration →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="comment-3d">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Comment ça marche pour vous</h2>
+      <p>L'outil porte <em>votre</em> nom, pas le nôtre. La demande de devis arrive chez vous.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h3>Vous recevez votre lien</h3>
+        <p>Un lien à votre nom, avec votre logo et vos couleurs si vous le souhaitez.
+           Vous le mettez dans votre bio Instagram, vos devis, vos cartes de visite.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h3>Votre client configure</h3>
+        <p>Teinte, largeur, avancée, position des lames, éclairage LED. Il voit le résultat
+           à taille réelle sur sa terrasse, de jour comme de nuit.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3>Il la voit chez lui</h3>
+        <p>Il pointe son téléphone vers sa terrasse. La pergola s'y pose à taille réelle&nbsp;;
+           il tourne autour, il recule, il compare avec sa maison.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <h3>La demande arrive chez vous</h3>
+        <p>Un bouton, et vous recevez sur WhatsApp sa configuration complète&nbsp;: cotes,
+           finition, nombre de lames, LED. Vous chiffrez sans relance ni malentendu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pourquoi-3d">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Ce que ça change sur le terrain</h2>
+      <p>Une pergola bioclimatique est un budget. Ce qui bloque la signature, ce n'est presque
+         jamais le prix seul&nbsp;: c'est le doute.</p>
+    </div>
+    <div class="adv-grid">
+      <div class="adv">
+        <span class="adv-mark mono">TAILLE RÉELLE</span>
+        <h3>Fini «&nbsp;je n'arrive pas à me projeter&nbsp;»</h3>
+        <p>Le client ne devine plus l'encombrement&nbsp;: il le voit sur sa propre terrasse,
+           au centimètre, et comprend enfin ce qu'il achète.</p>
+      </div>
+      <div class="adv">
+        <span class="adv-mark mono">VOTRE NOM</span>
+        <h3>Marque blanche</h3>
+        <p>Votre nom en haut de l'écran, votre WhatsApp en bas. PROMPOLU reste discret,
+           en bas de page. C'est votre outil.</p>
+      </div>
+      <div class="adv">
+        <span class="adv-mark mono">AUCUNE APPLI</span>
+        <h3>Un simple lien</h3>
+        <p>Ça s'ouvre dans le navigateur du téléphone, Android comme iPhone.
+           Rien à télécharger&nbsp;: personne n'installe une application pour un devis.</p>
+      </div>
+      <div class="adv">
+        <span class="adv-mark mono">≈ 1 SECONDE</span>
+        <h3>Léger, donc réellement utilisé</h3>
+        <p>Chaque modèle pèse environ 150&nbsp;Ko et s'affiche en une seconde en 4G.
+           La plupart des configurateurs 3D pèsent 5 à 20&nbsp;Mo — le client part avant la fin.</p>
+      </div>
+      <div class="adv">
+        <span class="adv-mark mono">DEVIS COMPLET</span>
+        <h3>Plus de mauvaises surprises</h3>
+        <p>La demande vous arrive écrite&nbsp;: 4,20&nbsp;×&nbsp;6,00&nbsp;m, RAL&nbsp;7016,
+           28 lames, LED. Vous ne rappelez plus trois fois pour obtenir les cotes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="limites-3d">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Ce qu'il faut savoir</h2>
+      <p>Autant le dire clairement — un outil de vente n'est pas un outil de fabrication.</p>
+    </div>
+    <ul class="v3d-limits">
+      <li><b>C'est un outil commercial, pas un plan d'atelier.</b> La géométrie est fidèle
+          à l'œil et conforme aux spécifications publiées, mais elle ne remplace pas les
+          plans de fabrication. On ne découpe pas d'après la 3D.</li>
+      <li><b>Les teintes sont indicatives.</b> Un écran ne remplace pas un nuancier&nbsp;:
+          le laquage et la lumière du lieu changent la perception. Gardez vos échantillons.</li>
+      <li><b>Les cotes restent à confirmer sur site.</b> Le relevé du menuisier est
+          indispensable. La 3D sert à décider, pas à mesurer.</li>
+      <li><b>Il faut un téléphone récent.</b> La vue réelle demande un appareil de moins de
+          cinq à six ans environ. Sur les autres, la pergola s'affiche en 3D — on la tourne,
+          on la configure — sans incrustation dans la caméra.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="contact" class="contact-section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Vous voulez votre lien&nbsp;?</h2>
+      <p>L'outil est réservé aux menuisiers et fabricants qui s'approvisionnent chez PROMPOLU.
+         Dites-nous votre nom d'atelier et votre numéro WhatsApp&nbsp;: nous vous créons votre lien.</p>
+    </div>
+    <div class="hero-actions">
+      <a href="https://wa.me/212668378538?text=Bonjour%20PROMPOLU%2C%20je%20souhaite%20obtenir%20mon%20lien%20de%20visualisation%203D%20pour%20mes%20clients." class="btn btn-solid" target="_blank" rel="noopener">Demander mon lien sur WhatsApp</a>
+      <a href="/contact.html" class="btn btn-outline">Nous écrire</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <img src="/assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="130" height="18">
+      <nav class="footer-nav">
+        <a href="/coulissants.html">Systèmes coulissants</a>
+        <a href="/battants.html">Fenêtres &amp; portes battantes</a>
+        <a href="/agencement.html">Profilés d'agencement</a>
+        <a href="/exterieur.html">Solutions extérieures</a>
+        <a href="/visualisation-3d.html">Visualisation 3D</a>
+        <a href="/conseils/index.html">Guides techniques</a>
+        <a href="/notre-activite.html">Qui sommes-nous</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 PROMPOLU ALUMINIUM — Fès &amp; Sefrou, Maroc</span>
+      <span>La qualité, notre meilleur profil</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/ar/vendor/qrcode.js"></script>
+<script>
+/* QR vers la démonstration — pour les visiteurs sur ordinateur */
+(function(){
+  var host = document.getElementById('v3dQr');
+  if(!host || typeof qrcode === 'undefined') return;
+  try{
+    var t = qrcode(0,'M');
+    t.addData(location.origin + '/ar/?p=demo');
+    t.make();
+    host.innerHTML = t.createImgTag(5, 0, 'QR code démonstration 3D');
+  }catch(e){ host.style.display = 'none'; }
+})();
+</script>
+</body>
+</html>

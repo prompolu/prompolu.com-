@@ -1,0 +1,159 @@
+/* ====================================================================
+   VISUALISATION 3D — à coller À LA FIN de /assets/style.css
+   Tout est préfixé .v3d- : aucun risque de casser une règle existante.
+   ==================================================================== */
+
+/* --- 1. La barre de navigation passe à 8 liens : on resserre un peu.
+       Sans ça, « Visualisation 3D » fait passer le menu sur deux lignes
+       entre 1000 et 1300 px de large.                                --- */
+@media (min-width:641px) and (max-width:1300px){
+  nav.main{gap:24px}
+  nav.main a{font-size:14px}
+}
+
+/* --- 2. La section de contact est SOMBRE (var(--charcoal)).
+       Les boutons .btn y seraient noirs sur noir : illisibles.
+       On les inverse, uniquement dans ce contexte.                   --- */
+.contact-section .btn-solid{
+  background:var(--paper);
+  color:var(--ink);
+  border-color:var(--paper);
+}
+.contact-section .btn-solid:hover{
+  background:var(--bronze);
+  border-color:var(--bronze);
+  color:var(--paper);
+}
+.contact-section .btn-outline{
+  color:#E6E5E1;
+  border-color:#4a4d52;
+}
+.contact-section .btn-outline:hover{
+  border-color:var(--bronze);
+  color:var(--bronze);
+}
+
+/* --- 3. La démonstration en direct --- */
+.v3d-demo{
+  display:grid;
+  grid-template-columns:minmax(0,380px) minmax(0,1fr);
+  gap:48px;
+  align-items:start;
+}
+
+/* --- le "téléphone" qui contient la démo réelle --- */
+.v3d-phone{
+  position:relative;
+  border:1px solid rgba(21,23,26,.16);
+  border-radius:22px;
+  background:#0e1116;
+  padding:8px;
+  box-shadow:0 18px 44px rgba(21,23,26,.13);
+}
+.v3d-phone::before{                 /* l'encoche, pour que ça se lise comme un téléphone */
+  content:"";
+  position:absolute;
+  top:16px; left:50%;
+  width:74px; height:5px;
+  transform:translateX(-50%);
+  background:#2a3441;
+  border-radius:100px;
+  z-index:2;
+  pointer-events:none;
+}
+.v3d-phone iframe{
+  display:block;
+  width:100%;
+  height:660px;
+  border:0;
+  border-radius:15px;
+  background:#0e1116;
+}
+
+/* --- colonne de droite --- */
+.v3d-side h3{
+  font-family:"Space Grotesk",sans-serif;
+  font-size:24px;
+  line-height:1.2;
+  letter-spacing:-.01em;
+  margin:12px 0 10px;
+}
+.v3d-side p{
+  margin:0 0 20px;
+  max-width:44ch;
+}
+.v3d-qr{
+  width:168px;
+  padding:12px;
+  background:#fff;
+  border:1px solid rgba(21,23,26,.14);
+  margin:0 0 18px;
+}
+.v3d-qr img{
+  display:block;
+  width:100%;
+  height:auto;
+  image-rendering:pixelated;
+}
+
+/* --- les limites, dites honnêtement --- */
+.v3d-limits{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px 40px;
+  max-width:980px;
+}
+.v3d-limits li{
+  position:relative;
+  padding-left:22px;
+  line-height:1.62;
+}
+.v3d-limits li::before{
+  content:"";
+  position:absolute;
+  left:0; top:.62em;
+  width:10px; height:1px;
+  background:#8A6541;             /* le bronze déjà utilisé par .kicker */
+}
+.v3d-limits b{font-weight:600}
+
+/* --- teaser sur la page d'accueil --- */
+.v3d-teaser{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,320px);
+  gap:44px;
+  align-items:center;
+}
+.v3d-teaser-copy h3{
+  font-family:"Space Grotesk",sans-serif;
+  font-size:30px;
+  line-height:1.15;
+  letter-spacing:-.015em;
+  margin:12px 0 14px;
+}
+.v3d-teaser-copy p{margin:0 0 22px;max-width:56ch}
+.v3d-teaser-media{
+  border:1px solid rgba(21,23,26,.14);
+  background:#e7e5df;
+  aspect-ratio:4/3;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.v3d-teaser-media img{width:100%;height:100%;object-fit:cover;display:block}
+
+@media (max-width:900px){
+  .v3d-demo{grid-template-columns:1fr;gap:34px}
+  .v3d-phone{max-width:380px}
+  .v3d-phone iframe{height:600px}
+  .v3d-limits{grid-template-columns:1fr;gap:16px}
+  .v3d-teaser{grid-template-columns:1fr;gap:28px}
+  .v3d-teaser-media{order:-1}
+}
+@media (max-width:560px){
+  .v3d-phone iframe{height:560px}
+  .v3d-teaser-copy h3{font-size:25px}
+}

@@ -1,0 +1,19 @@
+{
+  "_comment": "Un bloc par menuisier partenaire. Le lien à lui donner est : https://prompolu.com/ar/?p=SLUG — remplacez SLUG par la clé ci-dessous. Supprimez les exemples et ajoutez vos vrais partenaires.",
+
+  "demo": {
+    "name": "Menuiserie Exemple",
+    "logo": "",
+    "phone": "212600000000",
+    "email": "contact@example.ma",
+    "accent": "#c8a253"
+  },
+
+  "atlas-alu": {
+    "name": "Atlas Aluminium — Fès",
+    "logo": "",
+    "phone": "212600000001",
+    "email": "",
+    "accent": "#2e7d9a"
+  }
+}
