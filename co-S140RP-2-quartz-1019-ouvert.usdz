@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Garde-corps aluminium en réalité augmentée</title>
+<meta name="description" content="Visualisez votre garde-corps aluminium et verre, à taille réelle, chez vous, avec votre téléphone.">
+<script type="module" src="../vendor/model-viewer.min.js"></script>
+<script src="../vendor/qrcode.js"></script>
+<script src="../gardecorps.js"></script>
+<style>
+:root{
+  --bg:#0e1116; --panel:#161b22; --line:#242c37; --txt:#e8edf3;
+  --dim:#8b97a6; --accent:#c8a253; --accent-txt:#12161c;
+  --stage-a:#dfe7ee; --stage-b:#f4f7f9;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+  font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:560px;margin:0 auto;padding-bottom:96px}
+
+.brand{display:flex;align-items:center;gap:10px;padding:12px 16px;
+  border-bottom:1px solid var(--line);background:var(--panel);
+  position:sticky;top:0;z-index:20}
+.brand img{height:30px;width:auto;border-radius:4px}
+.brand .nm{font-weight:700;font-size:15px;letter-spacing:.2px}
+.brand .by{margin-left:auto;font-size:10.5px;color:var(--dim);text-align:right;line-height:1.3}
+.brand .by b{color:var(--accent);display:block;letter-spacing:.6px}
+
+/* ---------- selecteur de produit ---------- */
+.prod{display:flex;gap:2px;background:var(--panel);border-bottom:1px solid var(--line)}
+.prod a{flex:1;text-align:center;padding:11px 4px;font-size:12.5px;font-weight:600;
+  color:var(--dim);text-decoration:none;border-bottom:2px solid transparent}
+.prod a[aria-current]{color:var(--txt);border-bottom-color:var(--accent)}
+
+.stage{position:relative;background:linear-gradient(160deg,var(--stage-a),var(--stage-b));
+  transition:background .5s}
+body.night .stage{background:linear-gradient(160deg,#1b2330,#0d1218)}
+model-viewer{width:100%;height:56vh;min-height:300px;max-height:430px;
+  --poster-color:transparent;display:block}
+#arbtn{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;
+  display:flex;align-items:center;gap:9px;background:var(--accent);
+  color:var(--accent-txt);border:0;padding:13px 22px;border-radius:100px;
+  font-size:15px;font-weight:700;box-shadow:0 6px 22px #0006;cursor:pointer;white-space:nowrap}
+#arbtn svg{width:19px;height:19px}
+#arbtn[hidden]{display:none}
+#qrbtn{position:absolute;top:12px;right:12px;width:42px;height:42px;border-radius:11px;
+  border:0;background:#0e1116cc;color:#fff;display:grid;place-items:center;cursor:pointer;
+  backdrop-filter:blur(6px)}
+#qrbtn svg{width:22px;height:22px}
+.qrhint{position:absolute;left:12px;right:12px;bottom:12px;display:flex;gap:14px;
+  align-items:center;background:#0e1116e8;border:1px solid #2a3441;border-radius:14px;
+  padding:12px 14px;backdrop-filter:blur(8px)}
+.qrhint[hidden]{display:none}
+.qh-txt{font-size:12.5px;color:var(--dim);line-height:1.45}
+.qh-txt b{display:block;color:var(--txt);font-size:13.5px;margin-bottom:2px}
+.qh-code{flex:0 0 auto;width:88px;height:88px;background:#fff;border-radius:8px;padding:6px}
+.qh-code img{width:100%;height:100%;display:block;image-rendering:pixelated}
+
+.sec{padding:16px;border-bottom:1px solid var(--line)}
+.sec[hidden]{display:none}
+.lab{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;
+  color:var(--dim);margin-bottom:10px;font-weight:600}
+.sw{display:flex;gap:10px;flex-wrap:wrap}
+.sw button{width:50px;height:50px;border-radius:50%;border:2px solid #2c3542;
+  cursor:pointer;padding:0;position:relative}
+.sw button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px #c8a25333}
+.sw span{position:absolute;inset:auto 0 -19px;font-size:9.5px;color:var(--dim);text-align:center}
+.seg{display:flex;background:#0b0e13;border:1px solid var(--line);
+  border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;background:none;border:0;color:var(--dim);padding:10px 4px;
+  border-radius:8px;font-size:13.5px;font-weight:600;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-txt)}
+.num{display:flex;align-items:center;gap:8px;background:#0b0e13;
+  border:1px solid var(--line);border-radius:10px;padding:2px 12px 2px 4px}
+.num input{flex:1;min-width:0;background:none;border:0;color:var(--txt);
+  font:600 19px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  padding:11px 8px;-moz-appearance:textfield}
+.num input::-webkit-outer-spin-button,.num input::-webkit-inner-spin-button{
+  -webkit-appearance:none;margin:0}
+.num input:focus{outline:none}
+.num.bad{border-color:#c0524a}
+.num span{font-size:12px;color:var(--dim);flex:0 0 auto}
+.hint{font-size:11.5px;color:var(--dim);margin-top:8px;line-height:1.45}
+.hint b{color:var(--accent);font-weight:600}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.switch+.switch{margin-top:14px}
+.switch p{margin:0;font-size:14px;font-weight:600}
+.switch small{display:block;color:var(--dim);font-weight:400;font-size:12px}
+.tg{width:52px;height:30px;border-radius:100px;background:#2b3441;border:0;
+  position:relative;cursor:pointer;flex:0 0 auto;transition:.2s}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;
+  border-radius:50%;background:#fff;transition:.2s}
+.tg[aria-pressed="true"]{background:var(--accent)}
+.tg[aria-pressed="true"]::after{transform:translateX(22px)}
+
+.spec{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.spec div{background:var(--panel);padding:13px 8px;text-align:center}
+.spec b{display:block;font-size:17px;font-weight:700}
+.spec span{font-size:10.5px;color:var(--dim);letter-spacing:.4px}
+
+.warn{margin:0;padding:13px 16px;background:#1d1a12;border-bottom:1px solid #3a3018;
+  font-size:12px;color:#d8c79a;line-height:1.5}
+.warn b{color:#e9d9ab}
+
+.cta{position:fixed;left:0;right:0;bottom:0;background:var(--panel);
+  border-top:1px solid var(--line);padding:12px 16px;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom));z-index:30}
+.cta .in{max-width:560px;margin:0 auto;display:flex;gap:10px}
+.cta button{flex:1;padding:14px;border-radius:11px;border:0;font-size:15px;
+  font-weight:700;cursor:pointer}
+#devis{background:var(--accent);color:var(--accent-txt)}
+#wa{background:#25603f;color:#dff5e8;flex:0 0 54px;display:grid;place-items:center}
+#wa svg{width:22px;height:22px}
+
+.sheet{position:fixed;inset:0;background:#000a;display:none;z-index:40;
+  align-items:flex-end;justify-content:center}
+.sheet.on{display:flex}
+.card{background:var(--panel);width:100%;max-width:560px;
+  border-radius:16px 16px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+.card h2{margin:0 0 4px;font-size:18px}
+.card p.sub{margin:0 0 16px;color:var(--dim);font-size:13px}
+.card label{display:block;font-size:12px;color:var(--dim);margin:10px 0 5px}
+.card input{width:100%;padding:12px;border-radius:9px;border:1px solid var(--line);
+  background:#0b0e13;color:var(--txt);font-size:16px}
+.recap{background:#0b0e13;border:1px solid var(--line);border-radius:10px;
+  padding:12px;font-size:13px;margin:14px 0 4px}
+.recap b{color:var(--accent)}
+.card .act{display:flex;gap:10px;margin-top:16px}
+.card .act button{flex:1;padding:13px;border-radius:10px;border:0;font-weight:700;
+  font-size:15px;cursor:pointer}
+#send,#qrcopy{background:var(--accent);color:var(--accent-txt)}
+#close,#qrclose{background:#232b36;color:var(--txt);flex:0 0 92px}
+.qrbig{background:#fff;border-radius:12px;padding:14px;width:212px;margin:6px auto 12px}
+.qrbig img{width:100%;height:auto;display:block;image-rendering:pixelated}
+.qrlink{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);
+  background:#0b0e13;border:1px solid var(--line);border-radius:9px;padding:10px;
+  word-break:break-all;text-align:center}
+.note{font-size:11px;color:var(--dim);padding:14px 16px 0;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <img id="plogo" alt="" hidden>
+    <div><div class="nm" id="pname">Votre installateur</div></div>
+    <div class="by">Systèmes aluminium<b>PROMPOLU</b></div>
+  </div>
+
+  <nav class="prod">
+    <a href="../" id="lnkPergola">Pergola</a>
+    <a href="./" aria-current="page">Garde-corps</a>
+    <a href="../coulissants/" id="lnkCO">Coulissant</a>
+  </nav>
+
+  <div class="stage">
+    <model-viewer id="mv"
+      camera-controls touch-action="pan-y"
+      shadow-intensity="1.1" exposure="1.05" environment-image="neutral"
+      camera-orbit="38deg 74deg auto" camera-target="auto auto auto"
+      interaction-prompt="none"
+      ar ar-modes="webxr quick-look" ar-scale="fixed" ar-placement="floor"
+      alt="Garde-corps aluminium et verre">
+      <button id="arbtn" slot="ar-button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/>
+          <path d="M12 8.5l3.5 2v3L12 15.5 8.5 13.5v-3z"/>
+        </svg>
+        Voir chez moi en 3D
+      </button>
+    </model-viewer>
+    <button id="qrbtn" aria-label="Ouvrir sur un téléphone">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h3v3h-3v-3zm5 0h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3z"/>
+      </svg>
+    </button>
+    <div class="qrhint" id="qrhint" hidden>
+      <div class="qh-txt"><b>Pour la vue réelle chez vous</b>
+        Scannez ce code avec l'appareil photo de votre téléphone.</div>
+      <div class="qh-code" id="qrInline"></div>
+    </div>
+  </div>
+
+  <div class="spec">
+    <div><b id="sDim">3,00 × 1,10</b><span>MÈTRES</span></div>
+    <div><b id="sA">4</b><span id="sAlab">MONTANTS</span></div>
+    <div><b id="sB">88.4</b><span id="sBlab">VERRE FEUILLETÉ</span></div>
+  </div>
+
+  <p class="warn"><b>Sécurité :</b> un garde-corps est un dispositif de protection
+    contre les chutes. La hauteur à respecter dépend de l'usage (balcon, terrasse,
+    escalier) et de la réglementation applicable. Cet outil est une aide à la
+    visualisation, <b>pas une validation de conformité</b> : la hauteur, la fixation
+    et le remplissage restent à valider par le professionnel.</p>
+
+  <div class="sec">
+    <div class="lab">Système</div>
+    <div class="seg" id="systems"></div>
+    <p class="hint" id="sysHint"></p>
+  </div>
+
+  <div class="sec" id="secInfill">
+    <div class="lab">Remplissage</div>
+    <div class="seg" id="infills"></div>
+  </div>
+
+  <div class="sec">
+    <div class="row">
+      <div>
+        <div class="lab">Longueur</div>
+        <div class="num"><input id="lIn" type="number" inputmode="numeric"
+             min="100" max="1000" step="1" value="300"><span>cm</span></div>
+      </div>
+      <div>
+        <div class="lab">Hauteur</div>
+        <div class="seg" id="heights"></div>
+      </div>
+    </div>
+    <p class="hint" id="sizeHint"></p>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Finition</div>
+    <div class="sw" id="finishes"></div>
+  </div>
+
+  <div class="sec" id="secTint">
+    <div class="lab">Verre</div>
+    <div class="seg" id="tints"></div>
+  </div>
+
+  <div class="sec">
+    <div class="switch" id="rowMc">
+      <p>Main courante
+        <small>Capot aluminium sur le chant du verre</small></p>
+      <button class="tg" id="mc" aria-pressed="true" aria-label="Main courante"></button>
+    </div>
+    <div class="switch" id="rowEnc">
+      <p>Pose encastrée
+        <small>Profil noyé dans la dalle — seul le verre dépasse</small></p>
+      <button class="tg" id="enc" aria-pressed="false" aria-label="Pose encastrée"></button>
+    </div>
+    <div class="switch">
+      <p>Éclairage LED intégré
+        <small>Vue du soir — bandeau dans le profil</small></p>
+      <button class="tg" id="led" aria-pressed="false" aria-label="Éclairage LED"></button>
+    </div>
+  </div>
+
+  <p class="note">Rendu 3D à l'échelle réelle. Teintes indicatives.
+     Cotes à confirmer par relevé sur site.</p>
+</div>
+
+<div class="cta"><div class="in">
+  <button id="devis">Demander un devis</button>
+  <button id="wa" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.25 8.24a8.24 8.24 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24m-2.6 4.1c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34.99 2.5.12.16 1.7 2.6 4.13 3.64.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.43-.59 1.63-1.15.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.43-.71-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.46-.39-.4-.54-.41z"/></svg>
+  </button>
+</div></div>
+
+<div class="sheet" id="sheet"><div class="card">
+  <h2>Demander un devis</h2>
+  <p class="sub">Votre configuration est jointe automatiquement.</p>
+  <div class="recap" id="recap"></div>
+  <label for="nm">Nom complet</label><input id="nm" autocomplete="name">
+  <label for="tel">Téléphone</label><input id="tel" type="tel" autocomplete="tel" inputmode="tel">
+  <label for="vl">Ville</label><input id="vl" autocomplete="address-level2">
+  <div class="act"><button id="close">Annuler</button><button id="send">Envoyer</button></div>
+</div></div>
+
+<div class="sheet" id="qrsheet"><div class="card">
+  <h2>Ouvrir sur un téléphone</h2>
+  <p class="sub">Le client scanne et retrouve exactement cette configuration.</p>
+  <div class="qrbig" id="qrBig"></div>
+  <div class="qrlink" id="qrLink"></div>
+  <div class="act"><button id="qrclose">Fermer</button><button id="qrcopy">Copier le lien</button></div>
+</div></div>
+
+<script>
+/* ------------------------------------------------------------------ *
+ *  Configurateur garde-corps — Glass Line & S80B
+ * ------------------------------------------------------------------ */
+const mv = document.getElementById('mv');
+const s2l = c => c <= .04045 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4);
+const hexLin = h => [0,2,4].map(i => s2l(parseInt(h.substr(i,2),16)/255));
+
+const FINISHES = [
+  {id:'ral7016-anthracite', hex:'#383E42', m:.60, r:.38, nm:'RAL 7016'},
+  {id:'gris-nuit-7021',     hex:'#2F3234', m:.58, r:.38, nm:'Gris nuit'},
+  {id:'quartz-1019',        hex:'#A48F7A', m:.40, r:.46, nm:'Quartz 1019'},
+  {id:'ral9016-white',      hex:'#F1F0EA', m:.25, r:.50, nm:'RAL 9016'},
+  {id:'ral9006-silver',     hex:'#A1A1A0', m:.88, r:.28, nm:'RAL 9006'},
+  {id:'ral9005-black',      hex:'#0A0A0D', m:.55, r:.40, nm:'RAL 9005'},
+];
+const TINTS = [
+  {id:'clair',  nm:'Clair',  lin:[0.78,0.90,0.85], a:0.26, r:0.03},
+  {id:'fume',   nm:'Fumé',   lin:[0.17,0.18,0.20], a:0.52, r:0.05},
+  {id:'depoli', nm:'Dépoli', lin:[0.85,0.89,0.91], a:0.62, r:0.45},
+];
+const SYSTEMS = [
+  {id:'glassline', nm:'Glass Line'},
+  {id:'s80b',      nm:'S80B'},
+];
+const INFILLS = [
+  {id:'barreaudage', nm:'Barreaudage'},
+  {id:'mixte',       nm:'Barreaux + verre'},
+];
+const HEIGHTS = [90, 100, 110];
+const L_MIN = 100, L_MAX = 1000;
+
+/* longueurs et variantes reellement pre-generees pour la vue RA iPhone */
+const AR_LEN = [200, 300, 400, 500, 600];
+const AR_H   = 110;
+const nearest = (v,l) => l.reduce((a,b)=> Math.abs(b-v)<Math.abs(a-v)?b:a);
+
+const qs = new URLSearchParams(location.search);
+const pick = (v,l,d) => l.includes(v) ? v : d;
+const clamp = (v,lo,hi,d) => Number.isFinite(v) ? Math.min(hi,Math.max(lo,Math.round(v))) : d;
+
+const st = {
+  sys : pick(qs.get('sys'), SYSTEMS.map(s=>s.id), 'glassline'),
+  inf : pick(qs.get('i'), INFILLS.map(i=>i.id), 'barreaudage'),
+  L   : clamp(parseInt(qs.get('l'),10), L_MIN, L_MAX, 300),
+  H   : pick(parseInt(qs.get('h'),10), HEIGHTS, 110),
+  fin : FINISHES.find(f=>f.id===qs.get('f')) || FINISHES[0],
+  tint: TINTS.find(t=>t.id===qs.get('t')) || TINTS[0],
+  mc  : qs.get('mc') !== '0',
+  enc : qs.get('e') === '1',
+  led : qs.get('led') === '1',
+};
+
+function writeURL(){
+  const u = new URLSearchParams();
+  const p = qs.get('p'); if(p) u.set('p', p);
+  u.set('sys', st.sys);
+  if(st.sys==='s80b') u.set('i', st.inf);
+  u.set('l', st.L); u.set('h', st.H);
+  u.set('f', st.fin.id); u.set('t', st.tint.id);
+  if(st.sys==='glassline'){ if(!st.mc) u.set('mc','0'); if(st.enc) u.set('e','1'); }
+  if(st.led) u.set('led','1');
+  history.replaceState(null,'', location.pathname + '?' + u.toString());
+  renderQR();
+  const q = p ? '?p='+encodeURIComponent(p) : '';
+  document.getElementById('lnkPergola').href = '../' + q;
+  document.getElementById('lnkCO').href = '../coulissants/' + q;
+}
+
+/* ---------- partenaire ---------- */
+const partner = {name:'Votre installateur', logo:'', phone:'', email:''};
+async function loadPartner(){
+  const slug = qs.get('p');
+  if(!slug) return paint();
+  try{
+    const all = await (await fetch('../partners.json',{cache:'no-store'})).json();
+    if(all[slug]) Object.assign(partner, all[slug]);
+  }catch(e){}
+  paint();
+}
+function paint(){
+  document.getElementById('pname').textContent = partner.name;
+  if(partner.logo){ const i=document.getElementById('plogo');
+    i.src=partner.logo; i.alt=partner.name; i.hidden=false; }
+  if(partner.accent) document.documentElement.style.setProperty('--accent', partner.accent);
+  document.getElementById('wa').style.display = partner.phone ? 'grid' : 'none';
+}
+
+/* ---------- contrôles ---------- */
+function mark(host, btn){ [...host.children].forEach(c=>c.setAttribute('aria-pressed', c===btn)); }
+function seg(host, items, get, set){
+  host.innerHTML='';
+  items.forEach(it=>{
+    const b=document.createElement('button');
+    b.textContent=it.nm;
+    b.setAttribute('aria-pressed', get()===it.id);
+    b.onclick=()=>{ set(it.id); mark(host,b); refresh(); };
+    host.appendChild(b);
+  });
+}
+seg(document.getElementById('systems'), SYSTEMS, ()=>st.sys, v=>st.sys=v);
+seg(document.getElementById('infills'), INFILLS, ()=>st.inf, v=>st.inf=v);
+seg(document.getElementById('tints'),   TINTS,   ()=>st.tint.id,
+    v=>st.tint = TINTS.find(t=>t.id===v));
+seg(document.getElementById('heights'),
+    HEIGHTS.map(h=>({id:h, nm:h+' cm'})), ()=>st.H, v=>st.H=+v);
+
+const fWrap=document.getElementById('finishes');
+FINISHES.forEach(f=>{
+  const b=document.createElement('button');
+  b.style.background=f.hex;
+  b.setAttribute('aria-pressed', f.id===st.fin.id);
+  b.setAttribute('aria-label', f.nm);
+  b.innerHTML='<span>'+f.nm+'</span>';
+  b.onclick=()=>{ st.fin=f; mark(fWrap,b); refresh(); };
+  fWrap.appendChild(b);
+});
+
+const lIn=document.getElementById('lIn'); lIn.value=st.L;
+let timer=null;
+function onLen(){
+  const v=parseInt(lIn.value,10);
+  const ok=Number.isFinite(v)&&v>=L_MIN&&v<=L_MAX;
+  lIn.parentElement.classList.toggle('bad', !ok);
+  if(!ok) return;
+  st.L=v; clearTimeout(timer); timer=setTimeout(refresh, 220);
+}
+lIn.addEventListener('input', onLen);
+lIn.addEventListener('blur', ()=>{ lIn.value=clamp(parseInt(lIn.value,10),L_MIN,L_MAX,300); onLen(); });
+
+function toggle(id, key, after){
+  const b=document.getElementById(id);
+  b.setAttribute('aria-pressed', st[key]);
+  b.onclick=()=>{ st[key]=!st[key]; b.setAttribute('aria-pressed', st[key]);
+                  if(after) after(); refresh(); };
+}
+toggle('mc','mc'); toggle('enc','enc');
+toggle('led','led', ()=>{
+  document.body.classList.toggle('night', st.led);
+  mv.exposure = st.led ? 0.42 : 1.05;
+  mv.shadowIntensity = st.led ? 0.4 : 1.1;
+});
+if(st.led){ document.body.classList.add('night'); mv.exposure=0.42; mv.shadowIntensity=0.4; }
+
+/* ---------- rendu ---------- */
+let blobURL = null;
+function opts(){
+  return {system:st.sys, length:st.L/100, height:st.H/100, glass:'88.4',
+          infill:st.inf, handrail:st.mc, recessed:st.enc, led:st.led};
+}
+function hasGlass(){ return st.sys==='glassline' || st.inf==='mixte'; }
+
+function refresh(){
+  /* visibilite conditionnelle */
+  document.getElementById('secInfill').hidden = (st.sys!=='s80b');
+  document.getElementById('rowMc').style.display  = (st.sys==='glassline')?'flex':'none';
+  document.getElementById('rowEnc').style.display = (st.sys==='glassline')?'flex':'none';
+  document.getElementById('secTint').hidden = !hasGlass();
+
+  if(blobURL){ URL.revokeObjectURL(blobURL); blobURL=null; }
+  blobURL = GardeCorps.makeURL(opts(),
+              {lin:hexLin(st.fin.hex.substr(1)), m:st.fin.m, r:st.fin.r},
+              {lin:st.tint.lin, a:st.tint.a, r:st.tint.r}, st.led);
+  mv.src = blobURL;
+  syncAR(); specs(); writeURL();
+}
+
+function arVariant(){
+  return st.sys==='glassline' ? 'glassline' : ('s80b-'+st.inf);
+}
+function syncAR(){
+  const L = nearest(st.L, AR_LEN);
+  mv.setAttribute('ios-src',
+    `../models-gc/gc-${arVariant()}-${L}-${st.fin.id}.usdz`);
+}
+
+const fr = v => v.toFixed(2).replace('.', ',');
+function specs(){
+  document.getElementById('sDim').textContent = fr(st.L/100)+' × '+fr(st.H/100);
+  if(st.sys==='glassline'){
+    document.getElementById('sA').textContent   = Math.max(2, Math.round((st.L/100)/0.15));
+    document.getElementById('sAlab').textContent= 'FIXATIONS M12';
+    document.getElementById('sB').textContent   = '88.4';
+    document.getElementById('sBlab').textContent= 'VERRE FEUILLETÉ';
+  } else {
+    document.getElementById('sA').textContent   = GardeCorps.postCount(st.L/100);
+    document.getElementById('sAlab').textContent= 'MONTANTS';
+    document.getElementById('sB').textContent   = GardeCorps.barCount(st.L/100);
+    document.getElementById('sBlab').textContent= 'BARREAUX';
+  }
+  document.getElementById('sysHint').innerHTML = st.sys==='glassline'
+    ? 'Glass Line — profil de base en U 125 × 90 mm, verre feuilleté, sans montant. Hauteur maxi <b>1,10 m</b>.'
+    : 'S80B — montants tous les 1,20 m maxi. Le nombre de barreaux est calculé pour garder un jour inférieur à <b>110 mm</b>.';
+  const L = nearest(st.L, AR_LEN);
+  document.getElementById('sizeHint').innerHTML =
+    'Longueur libre de 1,00 m à 10,00 m. La vue en réalité augmentée sur iPhone ' +
+    'utilise la longueur standard la plus proche, <b>' + fr(L/100) + ' m</b>, à ' +
+    '<b>1,10 m</b> de hauteur — le devis reprend vos cotes exactes.';
+}
+
+/* ---------- devis ---------- */
+function summary(){
+  const sys = st.sys==='glassline' ? 'Glass Line (verre, sans montant)'
+            : 'S80B — ' + INFILLS.find(i=>i.id===st.inf).nm.toLowerCase();
+  const l = [];
+  l.push('Garde-corps — ' + fr(st.L/100) + ' m de long, ' + fr(st.H/100) + ' m de haut');
+  l.push('Système : ' + sys);
+  l.push('Finition : ' + st.fin.nm);
+  if(hasGlass()) l.push('Verre : feuilleté 88.4 (17,5 mm), teinte ' + st.tint.nm.toLowerCase());
+  if(st.sys==='glassline'){
+    l.push('Main courante : ' + (st.mc ? 'oui' : 'non'));
+    l.push('Pose : ' + (st.enc ? 'encastrée' : 'sur dalle'));
+  } else {
+    l.push('Montants : ' + GardeCorps.postCount(st.L/100) +
+           ' — barreaux : ' + GardeCorps.barCount(st.L/100));
+  }
+  l.push('Éclairage LED : ' + (st.led ? 'oui' : 'non'));
+  l.push('Hauteur à valider selon usage et réglementation.');
+  return l.join('\n');
+}
+const sheet=document.getElementById('sheet');
+document.getElementById('devis').onclick=()=>{
+  document.getElementById('recap').innerHTML =
+    summary().split('\n').map(x=>'<div>'+x.replace(/^([^:—]+)([:—])/,'<b>$1</b>$2')+'</div>').join('');
+  sheet.classList.add('on');
+};
+document.getElementById('close').onclick=()=>sheet.classList.remove('on');
+sheet.onclick=e=>{ if(e.target===sheet) sheet.classList.remove('on'); };
+function msg(){
+  const n=document.getElementById('nm').value.trim();
+  const t=document.getElementById('tel').value.trim();
+  const v=document.getElementById('vl').value.trim();
+  return `Bonjour, je souhaite un devis.\n\n${summary()}\n\nNom : ${n}\nTéléphone : ${t}\nVille : ${v}\n\n(Configuration réalisée en réalité augmentée)`;
+}
+document.getElementById('send').onclick=()=>{
+  const b=encodeURIComponent(msg());
+  if(partner.phone) location.href=`https://wa.me/${partner.phone.replace(/\D/g,'')}?text=${b}`;
+  else location.href=`mailto:${partner.email||''}?subject=${encodeURIComponent('Devis garde-corps')}&body=${b}`;
+};
+document.getElementById('wa').onclick=()=>{
+  const b=encodeURIComponent('Bonjour,\n\n'+summary());
+  if(partner.phone) location.href=`https://wa.me/${partner.phone.replace(/\D/g,'')}?text=${b}`;
+};
+
+/* ---------- QR ---------- */
+function qrImg(text, cell){
+  const t=qrcode(0,'M'); t.addData(text); t.make();
+  return `<img alt="QR code" src="${t.createDataURL(cell,0)}">`;
+}
+function renderQR(){
+  try{
+    const a=document.getElementById('qrInline'), b=document.getElementById('qrBig');
+    if(a) a.innerHTML=qrImg(location.href,4);
+    if(b) b.innerHTML=qrImg(location.href,6);
+  }catch(e){}
+  const l=document.getElementById('qrLink'); if(l) l.textContent=location.href;
+}
+const qrSheet=document.getElementById('qrsheet');
+document.getElementById('qrbtn').onclick=()=>{ renderQR(); qrSheet.classList.add('on'); };
+document.getElementById('qrclose').onclick=()=>qrSheet.classList.remove('on');
+qrSheet.onclick=e=>{ if(e.target===qrSheet) qrSheet.classList.remove('on'); };
+document.getElementById('qrcopy').onclick=async()=>{
+  const b=document.getElementById('qrcopy');
+  try{ await navigator.clipboard.writeText(location.href); b.textContent='Lien copié ✓'; }
+  catch(e){ b.textContent='Copie impossible'; }
+  setTimeout(()=>b.textContent='Copier le lien',2000);
+};
+
+/* ---------- support RA ---------- */
+function noAR(){
+  document.getElementById('arbtn').hidden = true;
+  document.getElementById('qrhint').hidden = false;
+  renderQR();
+}
+mv.addEventListener('ar-status', e=>{ if(e.detail.status==='failed') noAR(); });
+setTimeout(()=>{ if(!mv.canActivateAR) noAR(); }, 1800);
+
+mv.addEventListener('load', ()=>{
+  mv.cameraOrbit='38deg 74deg auto'; mv.cameraTarget='auto auto auto';
+  mv.jumpCameraToGoal();
+});
+
+loadPartner();
+refresh();
+</script>
+</body>
+</html>

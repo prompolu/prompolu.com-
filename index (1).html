@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Baie coulissante aluminium en réalité augmentée</title>
+<meta name="description" content="Visualisez votre baie coulissante aluminium STRUGAL à taille réelle, chez vous, avec votre téléphone.">
+<script type="module" src="../vendor/model-viewer.min.js"></script>
+<script src="../vendor/qrcode.js"></script>
+<script src="../coulissants.js"></script>
+<style>
+:root{
+  --bg:#0e1116; --panel:#161b22; --line:#242c37; --txt:#e8edf3;
+  --dim:#8b97a6; --accent:#c8a253; --accent-txt:#12161c;
+  --stage-a:#dfe7ee; --stage-b:#f4f7f9;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+  font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:560px;margin:0 auto;padding-bottom:96px}
+.brand{display:flex;align-items:center;gap:10px;padding:12px 16px;
+  border-bottom:1px solid var(--line);background:var(--panel);
+  position:sticky;top:0;z-index:20}
+.brand img{height:30px;width:auto;border-radius:4px}
+.brand .nm{font-weight:700;font-size:15px;letter-spacing:.2px}
+.brand .by{margin-left:auto;font-size:10.5px;color:var(--dim);text-align:right;line-height:1.3}
+.brand .by b{color:var(--accent);display:block;letter-spacing:.6px}
+.prod{display:flex;gap:2px;background:var(--panel);border-bottom:1px solid var(--line)}
+.prod a{flex:1;text-align:center;padding:11px 4px;font-size:12.5px;font-weight:600;
+  color:var(--dim);text-decoration:none;border-bottom:2px solid transparent}
+.prod a[aria-current]{color:var(--txt);border-bottom-color:var(--accent)}
+.stage{position:relative;background:linear-gradient(160deg,var(--stage-a),var(--stage-b))}
+model-viewer{width:100%;height:56vh;min-height:300px;max-height:430px;
+  --poster-color:transparent;display:block}
+#arbtn{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;
+  display:flex;align-items:center;gap:9px;background:var(--accent);
+  color:var(--accent-txt);border:0;padding:13px 22px;border-radius:100px;
+  font-size:15px;font-weight:700;box-shadow:0 6px 22px #0006;cursor:pointer;white-space:nowrap}
+#arbtn svg{width:19px;height:19px}
+#arbtn[hidden]{display:none}
+#qrbtn{position:absolute;top:12px;right:12px;width:42px;height:42px;border-radius:11px;
+  border:0;background:#0e1116cc;color:#fff;display:grid;place-items:center;cursor:pointer}
+#qrbtn svg{width:22px;height:22px}
+.qrhint{position:absolute;left:12px;right:12px;bottom:12px;display:flex;gap:14px;
+  align-items:center;background:#0e1116e8;border:1px solid #2a3441;border-radius:14px;padding:12px 14px}
+.qrhint[hidden]{display:none}
+.qh-txt{font-size:12.5px;color:var(--dim);line-height:1.45}
+.qh-txt b{display:block;color:var(--txt);font-size:13.5px;margin-bottom:2px}
+.qh-code{flex:0 0 auto;width:88px;height:88px;background:#fff;border-radius:8px;padding:6px}
+.qh-code img{width:100%;height:100%;display:block;image-rendering:pixelated}
+.sec{padding:16px;border-bottom:1px solid var(--line)}
+.lab{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;
+  color:var(--dim);margin-bottom:10px;font-weight:600}
+.sw{display:flex;gap:10px;flex-wrap:wrap}
+.sw button{width:50px;height:50px;border-radius:50%;border:2px solid #2c3542;
+  cursor:pointer;padding:0;position:relative}
+.sw button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px #c8a25333}
+.sw span{position:absolute;inset:auto 0 -19px;font-size:9.5px;color:var(--dim);text-align:center}
+.seg{display:flex;background:#0b0e13;border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;background:none;border:0;color:var(--dim);padding:10px 4px;
+  border-radius:8px;font-size:13.5px;font-weight:600;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-txt)}
+select{width:100%;background:#0b0e13;color:var(--txt);border:1px solid var(--line);
+  border-radius:10px;padding:13px 12px;font-size:16px;font-weight:600;
+  -webkit-appearance:none;appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),
+                   linear-gradient(135deg,var(--dim) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 22px, calc(100% - 14px) 22px;
+  background-size:6px 6px, 6px 6px; background-repeat:no-repeat}
+select:focus{outline:none;border-color:var(--accent)}
+.num{display:flex;align-items:center;gap:8px;background:#0b0e13;
+  border:1px solid var(--line);border-radius:10px;padding:2px 12px 2px 4px}
+.num input{flex:1;min-width:0;background:none;border:0;color:var(--txt);
+  font:600 19px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  padding:11px 8px;-moz-appearance:textfield}
+.num input::-webkit-outer-spin-button,.num input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.num input:focus{outline:none}
+.num.bad{border-color:#c0524a}
+.num span{font-size:12px;color:var(--dim);flex:0 0 auto}
+.hint{font-size:11.5px;color:var(--dim);margin-top:8px;line-height:1.45}
+.hint b{color:var(--accent);font-weight:600}
+.alert{margin-top:10px;padding:11px 12px;border-radius:9px;font-size:12.5px;line-height:1.5;
+  background:#2a1c17;border:1px solid #6b3a2c;color:#f0c3ae}
+.alert[hidden]{display:none}
+.alert b{color:#ffd9c6}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.spec{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.spec div{background:var(--panel);padding:13px 8px;text-align:center}
+.spec b{display:block;font-size:17px;font-weight:700}
+.spec span{font-size:10.5px;color:var(--dim);letter-spacing:.4px}
+.cta{position:fixed;left:0;right:0;bottom:0;background:var(--panel);
+  border-top:1px solid var(--line);padding:12px 16px;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom));z-index:30}
+.cta .in{max-width:560px;margin:0 auto;display:flex;gap:10px}
+.cta button{flex:1;padding:14px;border-radius:11px;border:0;font-size:15px;font-weight:700;cursor:pointer}
+#devis{background:var(--accent);color:var(--accent-txt)}
+#wa{background:#25603f;color:#dff5e8;flex:0 0 54px;display:grid;place-items:center}
+#wa svg{width:22px;height:22px}
+.sheet{position:fixed;inset:0;background:#000a;display:none;z-index:40;align-items:flex-end;justify-content:center}
+.sheet.on{display:flex}
+.card{background:var(--panel);width:100%;max-width:560px;border-radius:16px 16px 0 0;
+  padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+.card h2{margin:0 0 4px;font-size:18px}
+.card p.sub{margin:0 0 16px;color:var(--dim);font-size:13px}
+.card label{display:block;font-size:12px;color:var(--dim);margin:10px 0 5px}
+.card input{width:100%;padding:12px;border-radius:9px;border:1px solid var(--line);
+  background:#0b0e13;color:var(--txt);font-size:16px}
+.recap{background:#0b0e13;border:1px solid var(--line);border-radius:10px;
+  padding:12px;font-size:13px;margin:14px 0 4px}
+.recap b{color:var(--accent)}
+.card .act{display:flex;gap:10px;margin-top:16px}
+.card .act button{flex:1;padding:13px;border-radius:10px;border:0;font-weight:700;font-size:15px;cursor:pointer}
+#send,#qrcopy{background:var(--accent);color:var(--accent-txt)}
+#close,#qrclose{background:#232b36;color:var(--txt);flex:0 0 92px}
+.qrbig{background:#fff;border-radius:12px;padding:14px;width:212px;margin:6px auto 12px}
+.qrbig img{width:100%;height:auto;display:block;image-rendering:pixelated}
+.qrlink{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);
+  background:#0b0e13;border:1px solid var(--line);border-radius:9px;padding:10px;
+  word-break:break-all;text-align:center}
+.note{font-size:11px;color:var(--dim);padding:14px 16px 0;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <img id="plogo" alt="" hidden>
+    <div><div class="nm" id="pname">Votre installateur</div></div>
+    <div class="by">Systèmes aluminium<b>PROMPOLU</b></div>
+  </div>
+
+  <nav class="prod">
+    <a href="../" id="lnkPergola">Pergola</a>
+    <a href="../garde-corps/" id="lnkGC">Garde-corps</a>
+    <a href="./" aria-current="page">Coulissant</a>
+  </nav>
+
+  <div class="stage">
+    <model-viewer id="mv"
+      camera-controls touch-action="pan-y"
+      shadow-intensity="1.1" exposure="1.05" environment-image="neutral"
+      camera-orbit="28deg 76deg auto" camera-target="auto auto auto"
+      interaction-prompt="none"
+      ar ar-modes="webxr quick-look" ar-scale="fixed" ar-placement="floor"
+      alt="Baie coulissante aluminium">
+      <button id="arbtn" slot="ar-button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/>
+          <path d="M12 8.5l3.5 2v3L12 15.5 8.5 13.5v-3z"/>
+        </svg>
+        Voir chez moi en 3D
+      </button>
+    </model-viewer>
+    <button id="qrbtn" aria-label="Ouvrir sur un téléphone">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h3v3h-3v-3zm5 0h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3z"/>
+      </svg>
+    </button>
+    <div class="qrhint" id="qrhint" hidden>
+      <div class="qh-txt"><b>Pour la vue réelle chez vous</b>
+        Scannez ce code avec l'appareil photo de votre téléphone.</div>
+      <div class="qh-code" id="qrInline"></div>
+    </div>
+  </div>
+
+  <div class="spec">
+    <div><b id="sDim">3,60 × 2,20</b><span>MÈTRES</span></div>
+    <div><b id="sLeaf">1,21</b><span>M PAR VANTAIL</span></div>
+    <div><b id="sGlass">24</b><span>MM DE VITRAGE</span></div>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Système STRUGAL</div>
+    <select id="sysSel"></select>
+    <p class="hint" id="sysHint"></p>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Nombre de vantaux</div>
+    <div class="seg" id="leaves"></div>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Vantail manœuvrant</div>
+    <div class="seg" id="opening"></div>
+    <p class="hint" id="openHint"></p>
+  </div>
+
+  <div class="sec">
+    <div class="row">
+      <div>
+        <div class="lab">Largeur</div>
+        <div class="num"><input id="wIn" type="number" inputmode="numeric"
+             min="100" max="1200" step="1" value="360"><span>cm</span></div>
+      </div>
+      <div>
+        <div class="lab">Hauteur</div>
+        <div class="num"><input id="hIn" type="number" inputmode="numeric"
+             min="150" max="320" step="1" value="220"><span>cm</span></div>
+      </div>
+    </div>
+    <p class="hint" id="sizeHint"></p>
+    <div class="alert" id="alert" hidden></div>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Finition</div>
+    <div class="sw" id="finishes"></div>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Vitrage</div>
+    <div class="seg" id="tints"></div>
+  </div>
+
+  <p class="note">Rendu 3D à l'échelle réelle. Les masses vues non publiées par
+     STRUGAL sont reconstituées. Cotes à confirmer par relevé sur site.</p>
+</div>
+
+<div class="cta"><div class="in">
+  <button id="devis">Demander un devis</button>
+  <button id="wa" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.25 8.24a8.24 8.24 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24m-2.6 4.1c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34.99 2.5.12.16 1.7 2.6 4.13 3.64.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.43-.59 1.63-1.15.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.43-.71-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.46-.39-.4-.54-.41z"/></svg>
+  </button>
+</div></div>
+
+<div class="sheet" id="sheet"><div class="card">
+  <h2>Demander un devis</h2>
+  <p class="sub">Votre configuration est jointe automatiquement.</p>
+  <div class="recap" id="recap"></div>
+  <label for="nm">Nom complet</label><input id="nm" autocomplete="name">
+  <label for="tel">Téléphone</label><input id="tel" type="tel" autocomplete="tel" inputmode="tel">
+  <label for="vl">Ville</label><input id="vl" autocomplete="address-level2">
+  <div class="act"><button id="close">Annuler</button><button id="send">Envoyer</button></div>
+</div></div>
+
+<div class="sheet" id="qrsheet"><div class="card">
+  <h2>Ouvrir sur un téléphone</h2>
+  <p class="sub">Le client scanne et retrouve exactement cette configuration.</p>
+  <div class="qrbig" id="qrBig"></div>
+  <div class="qrlink" id="qrLink"></div>
+  <div class="act"><button id="qrclose">Fermer</button><button id="qrcopy">Copier le lien</button></div>
+</div></div>
+
+<script>
+const mv = document.getElementById('mv');
+const S = Coulissant.SYSTEMS;
+const s2l = c => c <= .04045 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4);
+const hexLin = h => [0,2,4].map(i => s2l(parseInt(h.substr(i,2),16)/255));
+
+const FINISHES = [
+  {id:'ral7016-anthracite', hex:'#383E42', m:.60, r:.38, nm:'RAL 7016'},
+  {id:'gris-nuit-7021',     hex:'#2F3234', m:.58, r:.38, nm:'Gris nuit'},
+  {id:'quartz-1019',        hex:'#A48F7A', m:.40, r:.46, nm:'Quartz 1019'},
+  {id:'ral9016-white',      hex:'#F1F0EA', m:.25, r:.50, nm:'RAL 9016'},
+  {id:'ral9006-silver',     hex:'#A1A1A0', m:.88, r:.28, nm:'RAL 9006'},
+  {id:'ral9005-black',      hex:'#0A0A0D', m:.55, r:.40, nm:'RAL 9005'},
+];
+const TINTS = [
+  {id:'clair',  nm:'Clair',  lin:[0.74,0.88,0.83], a:0.30, r:0.03},
+  {id:'fume',   nm:'Fumé',   lin:[0.16,0.17,0.19], a:0.58, r:0.05},
+  {id:'depoli', nm:'Dépoli', lin:[0.84,0.88,0.90], a:0.66, r:0.45},
+];
+const LEAVES = [2,3,4];
+const OPENINGS = [{id:0,nm:'Fermé'},{id:1,nm:'Ouvert'}];
+const W_MIN=100, W_MAX=1200, H_MIN=150, H_MAX=320;
+
+const qs = new URLSearchParams(location.search);
+const pick=(v,l,d)=>l.includes(v)?v:d;
+const clamp=(v,lo,hi,d)=>Number.isFinite(v)?Math.min(hi,Math.max(lo,Math.round(v))):d;
+
+const st = {
+  sys : S[qs.get('sys')] ? qs.get('sys') : 'S90RP',
+  W   : clamp(parseInt(qs.get('w'),10), W_MIN, W_MAX, 360),
+  H   : clamp(parseInt(qs.get('h'),10), H_MIN, H_MAX, 220),
+  lv  : pick(parseInt(qs.get('v'),10), LEAVES, 3),
+  op  : qs.get('o')==='1' ? 1 : 0,
+  fin : FINISHES.find(f=>f.id===qs.get('f')) || FINISHES[0],
+  tint: TINTS.find(t=>t.id===qs.get('t')) || TINTS[0],
+};
+
+function writeURL(){
+  const u=new URLSearchParams();
+  const p=qs.get('p'); if(p) u.set('p',p);
+  u.set('sys',st.sys); u.set('w',st.W); u.set('h',st.H); u.set('v',st.lv); u.set('o',st.op);
+  u.set('f',st.fin.id); u.set('t',st.tint.id);
+  history.replaceState(null,'',location.pathname+'?'+u.toString());
+  renderQR();
+  const q = p ? '?p='+encodeURIComponent(p) : '';
+  document.getElementById('lnkPergola').href='../'+q;
+  document.getElementById('lnkGC').href='../garde-corps/'+q;
+}
+
+/* ---------- partenaire ---------- */
+const partner={name:'Votre installateur', logo:'', phone:'', email:''};
+async function loadPartner(){
+  const slug=qs.get('p'); if(!slug) return paint();
+  try{ const all=await (await fetch('../partners.json',{cache:'no-store'})).json();
+       if(all[slug]) Object.assign(partner, all[slug]); }catch(e){}
+  paint();
+}
+function paint(){
+  document.getElementById('pname').textContent=partner.name;
+  if(partner.logo){const i=document.getElementById('plogo');
+    i.src=partner.logo;i.alt=partner.name;i.hidden=false;}
+  if(partner.accent) document.documentElement.style.setProperty('--accent',partner.accent);
+  document.getElementById('wa').style.display=partner.phone?'grid':'none';
+}
+
+/* ---------- contrôles ---------- */
+const sel=document.getElementById('sysSel');
+Object.keys(S).forEach(k=>{
+  const o=document.createElement('option');
+  o.value=k; o.textContent=k+' — '+S[k].tag;
+  if(k===st.sys) o.selected=true;
+  sel.appendChild(o);
+});
+sel.onchange=()=>{ st.sys=sel.value; refresh(); };
+
+function mark(host,btn){[...host.children].forEach(c=>c.setAttribute('aria-pressed',c===btn));}
+function seg(host,items,get,set){
+  host.innerHTML='';
+  items.forEach(it=>{
+    const b=document.createElement('button');
+    b.textContent=it.nm;
+    b.setAttribute('aria-pressed',get()===it.id);
+    b.onclick=()=>{set(it.id);mark(host,b);refresh();};
+    host.appendChild(b);
+  });
+}
+seg(document.getElementById('leaves'),
+    LEAVES.map(v=>({id:v,nm:v+' vantaux'})), ()=>st.lv, v=>st.lv=+v);
+seg(document.getElementById('opening'), OPENINGS, ()=>st.op, v=>st.op=+v);
+seg(document.getElementById('tints'), TINTS, ()=>st.tint.id,
+    v=>st.tint=TINTS.find(t=>t.id===v));
+
+const fWrap=document.getElementById('finishes');
+FINISHES.forEach(f=>{
+  const b=document.createElement('button');
+  b.style.background=f.hex;
+  b.setAttribute('aria-pressed',f.id===st.fin.id);
+  b.setAttribute('aria-label',f.nm);
+  b.innerHTML='<span>'+f.nm+'</span>';
+  b.onclick=()=>{st.fin=f;mark(fWrap,b);refresh();};
+  fWrap.appendChild(b);
+});
+
+const wIn=document.getElementById('wIn'), hIn=document.getElementById('hIn');
+wIn.value=st.W; hIn.value=st.H;
+let timer=null;
+function onSize(){
+  const w=parseInt(wIn.value,10), h=parseInt(hIn.value,10);
+  const wOK=Number.isFinite(w)&&w>=W_MIN&&w<=W_MAX;
+  const hOK=Number.isFinite(h)&&h>=H_MIN&&h<=H_MAX;
+  wIn.parentElement.classList.toggle('bad',!wOK);
+  hIn.parentElement.classList.toggle('bad',!hOK);
+  if(!wOK||!hOK) return;
+  st.W=w; st.H=h;
+  clearTimeout(timer); timer=setTimeout(refresh,220);
+}
+[wIn,hIn].forEach(i=>i.addEventListener('input',onSize));
+wIn.addEventListener('blur',()=>{wIn.value=clamp(parseInt(wIn.value,10),W_MIN,W_MAX,360);onSize();});
+hIn.addEventListener('blur',()=>{hIn.value=clamp(parseInt(hIn.value,10),H_MIN,H_MAX,220);onSize();});
+
+/* ---------- rendu ---------- */
+let blobURL=null;
+function refresh(){
+  if(blobURL){URL.revokeObjectURL(blobURL);blobURL=null;}
+  blobURL=Coulissant.makeURL(
+    {system:st.sys, width:st.W/100, height:st.H/100, leaves:st.lv, opening:st.op},
+    {lin:hexLin(st.fin.hex.substr(1)), m:st.fin.m, r:st.fin.r},
+    {lin:st.tint.lin, a:st.tint.a, r:st.tint.r});
+  mv.src=blobURL;
+  syncAR(); specs(); writeURL();
+}
+function syncAR(){
+  mv.setAttribute('ios-src',
+    `../models-co/co-${Coulissant.arSystem(st.sys)}-${st.lv}-${st.fin.id}`
+    + (st.op ? '-ouvert' : '') + '.usdz');
+}
+
+const fr=v=>v.toFixed(2).replace('.',',');
+function specs(){
+  const sys=S[st.sys];
+  const leafW=Coulissant.leafWidth(st.sys, st.W/100, st.lv);
+  document.getElementById('sDim').textContent=fr(st.W/100)+' × '+fr(st.H/100);
+  document.getElementById('sLeaf').textContent=fr(leafW);
+  document.getElementById('sGlass').textContent=sys.glass;
+
+  document.getElementById('sysHint').innerHTML =
+    'Cadre de <b>'+sys.depth+' mm</b> de profondeur, <b>'+sys.centre+' mm</b> au croisement central'
+    + (sys.exact ? ' (cote publiée par STRUGAL).' : ' (masse vue reconstituée).')
+    + ' Maxi <b>'+sys.vmax[0]+' × '+sys.vmax[1]+' mm</b> et <b>'+sys.kg+' kg</b> par vantail, vitrage '
+    + sys.glass+' mm.';
+
+  /* ouvrir un vantail degage exactement une largeur de vantail */
+  document.getElementById('openHint').innerHTML = st.op
+    ? 'Le vantail qui porte la poignée coulisse derrière son voisin et dégage un '
+      + '<b>passage libre de '+Math.round(leafW*1000)+' mm</b> — la largeur d\'un vantail.'
+    : 'Affichez la baie ouverte pour montrer au client le passage réellement dégagé.';
+
+  /* le controle qui compte : un vantail trop large pour le systeme */
+  const a=document.getElementById('alert');
+  const overW = leafW*1000 > sys.vmax[0];
+  const overH = st.H*10 > sys.vmax[1];
+  if(overW || overH){
+    let m='<b>Attention :</b> ';
+    if(overW) m += 'chaque vantail ferait '+Math.round(leafW*1000)+' mm de large, au-delà des '
+                 + sys.vmax[0]+' mm admis par le '+st.sys+'. ';
+    if(overH) m += 'La hauteur '+(st.H*10)+' mm dépasse les '+sys.vmax[1]+' mm du '+st.sys+'. ';
+    m += 'Passez à plus de vantaux, ou à un système de plus grande capacité.';
+    a.innerHTML=m; a.hidden=false;
+  } else a.hidden=true;
+
+  const aw=Coulissant.AR_WIDTH[st.lv];
+  const arSys=Coulissant.arSystem(st.sys);
+  document.getElementById('sizeHint').innerHTML =
+    'Cotes libres. La vue en réalité augmentée sur iPhone utilise le modèle <b>'+arSys+'</b>'
+    + (arSys===st.sys ? '' : ' (le plus proche du '+st.sys+')')
+    + ' en <b>'+fr(aw/100)+' × 2,20 m</b> — le devis reprend vos cotes exactes.';
+}
+
+/* ---------- devis ---------- */
+function summary(){
+  const sys=S[st.sys];
+  const leafW=Coulissant.leafWidth(st.sys, st.W/100, st.lv);
+  return ['Baie coulissante — '+fr(st.W/100)+' × '+fr(st.H/100)+' m',
+    'Système : '+st.sys+' — '+sys.tag,
+    'Vantaux : '+st.lv+' — '+Math.round(leafW*1000)+' mm par vantail',
+    'Passage libre, un vantail ouvert : '+Math.round(leafW*1000)+' mm',
+    'Finition : '+st.fin.nm,
+    'Vitrage : '+sys.glass+' mm, teinte '+st.tint.nm.toLowerCase(),
+    'Cotes à confirmer par relevé sur site.'].join('\n');
+}
+const sheet=document.getElementById('sheet');
+document.getElementById('devis').onclick=()=>{
+  document.getElementById('recap').innerHTML=
+    summary().split('\n').map(x=>'<div>'+x.replace(/^([^:—]+)([:—])/,'<b>$1</b>$2')+'</div>').join('');
+  sheet.classList.add('on');
+};
+document.getElementById('close').onclick=()=>sheet.classList.remove('on');
+sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove('on');};
+function msg(){
+  const n=document.getElementById('nm').value.trim();
+  const t=document.getElementById('tel').value.trim();
+  const v=document.getElementById('vl').value.trim();
+  return `Bonjour, je souhaite un devis.\n\n${summary()}\n\nNom : ${n}\nTéléphone : ${t}\nVille : ${v}\n\n(Configuration réalisée en réalité augmentée)`;
+}
+document.getElementById('send').onclick=()=>{
+  const b=encodeURIComponent(msg());
+  if(partner.phone) location.href=`https://wa.me/${partner.phone.replace(/\D/g,'')}?text=${b}`;
+  else location.href=`mailto:${partner.email||''}?subject=${encodeURIComponent('Devis baie coulissante')}&body=${b}`;
+};
+document.getElementById('wa').onclick=()=>{
+  const b=encodeURIComponent('Bonjour,\n\n'+summary());
+  if(partner.phone) location.href=`https://wa.me/${partner.phone.replace(/\D/g,'')}?text=${b}`;
+};
+
+/* ---------- QR ---------- */
+function qrImg(text,cell){const t=qrcode(0,'M');t.addData(text);t.make();
+  return `<img alt="QR code" src="${t.createDataURL(cell,0)}">`;}
+function renderQR(){
+  try{
+    const a=document.getElementById('qrInline'), b=document.getElementById('qrBig');
+    if(a) a.innerHTML=qrImg(location.href,4);
+    if(b) b.innerHTML=qrImg(location.href,6);
+  }catch(e){}
+  const l=document.getElementById('qrLink'); if(l) l.textContent=location.href;
+}
+const qrSheet=document.getElementById('qrsheet');
+document.getElementById('qrbtn').onclick=()=>{renderQR();qrSheet.classList.add('on');};
+document.getElementById('qrclose').onclick=()=>qrSheet.classList.remove('on');
+qrSheet.onclick=e=>{if(e.target===qrSheet)qrSheet.classList.remove('on');};
+document.getElementById('qrcopy').onclick=async()=>{
+  const b=document.getElementById('qrcopy');
+  try{await navigator.clipboard.writeText(location.href);b.textContent='Lien copié ✓';}
+  catch(e){b.textContent='Copie impossible';}
+  setTimeout(()=>b.textContent='Copier le lien',2000);
+};
+
+/* ---------- support RA ---------- */
+function noAR(){
+  document.getElementById('arbtn').hidden=true;
+  document.getElementById('qrhint').hidden=false;
+  renderQR();
+}
+mv.addEventListener('ar-status',e=>{if(e.detail.status==='failed')noAR();});
+setTimeout(()=>{if(!mv.canActivateAR)noAR();},1800);
+mv.addEventListener('load',()=>{
+  mv.cameraOrbit='28deg 76deg auto'; mv.cameraTarget='auto auto auto'; mv.jumpCameraToGoal();
+});
+
+loadPartner();
+refresh();
+</script>
+</body>
+</html>
