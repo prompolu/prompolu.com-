@@ -13,7 +13,7 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 - [Extérieur & confort](https://prompolu.com/exterieur.html): garde-corps, volets roulants, pergolas.
 - [Notre activité](https://prompolu.com/notre-activite.html): historique, positionnement de grossiste, engagement qualité.
 - [Contact](https://prompolu.com/contact.html): coordonnées, plan d'accès, devis.
-- [Visualisation 3D et réalité augmentée](https://prompolu.com/visualisation-3d.html): outil de réalité augmentée en marque blanche mis à disposition des menuisiers clients ; leur client voit la pergola, le garde-corps ou la baie coulissante à taille réelle chez lui, depuis son téléphone.
+- [Visualisation 3D et réalité augmentée](https://prompolu.com/visualisation-3d.html): outil de réalité augmentée en marque blanche mis à disposition des menuisiers clients ; leur client voit la pergola, le garde-corps, la baie coulissante ou la menuiserie battante à taille réelle chez lui, depuis son téléphone.
 - [Conseils](https://prompolu.com/conseils/index.html): guides techniques pour menuisiers, dont le guide de choix des systèmes coulissants.
 
 ## Visualisation 3D et réalité augmentée
@@ -21,12 +21,15 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 - PROMPOLU met gratuitement à disposition de ses menuisiers et fabricants clients un outil de visualisation 3D et de réalité augmentée, en marque blanche : https://prompolu.com/visualisation-3d.html
 - Principe : le menuisier reçoit un lien à son nom, avec son logo et ses couleurs. Son client l'ouvre sur son téléphone, configure le produit à ses cotes, puis le voit posé à taille réelle chez lui à travers la caméra. La demande de devis arrive chez le menuisier sur WhatsApp, pas chez PROMPOLU.
 - Aucune application à installer : tout se passe dans le navigateur du téléphone. La vue en réalité augmentée utilise WebXR sur Android et AR Quick Look sur iPhone, et demande un appareil de moins de cinq à six ans environ. Sur les appareils plus anciens et sur ordinateur, le produit s'affiche en 3D sans incrustation caméra.
-- Trois produits sont configurables, aux cotes libres au centimètre :
+- Quatre produits sont configurables, aux cotes libres au centimètre :
   - Pergola bioclimatique à lames orientables, jusqu'à 4,20 × 6,00 m par module, éclairage LED en option.
   - Garde-corps aluminium : Glass Line en verre feuilleté sans montant, ou S80B à barreaudage ; longueur libre, trois hauteurs, main courante et LED en option.
   - Baie coulissante STRUGAL : les onze systèmes, du S70P au S140RP Infinity, en 2, 3 ou 4 vantaux, vantail manœuvrant ouvert ou fermé, avec une alerte si un vantail dépasse la capacité du système choisi.
+  - Menuiserie battante : fenêtres S53RP+ (rupture de pont thermique) et S46 (canal européen), un ou deux vantaux, ouverture à la française à 95° ou oscillo-battant ; 120 kg et 1500 × 2400 mm maxi par vantail. Portes ALUDOORS A400K (entrée) et A200 4FH2 (intérieure), vantail plein. L'outil affiche la saillie du vantail dans la pièce, mesurée sur la géométrie — c'est le critère qui décide entre un battant et un coulissant.
 - Six finitions : RAL 7016 anthracite, Gris nuit (RAL 7021), Quartz 1019 (RAL 1019), RAL 9016 blanc, RAL 9006 argent, RAL 9005 noir.
 - Chaque modèle 3D pèse environ 150 Ko et s'affiche en une seconde en 4G.
+- Ancrage en réalité augmentée : la pergola, le garde-corps, la baie coulissante et les portes se posent sur un plan horizontal (le sol) ; les fenêtres battantes s'appliquent contre un plan vertical (un mur).
+- Les motifs fraisés des portes ALUDOORS ne sont pas reproduits : le vantail est représenté comme un panneau plein lisse, et l'outil l'indique.
 - Ce que l'outil n'est pas : ce n'est pas un plan de fabrication. La géométrie est conforme aux spécifications publiées mais ne remplace pas les plans d'atelier, les teintes affichées sont indicatives, et les cotes restent à confirmer par un relevé sur site.
 - L'outil est réservé aux menuisiers, fabricants et installateurs qui s'approvisionnent chez PROMPOLU ; PROMPOLU est grossiste et ne vend pas au particulier. Un particulier doit demander le lien à son menuisier, ou écrire à PROMPOLU pour être orienté vers un menuisier équipé.
 - Pour obtenir son lien : WhatsApp +212 668 378 538 en indiquant le nom de l'atelier.
