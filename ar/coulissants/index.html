@@ -137,6 +137,7 @@ select:focus{outline:none;border-color:var(--accent)}
     <a href="../" id="lnkPergola">Pergola</a>
     <a href="../garde-corps/" id="lnkGC">Garde-corps</a>
     <a href="./" aria-current="page">Coulissant</a>
+    <a href="../battants/" id="lnkBT">Battant</a>
   </nav>
 
   <div class="stage">
@@ -294,6 +295,7 @@ function writeURL(){
   const q = p ? '?p='+encodeURIComponent(p) : '';
   document.getElementById('lnkPergola').href='../'+q;
   document.getElementById('lnkGC').href='../garde-corps/'+q;
+  document.getElementById('lnkBT').href='../battants/'+q;
 }
 
 /* ---------- partenaire ---------- */
@@ -409,12 +411,14 @@ function specs(){
   const overW = leafW*1000 > sys.vmax[0];
   const overH = st.H*10 > sys.vmax[1];
   if(overW || overH){
-    let m='<b>Attention :</b> ';
-    if(overW) m += 'chaque vantail ferait '+Math.round(leafW*1000)+' mm de large, au-delà des '
-                 + sys.vmax[0]+' mm admis par le '+st.sys+'. ';
-    if(overH) m += 'La hauteur '+(st.H*10)+' mm dépasse les '+sys.vmax[1]+' mm du '+st.sys+'. ';
-    m += 'Passez à plus de vantaux, ou à un système de plus grande capacité.';
-    a.innerHTML=m; a.hidden=false;
+    const parts=[];
+    if(overW) parts.push('chaque vantail ferait '+Math.round(leafW*1000)+' mm de large, au-delà des '
+                 + sys.vmax[0]+' mm admis par le '+st.sys);
+    if(overH) parts.push('la hauteur '+(st.H*10)+' mm dépasse les '+sys.vmax[1]+' mm du '+st.sys);
+    parts[0]=parts[0].charAt(0).toUpperCase()+parts[0].slice(1);
+    a.innerHTML='<b>Attention :</b> ' + parts.join(', et ') + '. '
+      + 'Passez à plus de vantaux, ou à un système de plus grande capacité.';
+    a.hidden=false;
   } else a.hidden=true;
 
   const aw=Coulissant.AR_WIDTH[st.lv];
