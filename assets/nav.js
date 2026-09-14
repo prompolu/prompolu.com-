@@ -30,3 +30,18 @@
     });
   }
 })();
+
+/* Plans Google en chargement differé : l'iframe n'est créé qu'au clic. */
+(function () {
+  document.querySelectorAll('.map-load').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.src = b.getAttribute('data-src');
+      f.title = b.getAttribute('data-title') || 'Plan Google Maps';
+      f.loading = 'lazy';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      f.setAttribute('allowfullscreen', '');
+      b.replaceWith(f);
+    });
+  });
+})();

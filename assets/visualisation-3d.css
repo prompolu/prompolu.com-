@@ -206,3 +206,21 @@
 }
 .v3d-switch button+button{border-left:1px solid rgba(21,23,26,.18)}
 .v3d-switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+/* ====================================================================
+   Correctif d'ordre de cascade.
+   Les requêtes média ci-dessus (lignes 148-161) sont déclarées AVANT la
+   règle de base .v3d-products, qui les écrasait : la grille restait donc
+   à quatre colonnes sur mobile et débordait de l'écran. On redéclare ici,
+   en fin de feuille, les seules règles concernées.
+   ==================================================================== */
+@media (max-width:1220px){
+  .v3d-products{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:900px){
+  .v3d-products{grid-template-columns:1fr;}
+}
+@media (max-width:560px){
+  .v3d-prod-body{padding:22px 20px 24px;}
+  .v3d-switch{flex-wrap:wrap;}
+}
