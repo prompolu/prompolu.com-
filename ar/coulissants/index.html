@@ -36,12 +36,12 @@ body{margin:0;background:var(--bg);color:var(--txt);
 .stage{position:relative;background:linear-gradient(160deg,var(--stage-a),var(--stage-b))}
 model-viewer{width:100%;height:56vh;min-height:300px;max-height:430px;
   --poster-color:transparent;display:block}
-#arbtn{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;
+#arbtn,#arbtn-and{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;
   display:flex;align-items:center;gap:9px;background:var(--accent);
   color:var(--accent-txt);border:0;padding:13px 22px;border-radius:100px;
   font-size:15px;font-weight:700;box-shadow:0 6px 22px #0006;cursor:pointer;white-space:nowrap}
-#arbtn svg{width:19px;height:19px}
-#arbtn[hidden]{display:none}
+#arbtn svg,#arbtn-and svg{width:19px;height:19px}
+#arbtn[hidden],#arbtn-and[hidden]{display:none}
 #qrbtn{position:absolute;top:12px;right:12px;width:42px;height:42px;border-radius:11px;
   border:0;background:#0e1116cc;color:#fff;display:grid;place-items:center;cursor:pointer}
 #qrbtn svg{width:22px;height:22px}
@@ -157,6 +157,17 @@ select:focus{outline:none;border-color:var(--accent)}
         Voir chez moi en 3D
       </button>
     </model-viewer>
+    <!-- Voie Android : Scene Viewer ne lit pas les blob:, il lui faut une
+         URL de fichier. Ce bouton, hors du slot de model-viewer, lui passe
+         le modele GLB statique correspondant a la configuration. -->
+    <button id="arbtn-and" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/>
+        <path d="M12 8.5l3.5 2v3L12 15.5 8.5 13.5v-3z"/>
+      </svg>
+      Voir chez moi en 3D
+    </button>
     <button id="qrbtn" aria-label="Ouvrir sur un téléphone">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h3v3h-3v-3zm5 0h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3z"/>
@@ -487,14 +498,50 @@ document.getElementById('qrcopy').onclick=async()=>{
   setTimeout(()=>b.textContent='Copier le lien',2000);
 };
 
-/* ---------- support RA ---------- */
+/* ---------- support RA ----------
+   Trois voies, decidees par la plateforme :
+   - iPhone  : AR Quick Look, via l'attribut ios-src de model-viewer.
+   - Android : Google Scene Viewer. Il ne sait pas lire une URL blob:, donc
+               on lui passe le modele GLB statique de la configuration.
+   - le reste : pas de RA, on montre le QR code.                         */
+const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+             || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+const IS_ANDROID = /Android/.test(navigator.userAgent);
+const btnIOS = document.getElementById('arbtn');
+const btnAND = document.getElementById('arbtn-and');
+
 function noAR(){
-  document.getElementById('arbtn').hidden=true;
+  btnIOS.hidden=true; btnAND.hidden=true;
   document.getElementById('qrhint').hidden=false;
   renderQR();
 }
-mv.addEventListener('ar-status',e=>{if(e.detail.status==='failed')noAR();});
-setTimeout(()=>{if(!mv.canActivateAR)noAR();},1800);
+/* URL absolue du modele statique servi a Scene Viewer */
+function glbURL(){
+  return new URL(`../models-co/co-${Coulissant.arSystem(st.sys)}-${st.lv}-${st.fin.id}`
+                 + (st.op ? '-ouvert' : '') + '.glb', location.href).href;
+}
+function openSceneViewer(){
+  const file = encodeURIComponent(glbURL());
+  const back = encodeURIComponent(location.href);
+  const titre = encodeURIComponent('Baie coulissante');
+  location.href = 'intent://arvr.google.com/scene-viewer/1.0?file=' + file
+    + '&mode=ar_preferred&resizable=false&title=' + titre
+    + '#Intent;scheme=https;package=com.google.ar.core;'
+    + 'action=android.intent.action.VIEW;'
+    + 'S.browser_fallback_url=' + back + ';end;';
+}
+btnAND.onclick = openSceneViewer;
+
+function setupAR(){
+  if(IS_ANDROID){ btnIOS.hidden=true; btnAND.hidden=false; return; }
+  /* sur iPhone, Quick Look marche depuis iOS 12 : on montre le bouton sans
+     attendre canActivateAR, qui repond parfois trop tard. Si l'ouverture
+     echoue, l'ecouteur ar-status ci-dessous bascule sur le QR code. */
+  if(IS_IOS){ btnIOS.hidden=false; btnAND.hidden=true; return; }
+  noAR();
+}
+mv.addEventListener('ar-status',e=>{if(e.detail.status==='failed' && !IS_ANDROID)noAR();});
+setTimeout(setupAR,1500);
 mv.addEventListener('load',()=>{
   mv.cameraOrbit='28deg 76deg auto'; mv.cameraTarget='auto auto auto'; mv.jumpCameraToGoal();
 });
