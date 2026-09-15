@@ -114,15 +114,15 @@
     display:flex;align-items:center;gap:10px;margin-bottom:22px;
   }
   .kicker .dash{width:26px;height:1px;background:var(--bronze-dark);display:inline-block;}
-  h1.hero-title{
+  .hero-title{
     font-size:clamp(2.4rem, 4.6vw, 3.6rem);
     line-height:1.05;
     max-width:28ch;
   }
   /* la signature garde sa largeur d'origine, la ligne descriptive respire */
-  h1.hero-title .slogan{display:block;max-width:12ch;}
-  h1.hero-title .h1-tag{
-    display:block;margin-top:16px;max-width:30ch;
+  .hero-title .slogan{display:block;max-width:12ch;}
+  .hero-title .h1-tag{
+    display:block;margin:16px 0 0;max-width:30ch;
     font-family:'IBM Plex Sans', sans-serif;font-weight:500;
     font-size:clamp(1.02rem, 1.7vw, 1.22rem);line-height:1.35;
     color:var(--bronze-dark);
