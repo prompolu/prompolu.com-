@@ -1,0 +1,4 @@
+# Cloudflare Pages : en-têtes HTTP du site (ignoré par GitHub Pages).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
