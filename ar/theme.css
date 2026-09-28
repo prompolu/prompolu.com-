@@ -1,0 +1,130 @@
+/* ==================================================================== *
+ *  Configurateur 3D PROMPOLU — habillage « tableau de bord »
+ *  Chargé APRÈS le style de chaque page (pergola, garde-corps,
+ *  coulissant, battant) : ne change que l'apparence, pas le
+ *  fonctionnement. Sombre, cartes vitrées, halo bronze, boutons pilule.
+ * ==================================================================== */
+:root{
+  --bg:#121110; --panel:rgba(255,255,255,.055); --line:rgba(255,255,255,.09);
+  --txt:#f4f1ec; --dim:#aaa39b; --accent:#c4884e; --accent-txt:#15120f;
+  --glass2:rgba(255,255,255,.09); --r:26px;
+}
+html{background:#121110}
+body{
+  background:
+    radial-gradient(1100px 650px at 75% -10%,#3a2618 0%,transparent 60%),
+    radial-gradient(900px 600px at -10% 110%,#231914 0%,transparent 55%),
+    #121110;
+  background-attachment:fixed;
+  font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{padding:12px 12px 110px}
+
+/* ---------- en-tête : nom du partenaire ---------- */
+.brand{position:static;background:none;border:0;padding:10px 6px 14px;gap:12px}
+.brand img{height:40px;border-radius:12px}
+.brand .nm{font-family:Sora,Manrope,sans-serif;font-weight:600;font-size:24px;letter-spacing:-.02em;line-height:1.15}
+.brand .by{font-size:11px;color:var(--dim)}
+.brand .by b{color:var(--txt);letter-spacing:.14em;font-family:Sora,sans-serif;font-weight:600}
+
+/* ---------- produits : pastilles ---------- */
+.prod{background:rgba(12,11,10,.7);border:1px solid var(--line);border-radius:18px;padding:5px;gap:4px;margin-bottom:12px}
+.prod a{border:0;border-radius:13px;padding:10px 4px;color:var(--dim);transition:.2s}
+.prod a:hover{color:var(--txt)}
+.prod a[aria-current]{background:#fff;color:#121110}
+
+/* ---------- scène 3D : carte avec halo ---------- */
+.stage{
+  border-radius:30px;overflow:hidden;border:1px solid var(--line);
+  background:
+    radial-gradient(circle at 62% 42%,rgba(255,214,176,.95) 0%,rgba(222,160,108,.75) 26%,rgba(120,78,50,.55) 55%,rgba(28,22,19,.95) 82%),
+    #1c1714;
+}
+.stage::before{content:"";position:absolute;left:50%;top:44%;width:74%;aspect-ratio:1;transform:translate(-50%,-50%);
+  border-radius:50%;border:1px solid rgba(255,255,255,.14);box-shadow:0 0 0 70px rgba(255,255,255,.025);pointer-events:none}
+body.night .stage{background:radial-gradient(circle at 60% 45%,#3a2c22 0%,#16120f 70%)}
+model-viewer{height:58vh;min-height:340px;max-height:520px}
+#arbtn,#arbtn-and{background:#fff;color:#121110;border-radius:16px;padding:14px 24px;box-shadow:0 12px 34px rgba(0,0,0,.35)}
+#qrbtn{border-radius:14px;background:rgba(18,17,16,.72);border:1px solid var(--line)}
+.qrhint{border-radius:20px;background:rgba(18,17,16,.82);border-color:var(--line)}
+
+/* ---------- chiffres : bande vitrée ---------- */
+.spec{background:none;gap:8px;margin:12px 0}
+.spec div{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:16px 8px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.spec b{font-family:Sora,sans-serif;font-weight:600;font-size:21px;letter-spacing:-.02em}
+.spec span{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:10px;letter-spacing:.08em}
+
+/* ---------- réglages : cartes vitrées ---------- */
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 20px;margin:0 0 10px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.lab{font-size:12px;letter-spacing:.02em;text-transform:none;color:var(--dim);font-weight:600}
+.sw button{border:2px solid rgba(255,255,255,.14)}
+.sw button[aria-pressed="true"]{border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.12)}
+.seg{background:rgba(12,11,10,.6);border-color:var(--line);border-radius:15px;padding:4px}
+.seg button{border-radius:11px;color:var(--dim)}
+.seg button[aria-pressed="true"]{background:#fff;color:#121110}
+.num{background:rgba(12,11,10,.6);border-color:var(--line);border-radius:15px}
+.num input{font-family:Sora,Manrope,sans-serif;font-weight:600}
+select{background:rgba(12,11,10,.6)!important;border-color:var(--line)!important;border-radius:15px!important;color:var(--txt)!important}
+.tg{background:rgba(255,255,255,.14)}
+.tg[aria-pressed="true"]{background:var(--accent)}
+.hint b{color:var(--accent)}
+.alert{border-radius:20px}
+.note{color:var(--dim);padding:8px 10px 0}
+
+/* ---------- barre d'action : verre + pilule blanche ---------- */
+.cta{background:rgba(18,17,16,.78);border:0;border-top:1px solid var(--line);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.cta button{border-radius:16px}
+#devis{background:#fff;color:#121110;font-family:Manrope,sans-serif;font-weight:700}
+#wa{background:#1f6b45;color:#e6fbef;border-radius:16px}
+
+/* ---------- fenêtres (devis, QR) ---------- */
+.sheet{background:rgba(0,0,0,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.card{background:#1b1917;border:1px solid var(--line);border-radius:28px 28px 0 0}
+.card h2{font-family:Sora,sans-serif;font-weight:600;letter-spacing:-.02em;font-size:20px}
+.card input{background:rgba(12,11,10,.7);border-color:var(--line);border-radius:14px}
+.recap,.qrlink{background:rgba(12,11,10,.6);border-color:var(--line);border-radius:16px}
+.recap b{color:var(--accent)}
+.card .act button{border-radius:15px}
+#send,#qrcopy{background:#fff;color:#121110}
+#close,#qrclose{background:rgba(255,255,255,.09);color:var(--txt)}
+.qrbig{border-radius:20px}
+
+/* ==================================================================== *
+ *  Ordinateur / tablette paysage : tableau de bord
+ *  scène 3D à gauche (fixe au défilement), chiffres et réglages à droite.
+ * ==================================================================== */
+@media (min-width:1000px){
+  body{padding:28px}
+  .wrap{
+    max-width:1240px;padding:22px 22px 28px;border-radius:40px;
+    background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+    border:1px solid var(--line);box-shadow:0 40px 120px rgba(0,0,0,.45);
+    display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);column-gap:18px;row-gap:0;align-items:start;
+  }
+  .wrap > *{grid-column:2}
+  .brand{grid-column:1 / -1;padding:6px 8px 18px}
+  .brand .nm{font-size:34px}
+  .prod{grid-column:1;margin-bottom:14px}
+  .stage{grid-column:1;grid-row:3 / span 40;position:sticky;top:28px;align-self:start}
+  model-viewer{height:calc(100vh - 230px);min-height:460px;max-height:720px}
+  .spec{margin:0 0 10px;grid-row:2 / span 2;align-self:start}
+  .note{text-align:left}
+  /* la barre d'action rejoint la colonne de droite */
+  .cta{left:auto;right:max(50px, calc((100vw - 1240px) / 2 + 44px));bottom:44px;
+    width:min(430px, calc((min(100vw, 1296px) - 140px) * .39));padding:10px;border:1px solid var(--line);border-radius:24px;
+    box-shadow:0 20px 60px rgba(0,0,0,.45)}
+  .cta .in{max-width:none}
+  .wrap{padding-bottom:110px}
+  .sheet{align-items:center}
+  .card{border-radius:28px;max-width:520px}
+}
+
+/* Téléphone : les quatre produits tiennent sur une ligne. */
+@media (max-width:480px){
+  .prod a{font-size:11.5px;white-space:nowrap;padding:10px 2px;letter-spacing:-.01em}
+  .brand .nm{font-size:21px}
+}
