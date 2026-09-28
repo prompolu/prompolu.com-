@@ -110,9 +110,9 @@ function denied(reason, expiresOn) {
     arrow: '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
   };
   const steps = [
-    ['/assets/coulissant-teaser.jpg', 'Écrivez-nous sur WhatsApp', 'Le nom de votre menuiserie et le numéro qui recevra les demandes de devis.', '2 min', 'Sur WhatsApp'],
-    ['/assets/battant-teaser.jpg', 'Recevez votre lien personnel', 'À votre nom et à vos couleurs, pour la durée convenue.', 'Même jour', 'Lien signé'],
-    ['/assets/garde-corps-teaser.jpg', 'Envoyez-le à vos clients', 'Ils voient le produit chez eux, à taille réelle, et vous renvoient leur demande.', 'Sans appli', 'Réalité augmentée'],
+    ['/assets/acces-3d-etape-1.svg', 'Écrivez-nous sur WhatsApp', 'Le nom de votre menuiserie et le numéro qui recevra les demandes de devis.', '2 min', 'Sur WhatsApp'],
+    ['/assets/acces-3d-etape-2.svg', 'Recevez votre lien personnel', 'À votre nom et à vos couleurs, pour la durée convenue.', 'Même jour', 'Lien signé'],
+    ['/assets/acces-3d-etape-3.svg', 'Envoyez-le à vos clients', 'Ils voient le produit chez eux, à taille réelle, et vous renvoient leur demande.', 'Sans appli', 'Réalité augmentée'],
   ].map(([img, t, d, a, b], n) => `
       <li class="row">
         <img src="${img}" alt="" width="120" height="90" loading="lazy">
@@ -193,7 +193,7 @@ h1,h2,.stat b,.status b{font-family:Sora,Manrope,sans-serif;font-weight:600;lett
 .cols{display:grid;grid-template-columns:120px 1fr 140px 170px 40px;gap:18px;font-size:12px;color:var(--dim);padding:0 14px 12px;border-bottom:1px solid var(--edge);margin-bottom:12px}
 ol{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .row{display:grid;grid-template-columns:120px 1fr 140px 170px 40px;gap:18px;align-items:center;padding:10px 14px 10px 10px;border-radius:22px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.06)}
-.row img{width:120px;height:78px;object-fit:cover;border-radius:16px;mix-blend-mode:luminosity}
+.row img{width:120px;height:78px;object-fit:cover;border-radius:16px}
 .row-t b{display:block;font-size:14.5px}
 .row-t span{font-size:12.5px;color:var(--mut)}
 .chip{font-size:12.5px;color:var(--mut);display:flex;align-items:center;gap:8px}

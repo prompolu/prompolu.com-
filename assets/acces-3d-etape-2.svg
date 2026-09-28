@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 156">
+  <defs>
+    <radialGradient id="g2" cx="35%" cy="45%" r="75%"><stop offset="0" stop-color="#d9772f" stop-opacity=".55"/><stop offset=".55" stop-color="#5a3a24" stop-opacity=".35"/><stop offset="1" stop-color="#1a1714" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="240" height="156" rx="22" fill="#1d1a18"/>
+  <rect width="240" height="156" rx="22" fill="url(#g2)"/>
+  <!-- link card -->
+  <rect x="26" y="34" width="188" height="88" rx="16" fill="rgba(18,17,16,.85)" stroke="rgba(255,255,255,.22)"/>
+  <circle cx="50" cy="58" r="12" fill="#f4f1ec"/>
+  <path d="M45 58h10M50 53v10" stroke="#121110" stroke-width="0" />
+  <text x="50" y="62.5" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="12" fill="#121110">M</text>
+  <rect x="70" y="50" width="78" height="6" rx="3" fill="#f4f1ec"/>
+  <rect x="70" y="61" width="36" height="4" rx="2" fill="#f4f1ec" opacity=".5"/>
+  <rect x="112" y="56" width="46" height="14" rx="7" fill="rgba(63,191,127,.18)"/>
+  <circle cx="120" cy="63" r="2.6" fill="#3fbf7f"/>
+  <text x="126" y="66.5" font-family="Arial, sans-serif" font-size="8.5" font-weight="700" fill="#3fbf7f">signé</text>
+  <!-- url pill -->
+  <rect x="38" y="80" width="164" height="26" rx="13" fill="#2a2724"/>
+  <g transform="translate(46 85)" fill="none" stroke="#c4884e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7.5 11.5 5.8 13.2a3 3 0 0 1-4.2-4.2l3-3a3 3 0 0 1 4.2 0"/>
+    <path d="M8.5 4.5l1.7-1.7a3 3 0 0 1 4.2 4.2l-3 3a3 3 0 0 1-4.2 0"/>
+  </g>
+  <text x="68" y="97" font-family="Menlo, monospace" font-size="10.5" fill="#f4f1ec" opacity=".9">prompolu.com/ar/?p=…</text>
+  <!-- signed badge -->
+  <circle cx="196" cy="36" r="17" fill="#fff"/>
+  <g transform="translate(186 26)" fill="none" stroke="#121110" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3.5" y="9" width="13" height="9" rx="2"/><path d="M6.5 9V6.5a3.5 3.5 0 0 1 7 0V9"/>
+  </g>
+  <rect x="70" y="69" width="44" height="0" rx="0" fill="none"/>
+  
+  
+</svg>
