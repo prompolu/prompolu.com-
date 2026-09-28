@@ -124,7 +124,8 @@ select:focus{outline:none;border-color:var(--accent)}
 .note{font-size:11px;color:var(--dim);padding:14px 16px 0;text-align:center}
 </style>
 </head>
-\1\n  <h1 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Baie coulissante aluminium en réalité augmentée</h1>
+<body>
+  <h1 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Baie coulissante aluminium en réalité augmentée</h1>
 
   <div class="brand">
     <img id="plogo" alt="" hidden>
@@ -282,6 +283,9 @@ const OPENINGS = [{id:0,nm:'Fermé'},{id:1,nm:'Ouvert'}];
 const W_MIN=100, W_MAX=1200, H_MIN=150, H_MAX=320;
 
 const qs = new URLSearchParams(location.search);
+/* Accès : le lien donné par PROMPOLU (?p=…) accompagne aussi les fichiers 3D,
+   que la vue réelle (Android, iPhone) télécharge en dehors du navigateur. */
+const withAccess = (u) => qs.get('p') ? u + (u.includes('?') ? '&' : '?') + 'p=' + encodeURIComponent(qs.get('p')) : u;
 const pick=(v,l,d)=>l.includes(v)?v:d;
 const clamp=(v,lo,hi,d)=>Number.isFinite(v)?Math.min(hi,Math.max(lo,Math.round(v))):d;
 
@@ -391,9 +395,9 @@ function refresh(){
   syncAR(); specs(); writeURL();
 }
 function syncAR(){
-  mv.setAttribute('ios-src',
+  mv.setAttribute('ios-src', withAccess(
     `../models-co/co-${Coulissant.arSystem(st.sys)}-${st.lv}-${st.fin.id}`
-    + (st.op ? '-ouvert' : '') + '.usdz');
+    + (st.op ? '-ouvert' : '') + '.usdz'));
 }
 
 const fr=v=>v.toFixed(2).replace('.',',');
@@ -516,8 +520,8 @@ function noAR(){
 }
 /* URL absolue du modele statique servi a Scene Viewer */
 function glbURL(){
-  return new URL(`../models-co/co-${Coulissant.arSystem(st.sys)}-${st.lv}-${st.fin.id}`
-                 + (st.op ? '-ouvert' : '') + '.glb', location.href).href;
+  return withAccess(new URL(`../models-co/co-${Coulissant.arSystem(st.sys)}-${st.lv}-${st.fin.id}`
+                 + (st.op ? '-ouvert' : '') + '.glb', location.href).href);
 }
 function openSceneViewer(){
   const file = encodeURIComponent(glbURL());

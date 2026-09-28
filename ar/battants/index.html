@@ -289,6 +289,9 @@ const BOUNDS = {
 };
 
 const qs = new URLSearchParams(location.search);
+/* Accès : le lien donné par PROMPOLU (?p=…) accompagne aussi les fichiers 3D,
+   que la vue réelle (Android, iPhone) télécharge en dehors du navigateur. */
+const withAccess = (u) => qs.get('p') ? u + (u.includes('?') ? '&' : '?') + 'p=' + encodeURIComponent(qs.get('p')) : u;
 const pick=(v,l,d)=>l.includes(v)?v:d;
 const clamp=(v,lo,hi,d)=>Number.isFinite(v)?Math.min(hi,Math.max(lo,Math.round(v))):d;
 
@@ -438,7 +441,7 @@ function refresh(){
 }
 function syncAR(){
   mv.setAttribute('ios-src',
-    `../models-bt/bt-${st.sys}-${st.lv}-${st.mode}-${st.fin.id}.usdz`);
+    withAccess(`../models-bt/bt-${st.sys}-${st.lv}-${st.mode}-${st.fin.id}.usdz`));
 }
 
 const fr=v=>v.toFixed(2).replace('.',',');
@@ -571,8 +574,8 @@ function noAR(){
 }
 /* URL absolue du modele statique servi a Scene Viewer */
 function glbURL(){
-  return new URL(`../models-bt/bt-${st.sys}-${st.lv}-${st.mode}-${st.fin.id}.glb`,
-                 location.href).href;
+  return withAccess(new URL(`../models-bt/bt-${st.sys}-${st.lv}-${st.mode}-${st.fin.id}.glb`,
+                 location.href).href);
 }
 function openSceneViewer(){
   const file = encodeURIComponent(glbURL());

@@ -144,7 +144,8 @@ model-viewer{width:100%;height:56vh;min-height:300px;max-height:430px;
 .note{font-size:11px;color:var(--dim);padding:14px 16px 0;text-align:center}
 </style>
 </head>
-\1\n  <h1 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Garde-corps aluminium et verre en réalité augmentée</h1>
+<body>
+  <h1 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Garde-corps aluminium et verre en réalité augmentée</h1>
 
   <div class="brand">
     <img id="plogo" alt="" hidden>
@@ -332,6 +333,9 @@ const AR_H   = 110;
 const nearest = (v,l) => l.reduce((a,b)=> Math.abs(b-v)<Math.abs(a-v)?b:a);
 
 const qs = new URLSearchParams(location.search);
+/* Accès : le lien donné par PROMPOLU (?p=…) accompagne aussi les fichiers 3D,
+   que la vue réelle (Android, iPhone) télécharge en dehors du navigateur. */
+const withAccess = (u) => qs.get('p') ? u + (u.includes('?') ? '&' : '?') + 'p=' + encodeURIComponent(qs.get('p')) : u;
 const pick = (v,l,d) => l.includes(v) ? v : d;
 const clamp = (v,lo,hi,d) => Number.isFinite(v) ? Math.min(hi,Math.max(lo,Math.round(v))) : d;
 
@@ -468,7 +472,7 @@ function arVariant(){
 function syncAR(){
   const L = nearest(st.L, AR_LEN);
   mv.setAttribute('ios-src',
-    `../models-gc/gc-${arVariant()}-${L}-${st.fin.id}.usdz`);
+    withAccess(`../models-gc/gc-${arVariant()}-${L}-${st.fin.id}.usdz`));
 }
 
 const fr = v => v.toFixed(2).replace('.', ',');
@@ -583,8 +587,8 @@ function noAR(){
 /* URL absolue du modele statique servi a Scene Viewer */
 function glbURL(){
   const L = nearest(st.L, AR_LEN);
-  return new URL(`../models-gc/gc-${arVariant()}-${L}-${st.fin.id}.glb`,
-                 location.href).href;
+  return withAccess(new URL(`../models-gc/gc-${arVariant()}-${L}-${st.fin.id}.glb`,
+                 location.href).href);
 }
 function openSceneViewer(){
   const file = encodeURIComponent(glbURL());

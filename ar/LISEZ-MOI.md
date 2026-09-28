@@ -8,64 +8,40 @@ peut avoir cet outil qu'en achetant ses profilés chez vous.
 
 ---
 
-## 1. Mise en ligne
+## 1. Mise en ligne et accès réservé
 
-Le site est publié par **GitHub Pages** depuis le dépôt `prompolu/prompolu.com-`
-(le fichier `CNAME` à la racine pointe vers prompolu.com). Il n'y a donc **rien
-à envoyer par FTP** : dès que le dépôt est mis à jour, GitHub republie le site
-tout seul, en une à deux minutes.
+Le site est publié par **Cloudflare Pages** depuis le dépôt privé
+`prompolu/prompolu.com-` : chaque mise à jour du dépôt republie le site en une à
+deux minutes.
 
-Ce dossier `ar/` doit simplement se trouver à la racine du dépôt. Le
-configurateur est alors accessible sur :
+L'espace 3D (`/ar/`, et tous les fichiers `.glb` / `.usdz`) n'est servi qu'avec
+un **lien donné par PROMPOLU**. La vérification est faite par Cloudflare, avant
+d'envoyer la page ou le moindre modèle 3D (`functions/_middleware.js`) : sans
+lien valable, le visiteur voit « Visualisation 3D — accès réservé » et un bouton
+WhatsApp vers PROMPOLU. Le reste du site reste public.
 
-```
-https://prompolu.com/ar/?p=demo
-```
+## 2. Donner un accès
 
-> **Note pour plus tard :** une version précédente de ces instructions parlait
-> d'un fichier `.htaccess` et de types MIME à déclarer. Cela ne vaut que pour un
-> hébergement Apache classique. **GitHub Pages ignore `.htaccess`** — le fichier
-> a donc été retiré. GitHub Pages sert correctement les fichiers `.glb` et
-> `.usdz` (le site officiel de `model-viewer` est lui-même hébergé ainsi), il
-> n'y a rien à configurer.
-
-Un fichier `.nojekyll` a été ajouté à la racine du dépôt : il demande à GitHub
-de publier les fichiers tels quels, sans passer par Jekyll. C'est plus rapide et
-cela évite tout risque qu'un fichier soit ignoré au passage.
-
-Vérifiez enfin, dans **Settings → Pages** du dépôt, que **« Enforce HTTPS »**
-est bien coché : la caméra et la réalité augmentée sont bloquées par les
-navigateurs en `http://`.
-
----
-
-## 2. Ajouter un menuisier partenaire
-
-Ouvrez `partners.json` et ajoutez un bloc :
-
-```json
-"menuiserie-bennani": {
-  "name": "Menuiserie Bennani — Sefrou",
-  "logo": "logos/bennani.png",
-  "phone": "212661234567",
-  "email": "contact@bennani.ma",
-  "accent": "#1f6f8b"
-}
-```
-
-Son lien devient :
+Dans le **générateur de codes** (https://cutter-hard.pages.dev/generateur.html),
+mode **Espace 3D** : nom du menuisier (ou du prospect), son numéro WhatsApp
+(format international, ex. 212661234567), couleur des boutons (facultatif),
+logo (facultatif), durée — essai de quelques jours, annuel jusqu'à une date,
+ou permanent. Le générateur donne le lien complet :
 
 ```
-https://prompolu.com/ar/?p=menuiserie-bennani
+https://prompolu.com/ar/?p=<jeton>
 ```
 
-- `phone` : format international **sans `+` ni espaces**. La demande de devis
-  part directement sur **son** WhatsApp, pré-remplie avec la configuration.
-- `logo` : facultatif. Déposez l'image dans un dossier `ar/logos/`.
-- `accent` : facultatif. Colore les boutons à ses couleurs.
-- Sans `?p=`, la page s'affiche en version neutre PROMPOLU.
-
----
+- Le nom, le numéro et la date de fin sont **signés dans le lien** : les
+  modifier le rend invalide. La demande de devis part sur **ce** numéro.
+- À la date de fin, le lien affiche « Votre accès a expiré » et propose de
+  contacter PROMPOLU.
+- `logo` : déposez l'image dans `ar/logos/` (ex. `bennani.png`) et indiquez ce
+  nom de fichier dans le générateur.
+- Le menuisier envoie son lien à ses clients ; le navigateur de chacun le
+  garde (cookie), et le lien suit dans le QR code et entre les produits.
+- Retirer un accès avant sa date de fin : ajouter une liste de liens bloqués
+  dans `functions/_middleware.js` (demander au développeur).
 
 ## 3. Ce que le client peut régler
 

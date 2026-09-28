@@ -150,7 +150,8 @@ model-viewer{width:100%;height:60vh;min-height:330px;max-height:460px;
 #qrcopy{background:var(--accent);color:var(--accent-txt)}
 </style>
 </head>
-\1\n  <h1 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Pergola bioclimatique aluminium en réalité augmentée</h1>
+<body>
+  <h1 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Pergola bioclimatique aluminium en réalité augmentée</h1>
 
   <div class="brand">
     <img id="plogo" alt="" hidden>
@@ -321,6 +322,9 @@ const SLATS  = [{id:'closed',nm:'Fermé', pos:'fermées'},
    Ainsi le QR code (ou un lien WhatsApp) rouvre EXACTEMENT la même
    configuration sur le téléphone du client.                        */
 const qs = new URLSearchParams(location.search);
+/* Accès : le lien donné par PROMPOLU (?p=…) accompagne aussi les fichiers 3D,
+   que la vue réelle (Android, iPhone) télécharge en dehors du navigateur. */
+const withAccess = (u) => qs.get('p') ? u + (u.includes('?') ? '&' : '?') + 'p=' + encodeURIComponent(qs.get('p')) : u;
 const pick = (v, list, dflt) => list.includes(v) ? v : dflt;
 const clamp = (v, lo, hi, dflt) =>
   Number.isFinite(v) ? Math.min(hi, Math.max(lo, Math.round(v))) : dflt;
@@ -446,7 +450,7 @@ function load(){
   if (isStd(st.w, st.d)) {
     /* taille standard : on sert le fichier pre-genere, toutes les
        modalites de realite augmentee restent disponibles.            */
-    mv.src = `models/pergola-${st.w}x${st.d}-${st.slat}.glb`;
+    mv.src = withAccess(`models/pergola-${st.w}x${st.d}-${st.slat}.glb`);
     mv.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
   } else {
     /* cotes libres : la pergola est construite ici, dans le navigateur,
@@ -473,7 +477,7 @@ function load(){
 function arSize(){ return [nearest(st.w, STD_W), nearest(st.d, STD_D)]; }
 function syncAR(){
   const [aw, ad] = arSize();
-  mv.setAttribute('ios-src', `models/pergola-${aw}x${ad}-${st.fin.id}.usdz`);
+  mv.setAttribute('ios-src', withAccess(`models/pergola-${aw}x${ad}-${st.fin.id}.usdz`));
 }
 function applyMaterial(){
   const mats = mv.model && mv.model.materials;
