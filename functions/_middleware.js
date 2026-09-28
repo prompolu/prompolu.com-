@@ -80,31 +80,108 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&
 
 function denied(reason, expiresOn) {
   const frDate = expiresOn ? new Date(`${expiresOn}T12:00:00Z`).toLocaleDateString('fr-FR') : '';
-  const text = {
-    MISSING: 'La visualisation 3D est réservée aux clients professionnels de PROMPOLU. Demandez votre accès : nous vous envoyons votre lien personnel.',
-    INVALID: 'Ce lien n’est pas valable. Il a peut-être été mal copié : demandez à PROMPOLU de vous le renvoyer.',
-    EXPIRED: `Votre accès a expiré le ${frDate}. Contactez PROMPOLU pour le renouveler.`,
+  const copy = {
+    MISSING: {
+      kicker: 'Accès réservé — clients professionnels',
+      title: 'La visualisation 3D est réservée à nos partenaires.',
+      text: 'Chaque menuisier partenaire de PROMPOLU reçoit son lien personnel : l’outil porte son nom, et les demandes de devis de ses clients arrivent directement sur son WhatsApp.',
+      cta: 'Demander mon accès',
+      wa: 'Bonjour, je souhaite un accès à la visualisation 3D PROMPOLU.',
+    },
+    INVALID: {
+      kicker: 'Lien non valable',
+      title: 'Ce lien ne donne pas accès à la visualisation 3D.',
+      text: 'Il a peut-être été mal copié ou modifié. Demandez à PROMPOLU de vous renvoyer votre lien personnel.',
+      cta: 'Recevoir mon lien',
+      wa: 'Bonjour, mon lien de visualisation 3D PROMPOLU ne fonctionne pas.',
+    },
+    EXPIRED: {
+      kicker: 'Accès expiré',
+      title: 'Votre accès à la visualisation 3D est arrivé à son terme.',
+      text: `Il était valable jusqu’au ${frDate}. Contactez PROMPOLU pour le renouveler : nous vous enverrons un nouveau lien.`,
+      cta: 'Renouveler mon accès',
+      wa: 'Bonjour, je souhaite renouveler mon accès à la visualisation 3D PROMPOLU.',
+    },
   }[reason];
-  const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(reason === 'EXPIRED'
-    ? 'Bonjour, je souhaite renouveler mon accès à la visualisation 3D PROMPOLU.'
-    : 'Bonjour, je souhaite un accès à la visualisation 3D PROMPOLU.')}`;
+  const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(copy.wa)}`;
+  const waIcon = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.03c-.25.69-1.44 1.32-1.99 1.37-.51.05-.99.24-3.33-.69-2.81-1.11-4.6-3.99-4.74-4.18-.14-.18-1.13-1.5-1.13-2.87 0-1.36.71-2.03.97-2.31.25-.28.55-.35.74-.35l.53.01c.17.01.4-.07.62.47.23.55.78 1.9.85 2.04.07.14.11.3.02.48-.09.18-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.07.95 1.97 1.25 2.25 1.39.28.14.44.12.6-.07.16-.18.69-.81.88-1.09.18-.28.37-.23.62-.14.25.09 1.6.76 1.87.9.28.14.46.21.53.32.07.12.07.67-.18 1.36Z"/></svg>';
+  const lock = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4.5" y="10.5" width="15" height="10" rx="1.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>';
   const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
-<title>Accès réservé | PROMPOLU</title>
+<title>Visualisation 3D — accès réservé | PROMPOLU</title>
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-:root{color-scheme:dark}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#15171a;color:#f1f0ec;
-font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;padding:24px;box-sizing:border-box}
-main{max-width:460px}.k{color:#8c6a45;font-size:12px;letter-spacing:.14em;font-weight:700}
-h1{font-size:28px;line-height:1.2;margin:.3em 0 .5em}p{color:#c9c7c1;margin:0 0 1.4em}
-a.b{display:inline-block;background:#f1f0ec;color:#15171a;text-decoration:none;font-weight:700;padding:14px 24px;border-radius:999px}
-a.s{display:block;margin-top:18px;color:#8c6a45}
-</style></head><body><main>
-<div class="k">PROMPOLU ALUMINIUM</div>
-<h1>Visualisation 3D — accès réservé</h1>
-<p data-reason="${reason}">${esc(text)}</p>
-<a class="b" href="${esc(wa)}">Demander l’accès sur WhatsApp</a>
-<a class="s" href="/visualisation-3d.html">Découvrir la visualisation 3D</a>
-</main></body></html>`;
+:root{--ink:#15171A;--paper:#F1F0EC;--line:#D9D8D3;--bronze:#A97C50;--bronze-dark:#8A6541;--aluminium-light:#C7C9CC;--muted:#55585e}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);
+  font:16px/1.6 'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+header{border-bottom:1px solid var(--line)}
+header .in,footer .in{max-width:1180px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+header img{height:26px;width:auto;display:block}
+header .back{font-size:13px;color:var(--muted)}
+header .back:hover{color:var(--bronze-dark)}
+main{flex:1;display:flex;align-items:center}
+.grid{max-width:1180px;margin:0 auto;padding:56px 28px;display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;width:100%}
+.kicker{font-size:13px;color:var(--bronze-dark);display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.kicker .dash{width:26px;height:1px;background:var(--bronze-dark)}
+h1{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-.01em;font-size:clamp(2rem,4vw,3.1rem);line-height:1.08;margin:0 0 20px;max-width:18ch}
+.lead{color:var(--muted);font-size:17px;max-width:46ch;margin:0 0 30px}
+.steps{list-style:none;margin:0 0 34px;padding:0;border-top:1px solid var(--line)}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:6px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+.steps b{font-weight:500}
+.steps .n{color:var(--bronze-dark);font-size:13px;padding-top:2px}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:13.5px;padding:14px 24px;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--ink);transition:background .2s,color .2s,border-color .2s}
+.btn-solid{background:var(--ink);color:var(--paper)}
+.btn-solid:hover{background:var(--bronze);border-color:var(--bronze)}
+.btn-outline:hover{border-color:var(--bronze);color:var(--bronze-dark)}
+figure{margin:0;position:relative}
+figure img{width:100%;height:auto;display:block;aspect-ratio:4/3;object-fit:cover;filter:saturate(.9)}
+figure .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(21,23,26,0) 45%,rgba(21,23,26,.72))}
+figure .badge{position:absolute;left:20px;bottom:18px;right:20px;color:var(--paper);display:flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.04em}
+figure .badge span{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(241,240,236,.5)}
+figure::before{content:"";position:absolute;inset:-12px 12px 12px -12px;border:1px solid var(--line);z-index:-1}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:12.5px}
+footer .in{padding:18px 28px;flex-wrap:wrap}
+@media (max-width:860px){
+  .grid{grid-template-columns:1fr;gap:36px;padding:32px 22px 44px}
+  figure{order:-1}
+  figure::before{display:none}
+  header .in,footer .in{padding-left:22px;padding-right:22px}
+  .btn{width:100%;justify-content:center}
+}
+</style></head><body>
+<header><div class="in">
+  <a href="/" aria-label="PROMPOLU — accueil"><img src="/assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="188" height="26"></a>
+  <a class="back mono" href="/visualisation-3d.html">← Visualisation 3D</a>
+</div></header>
+<main><div class="grid">
+  <section>
+    <div class="kicker mono"><span class="dash"></span>${esc(copy.kicker)}</div>
+    <h1>${esc(copy.title)}</h1>
+    <p class="lead" data-reason="${reason}">${esc(copy.text)}</p>
+    <ol class="steps">
+      <li><span class="n mono">01</span><span><b>Écrivez-nous sur WhatsApp.</b> Nom de votre menuiserie et numéro qui recevra les demandes.</span></li>
+      <li><span class="n mono">02</span><span><b>Recevez votre lien personnel</b>, à votre nom et à vos couleurs.</span></li>
+      <li><span class="n mono">03</span><span><b>Envoyez-le à vos clients :</b> ils voient le produit chez eux, à taille réelle.</span></li>
+    </ol>
+    <div class="actions">
+      <a class="btn btn-solid" href="${esc(wa)}">${waIcon}${esc(copy.cta)}</a>
+      <a class="btn btn-outline" href="/visualisation-3d.html">Découvrir l’outil</a>
+    </div>
+  </section>
+  <figure>
+    <img src="/assets/visualisation-3d-teaser.jpg" alt="Pergola bioclimatique en aluminium en réalité augmentée" width="1200" height="900">
+    <div class="veil"></div>
+    <figcaption class="badge mono"><span>${lock}</span>Pergola · garde-corps · coulissant · battant — en réalité augmentée</figcaption>
+  </figure>
+</div></main>
+<footer><div class="in mono"><span>© ${new Date().getFullYear()} PROMPOLU ALUMINIUM — Fès &amp; Sefrou, Maroc</span><span>+212 6 68 37 85 38</span></div></footer>
+</body></html>`;
   return new Response(html, { status: 403, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
 }
 
