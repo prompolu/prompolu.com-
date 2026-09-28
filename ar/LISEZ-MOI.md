@@ -20,6 +20,11 @@ d'envoyer la page ou le moindre modèle 3D (`functions/_middleware.js`) : sans
 lien valable, le visiteur voit « Visualisation 3D — accès réservé » et un bouton
 WhatsApp vers PROMPOLU. Le reste du site reste public.
 
+Projet Cloudflare Pages : `prompolu-com` (production : branche `main`). Chaque
+autre branche est publiée à part pour les essais, par exemple la branche
+`acces-3d` sur https://acces-3d.prompolu-com.pages.dev — pour y tester un lien
+du générateur, remplacer `prompolu.com` par cette adresse dans le lien.
+
 ## 2. Donner un accès
 
 Dans le **générateur de codes** (https://cutter-hard.pages.dev/generateur.html),
