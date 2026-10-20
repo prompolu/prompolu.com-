@@ -15,12 +15,20 @@
     return form.querySelector('[name="' + nom + '"]');
   }
 
+  // Une fiche produit peut préparer la référence ; le visiteur peut la modifier.
+  var reference = new URLSearchParams(window.location.search).get('systeme');
+  var systeme = champ('systeme');
+  if (reference && systeme && !systeme.value.trim()) {
+    systeme.value = reference.replace(/[\u0000-\u001F\u007F]/g, '').trim().slice(0, 80);
+  }
+
   function valeur(nom) {
     var el = champ(nom);
     return el ? el.value.trim() : '';
   }
 
   function erreur(el, actif) {
+    el.setAttribute('aria-invalid', actif ? 'true' : 'false');
     var bloc = el.closest('.qf-field');
     if (!bloc) return;
     bloc.classList.toggle('qf-error', actif);

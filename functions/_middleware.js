@@ -20,6 +20,32 @@ const COOKIE = 'prompolu_ar';
 const DAY = 86_400_000;
 
 const isProtected = (path) => path === '/ar' || path.startsWith('/ar/') || /\.(glb|usdz)$/i.test(path);
+// Public documents use the same extension-less URLs as Pages' static routing.
+// Leave preview hosts, signed AR links and non-page resources on their own routes.
+const PUBLIC_PAGES = new Set([
+  '/', '/coulissants', '/battants', '/agencement', '/exterieur',
+  '/notre-activite', '/contact', '/conseils/',
+  '/conseils/guide-choisir-systeme-coulissant-aluminium',
+  '/conseils/coulissant-ou-battant-comment-choisir',
+  '/conseils/rupture-de-pont-thermique-aluminium',
+  '/visualisation-3d', '/showroom-sefrou', '/grossiste-aluminium-fes',
+  '/distributeur-strugal-maroc',
+]);
+
+function publicRedirect(request, url) {
+  if (request.method !== 'GET' && request.method !== 'HEAD') return null;
+  if (url.hostname !== 'prompolu.com' && url.hostname !== 'www.prompolu.com') return null;
+  var path = url.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+  if (path === '/conseils') path = '/conseils/';
+  if (!PUBLIC_PAGES.has(path)) return null;
+  if (url.hostname === 'prompolu.com' && url.protocol === 'https:' && url.pathname === path) return null;
+  const target = new URL(url);
+  target.protocol = 'https:';
+  target.hostname = 'prompolu.com';
+  target.port = '';
+  target.pathname = path;
+  return Response.redirect(target.toString(), 308);
+}
 const looksLikeToken = (t) => typeof t === 'string' && /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]{86}$/.test(t);
 
 const unb64url = (s) => {
@@ -226,11 +252,11 @@ footer{max-width:1240px;margin:16px auto 0;display:flex;justify-content:space-be
 <div class="frame">
   <nav class="rail" aria-label="Navigation">
     <a class="logo" href="/" aria-label="PROMPOLU — accueil"><img src="/assets/apple-touch-icon.png" alt=""></a>
-    <a class="on" href="/visualisation-3d.html" aria-label="Visualisation 3D">${i.cube}</a>
+    <a class="on" href="/visualisation-3d" aria-label="Visualisation 3D">${i.cube}</a>
     <a href="/" aria-label="Accueil">${i.home}</a>
     <a href="${esc(wa)}" aria-label="WhatsApp PROMPOLU">${i.wa}</a>
     <span class="sp"></span>
-    <a href="/visualisation-3d.html" aria-label="Espace réservé">${i.lock}</a>
+    <a href="/visualisation-3d" aria-label="Espace réservé">${i.lock}</a>
   </nav>
   <div class="main">
     <div class="top">
@@ -246,7 +272,7 @@ footer{max-width:1240px;margin:16px auto 0;display:flex;justify-content:space-be
           <p>Pergola, garde-corps, baie coulissante ou battant : votre client pointe son téléphone et voit le produit chez lui, à taille réelle, avant de signer.</p>
           <div class="btns">
             <a class="pill w" href="${esc(wa)}">${i.wa}${esc(copy.cta)}</a>
-            <a class="pill g" href="/visualisation-3d.html">Découvrir l’outil</a>
+            <a class="pill g" href="/visualisation-3d">Découvrir l’outil</a>
           </div>
         </div>
         <div class="stats">
@@ -283,6 +309,8 @@ footer{max-width:1240px;margin:16px auto 0;display:flex;justify-content:space-be
 export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
+  const redirect = publicRedirect(request, url);
+  if (redirect) return redirect;
   if (!isProtected(url.pathname)) return context.next();
 
   // The link's token wins; otherwise the one this browser already received.

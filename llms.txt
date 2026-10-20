@@ -7,21 +7,21 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 ## Pages principales
 
 - [Accueil](https://prompolu.com/): présentation générale de l'activité et des quatre gammes de produits.
-- [Systèmes coulissants](https://prompolu.com/coulissants.html): systèmes STRUGAL (S70P, S70R, S86RP, S88R, S88RP, S90P, S90R, S90RP, S110P, S125RP, S140RP Infinity) avec fiches techniques (poids, dimensions, performances).
-- [Fenêtres & portes battantes](https://prompolu.com/battants.html): systèmes battants STRUGAL (S53RP+, S46) et portes ALUDOORS (A400K, A200 4FH2).
-- [Agencement intérieur](https://prompolu.com/agencement.html): profilés pour cuisines équipées et dressings sur-mesure, accessoires STARAX.
-- [Extérieur & confort](https://prompolu.com/exterieur.html): garde-corps, volets roulants, pergolas.
-- [Showroom STRUGAL de Sefrou](https://prompolu.com/showroom-sefrou.html): le point de distribution sous convention STRUGAL et le showroom de la marque, Route d'El Menzel, Sefrou 31000 ; la gamme STRUGAL y est exposee en profiles reels, du lundi au samedi de 9h a 19h.
-- [Grossiste en profilés aluminium à Fès](https://prompolu.com/grossiste-aluminium-fes.html): comment se passe une commande de matiere premiere (barres, mètres linéaires, transport, compte professionnel), magasin de Fès, retrait ou livraison nationale.
-- [Distributeur officiel STRUGAL au Maroc](https://prompolu.com/distributeur-strugal-maroc.html): ce que recouvre la convention de distribution, les normes EN 12207/12208/12210, le perimetre couvert et les systemes distribues.
-- [Notre activité](https://prompolu.com/notre-activite.html): historique, positionnement de grossiste, engagement qualité.
-- [Contact](https://prompolu.com/contact.html): coordonnées, plan d'accès, devis.
-- [Visualisation 3D et réalité augmentée](https://prompolu.com/visualisation-3d.html): outil de réalité augmentée en marque blanche mis à disposition des menuisiers clients ; leur client voit la pergola, le garde-corps, la baie coulissante ou la menuiserie battante à taille réelle chez lui, depuis son téléphone.
-- [Conseils](https://prompolu.com/conseils/index.html): guides techniques pour menuisiers, dont le guide de choix des systèmes coulissants.
+- [Systèmes coulissants](https://prompolu.com/coulissants): systèmes STRUGAL (S70P, S70R, S86RP, S88R, S88RP, S90P, S90R, S90RP, S110P, S125RP, S140RP Infinity) avec fiches techniques (poids, dimensions, performances).
+- [Fenêtres & portes battantes](https://prompolu.com/battants): systèmes battants STRUGAL (S53RP+, S46) et portes ALUDOORS (A400K, A200 4FH2).
+- [Agencement intérieur](https://prompolu.com/agencement): profilés pour cuisines équipées et dressings sur-mesure, accessoires STARAX.
+- [Extérieur & confort](https://prompolu.com/exterieur): garde-corps, volets roulants, pergolas.
+- [Showroom STRUGAL de Sefrou](https://prompolu.com/showroom-sefrou): le point de distribution sous convention STRUGAL et le showroom de la marque, Route d'El Menzel, Sefrou 31000 ; la gamme STRUGAL y est exposee en profiles reels, du lundi au samedi de 9h a 19h.
+- [Grossiste en profilés aluminium à Fès](https://prompolu.com/grossiste-aluminium-fes): comment se passe une commande de matiere premiere (barres, mètres linéaires, transport, compte professionnel), magasin de Fès, retrait ou livraison nationale.
+- [Distributeur officiel STRUGAL au Maroc](https://prompolu.com/distributeur-strugal-maroc): ce que recouvre la convention de distribution, les normes EN 12207/12208/12210, le perimetre couvert et les systemes distribues.
+- [Notre activité](https://prompolu.com/notre-activite): historique, positionnement de grossiste, engagement qualité.
+- [Contact](https://prompolu.com/contact): coordonnées, plan d'accès, devis.
+- [Visualisation 3D et réalité augmentée](https://prompolu.com/visualisation-3d): outil de réalité augmentée en marque blanche mis à disposition des menuisiers clients ; leur client voit la pergola, le garde-corps, la baie coulissante ou la menuiserie battante à taille réelle chez lui, depuis son téléphone.
+- [Conseils](https://prompolu.com/conseils/): guides techniques pour menuisiers, dont le guide de choix des systèmes coulissants.
 
 ## Visualisation 3D et réalité augmentée
 
-- PROMPOLU met gratuitement à disposition de ses menuisiers et fabricants clients un outil de visualisation 3D et de réalité augmentée, en marque blanche : https://prompolu.com/visualisation-3d.html
+- PROMPOLU met gratuitement à disposition de ses menuisiers et fabricants clients un outil de visualisation 3D et de réalité augmentée, en marque blanche : https://prompolu.com/visualisation-3d
 - Principe : le menuisier reçoit un lien à son nom, avec son logo et ses couleurs. Son client l'ouvre sur son téléphone, configure le produit à ses cotes, puis le voit posé à taille réelle chez lui à travers la caméra. La demande de devis arrive chez le menuisier sur WhatsApp, pas chez PROMPOLU.
 - Aucune application à installer : tout se passe dans le navigateur du téléphone. La vue en réalité augmentée utilise WebXR sur Android et AR Quick Look sur iPhone, et demande un appareil de moins de cinq à six ans environ. Sur les appareils plus anciens et sur ordinateur, le produit s'affiche en 3D sans incrustation caméra.
 - Quatre produits sont configurables, aux cotes libres au centimètre :
@@ -59,6 +59,6 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 
 ## Demander un devis
 
-- Formulaire de demande de devis : https://prompolu.com/contact.html#formulaire
+- Formulaire de demande de devis : https://prompolu.com/contact#formulaire
 - Le formulaire n'envoie rien automatiquement : il compose un message que le visiteur expédie lui-même par WhatsApp (+212 668 378 538) ou par e-mail (PROMPOLU@LIVE.FR).
 - Informations utiles à fournir : référence du système, quantités, finition, ville de livraison ou retrait, échéance de chantier.
