@@ -17,3 +17,29 @@
 .page-directory a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
 @media(max-width:900px){.mobile-nav{max-height:calc(100dvh - 100px);overflow-y:auto}.mobile-nav>a{font-size:19px;padding:11px 0}.page-directory{gap:30px}.page-directory h2{font-size:21px}.page-directory a{font-size:12px}}
 @media(max-width:640px){.mobile-nav>a{font-size:17px}.page-directory{grid-template-columns:1fr;gap:30px;padding-top:35px;padding-bottom:35px}.page-directory>div{gap:11px}.page-directory h2{font-size:25px}.page-directory a{font-size:14px}}
+
+/* PROMPOLU and its official STRUGAL distributor signature stay side by side. */
+.site-header{grid-template-columns:minmax(0,440px) 1fr auto}
+.brand-group{display:flex;align-items:center;gap:18px;min-width:0}
+.site-header .brand-group .brand{flex:1;min-width:0;width:auto;max-width:280px;margin:0}
+.distributor-mark{flex:0 0 132px;padding-left:18px;border-left:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:6px}
+.distributor-mark span{font:500 10px/1.35 var(--body);text-align:center;letter-spacing:.04em;color:var(--bronze-dark)}
+.distributor-mark img{width:112px;height:auto;max-width:100%}
+@media(max-width:1190px){
+ .site-header{grid-template-columns:minmax(0,310px) 1fr auto}
+ .brand-group{gap:12px}
+ .distributor-mark{flex-basis:102px;padding-left:12px}
+ .distributor-mark span{font-size:9px}
+}
+@media(max-width:900px){
+ .site-header{grid-template-columns:minmax(0,1fr) auto auto}
+ .brand-group{max-width:400px}
+}
+@media(max-width:640px){
+ .site-header{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
+ .brand-group{gap:8px}
+ .site-header .brand-group .brand{max-width:224px;padding:6px}
+ .distributor-mark{flex-basis:88px;padding-left:8px;gap:5px}
+ .distributor-mark span{font-size:8px;letter-spacing:0}
+ .distributor-mark img{width:80px}
+}
