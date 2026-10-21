@@ -50,7 +50,7 @@ function navigation(pathname) {
   const document = documentDouble();
   const nav = new Element(document, { id: 'mainNav' });
   const toggle = new Element(document, { id: 'navToggle' });
-  const markup = read('index.html').match(/<nav class="main mobile-nav" id="mainNav"[^>]*>([\s\S]*?)<\/nav>/)[1];
+  const markup = read('index.html').match(/<nav class="mobile-nav" id="mainNav"[^>]*>([\s\S]*?)<\/nav>/)[1];
   const links = [...markup.matchAll(/<a href="([^"]+)"/g)].map((m) => {
     const element = new Element(document, { href: m[1] });
     element.pathname = new URL(m[1], 'https://prompolu.com').pathname;

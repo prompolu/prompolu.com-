@@ -36,3 +36,49 @@
  .site-header{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
  .brand-group{gap:10px}
 }
+
+/* The mobile menu has its own layout; legacy desktop nav rules must not apply. */
+@media (max-width: 900px) {
+  .mobile-nav {
+    top: 84px;
+    align-items: stretch;
+    gap: 0;
+    max-height: calc(100dvh - 104px);
+    padding: 12px 20px 20px;
+    overscroll-behavior: contain;
+    text-align: left;
+  }
+  .mobile-nav > a:not(.button) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: 20px;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 0;
+    line-height: 1.4;
+  }
+  .mobile-nav > a:not(.button) > span {
+    flex-shrink: 0;
+    padding: 0;
+    line-height: 1;
+  }
+  .mobile-nav > a.button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+    flex-shrink: 0;
+    gap: 16px;
+    width: 100%;
+    min-height: 52px;
+    margin-top: 20px;
+    padding: 14px 22px;
+    border-bottom: 0;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}
+.mobile-nav > a.button[aria-current] { color: #fff; text-decoration: none; }

@@ -85,3 +85,6 @@
 @media (max-width: 640px) {
   .range-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Text must stay inside its column without inherited per-line scaling. */
+.approved-hero h1 span:nth-child(n) { transform: none; }
