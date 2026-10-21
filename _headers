@@ -2,3 +2,7 @@
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+
+# Unlisted motion-design approval previews only; public site indexing stays enabled.
+/preview/*
+  X-Robots-Tag: noindex, nofollow, noarchive
