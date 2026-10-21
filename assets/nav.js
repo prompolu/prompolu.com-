@@ -6,6 +6,7 @@
   if (toggle && nav) {
     function setOpen(open) {
       nav.classList.toggle('open', open);
+      nav.hidden = !open;
       toggle.setAttribute('aria-expanded', String(open));
       toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
     }

@@ -19,11 +19,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:locale" content="fr_MA">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="preload" as="style" href="/assets/site.css">
-<link rel="stylesheet" href="/assets/site.css">
+
+
+
+
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -263,72 +263,76 @@
   ]
 }
 </script>
+
+<meta name="theme-color" content="#F1F0EC">
+<link rel="stylesheet" href="/assets/fonts.css"><link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/visualisation-3d.css"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/navigation.css"><link rel="stylesheet" href="/pages.css"><link rel="stylesheet" href="/image-layout.css">
 </head>
-<body>
+<body class="inner-page" id="top">
 
-<div class="topbar">
-  <div class="wrap">
-    <span>Fès — Av. El Wafaa&nbsp;&nbsp;/&nbsp;&nbsp;Sefrou — Rte d'El Menzel</span>
-    <span>
-      <a href="tel:+212668378538">06 68 37 85 38</a>
-      <span class="sep">/</span>
-      <a href="mailto:PROMPOLU@LIVE.FR">PROMPOLU@LIVE.FR</a>
-    </span>
-  </div>
-</div>
+<a class="skip-link" href="#main">Aller au contenu</a><svg class="svg-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <clipPath id="window-curve" clipPathUnits="objectBoundingBox"><path d="M.29 .105 L.94 .005 Q1 -.01 1 .07 L1 .86 Q1 .94 .90 .955 L.08 1 Q-.055 1 .025 .82 L.235 .285 Q.25 .14 .29 .105Z"></path></clipPath>
+    <symbol id="arrow" viewBox="0 0 32 32"><path d="M4 16h23M18 7l9 9-9 9"></path></symbol>
+  </defs></svg>
 
-<header class="site">
-  <div class="wrap">
-    <div class="brand">
-      <a href="/" class="logo-mark"><img src="/assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="150" height="21"></a>
-      <span class="partner-badge">
-        <span class="lbl">Distributeur<br>officiel</span>
-        <img src="/assets/logo-strugal.png" alt="STRUGAL" width="149" height="38">
-      </span>
-    </div>
-    <nav class="main" id="mainNav">
-      <a href="/coulissants">Coulissants</a>
-      <a href="/battants">Battants</a>
-      <a href="/agencement">Agencement</a>
-      <a href="/exterieur">Extérieur</a>
-      <a href="/visualisation-3d" aria-current="page">Visualisation 3D</a>
-      <a href="/conseils/">Conseils</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="PROMPOLU ALUMINIUM, accueil"><img src="/assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="602" height="83"></a>
+    <nav class="desktop-nav" aria-label="Navigation principale">
+      <details class="nav-disclosure"><summary>Nos gammes <svg class="chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3"></path></svg></summary><div class="nav-panel">
+        <a href="/coulissants">Coulissants <span aria-hidden="true">→</span></a>
+        <a href="/battants">Fenêtres &amp; portes battantes <span aria-hidden="true">→</span></a>
+        <a href="/agencement">Agencement intérieur <span aria-hidden="true">→</span></a>
+        <a href="/exterieur">Solutions extérieures <span aria-hidden="true">→</span></a>
+        <a class="nav-panel-separator" href="/visualisation-3d">Visualisation 3D <span aria-hidden="true">→</span></a>
+        <a href="/conseils/">Conseils &amp; guides <span aria-hidden="true">→</span></a>
+        <a href="/showroom-sefrou">Showroom de Sefrou <span aria-hidden="true">→</span></a>
+      </div></details>
       <a href="/notre-activite">Notre activité</a>
-      <a href="/contact" class="cta">Demander un devis</a>
+      <a href="/contact">Contact</a>
     </nav>
-    <button class="nav-toggle" id="navToggle" type="button" aria-controls="mainNav" aria-expanded="false" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
+    <a class="button header-quote" href="/contact#formulaire">Demander un devis <svg aria-hidden="true"><use href="#arrow"></use></svg></a>
+    <button class="menu-toggle" id="navToggle" type="button" aria-controls="mainNav" aria-expanded="false" aria-label="Ouvrir le menu"><span></span><span></span></button>
+  </header>
+  <nav class="main mobile-nav" id="mainNav" aria-label="Navigation mobile" hidden>
+    <a href="/coulissants">Coulissants <span>→</span></a>
+    <a href="/battants">Battants <span>→</span></a>
+    <a href="/agencement">Agencement <span>→</span></a>
+    <a href="/exterieur">Extérieur <span>→</span></a>
+    <a href="/visualisation-3d">Visualisation 3D <span>→</span></a>
+    <a href="/conseils/">Conseils &amp; guides <span>→</span></a>
+    <a href="/notre-activite">Notre activité <span>→</span></a>
+    <a href="/showroom-sefrou">Showroom de Sefrou <span>→</span></a>
+    <a href="/contact">Contact <span>→</span></a>
+    <a class="button" href="/contact#formulaire">Demander un devis <svg aria-hidden="true"><use href="#arrow"></use></svg></a>
+  </nav>
 
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-copy">
+  <main id="main"><section class="page-hero">
+  <div class="wrap page-hero-grid">
+    <div class="page-hero-copy"><p class="eyebrow">Votre outil commercial</p><div class="hero-copy">
       <span class="kicker"><span class="dash"></span>Outil réservé à nos clients professionnels</span>
       <h1 class="hero-title">Votre client voit son aluminium <br>chez lui. Avant de signer.</h1>
       <p class="hero-sub">Le plus dur, sur une pergola, un garde-corps, une baie coulissante ou une fenêtre, c'est de le faire
-        imaginer. Votre client regarde un catalogue et hésite&nbsp;: trop grand&nbsp;? trop
-        foncé&nbsp;? Avec la visualisation 3D, il pointe son téléphone vers sa terrasse ou son
+        imaginer. Votre client regarde un catalogue et hésite : trop grand ? trop
+        foncé ? Avec la visualisation 3D, il pointe son téléphone vers sa terrasse ou son
         balcon, et le produit s'y trouve, à taille réelle, aux cotes et dans la teinte qu'il a
         choisies. Il tourne autour. Il décide. Et il peut signer sans se demander à quoi ressemblera le résultat. Aucune application à installer.</p>
       <div class="hero-actions">
-        <a rel="nofollow" href="/ar/" class="btn btn-solid">Demander l'accès</a>
+        <a rel="noopener noreferrer" href="https://prompolu.com/ar/" class="btn btn-solid" target="_blank">Demander l'accès</a>
         <a href="#produits-3d" class="btn btn-outline">Voir les produits</a>
       </div>
     </div>
-  </div>
+  </div><figure class="page-visual page-visual-photo"><img src="/assets/visualisation-3d-teaser.jpg" alt="Pergola présentée en visualisation 3D" fetchpriority="high" width="1200" height="900"></figure></div>
 </section>
 
 <section id="produits-3d">
   <div class="wrap">
     <div class="section-head">
       <h2>Quatre produits configurables</h2>
-      <p>Un seul lien pour votre client&nbsp;: il passe de l'un à l'autre depuis la page.</p>
+      <p>Un seul lien pour votre client : il passe de l'un à l'autre depuis la page.</p>
     </div>
     <div class="v3d-products">
-      <a class="v3d-prod" rel="nofollow" href="/ar/">
+      <a class="v3d-prod" rel="noopener noreferrer" href="https://prompolu.com/ar/" target="_blank">
         <span class="v3d-prod-img">
-          <img src="/assets/visualisation-3d-teaser.jpg" alt="Pergola bioclimatique en aluminium"
-               width="1200" height="900" loading="lazy">
+          <img src="/assets/visualisation-3d-teaser.jpg" alt="Pergola bioclimatique en aluminium" width="1200" height="900" loading="lazy">
         </span>
         <span class="v3d-prod-body">
           <span class="adv-mark mono">TERRASSE</span>
@@ -338,10 +342,9 @@
           <span class="more">Demander l'accès →</span>
         </span>
       </a>
-      <a class="v3d-prod" rel="nofollow" href="/ar/">
+      <a class="v3d-prod" rel="noopener noreferrer" href="https://prompolu.com/ar/" target="_blank">
         <span class="v3d-prod-img">
-          <img src="/assets/garde-corps-teaser.jpg" alt="Garde-corps aluminium et verre"
-               width="1200" height="900" loading="lazy">
+          <img src="/assets/garde-corps-teaser.jpg" alt="Garde-corps aluminium et verre" width="1200" height="900" loading="lazy">
         </span>
         <span class="v3d-prod-body">
           <span class="adv-mark mono">BALCON &amp; ESCALIER</span>
@@ -351,10 +354,9 @@
           <span class="more">Demander l'accès →</span>
         </span>
       </a>
-      <a class="v3d-prod" rel="nofollow" href="/ar/">
+      <a class="v3d-prod" rel="noopener noreferrer" href="https://prompolu.com/ar/" target="_blank">
         <span class="v3d-prod-img">
-          <img src="/assets/coulissant-teaser.jpg" alt="Baie coulissante aluminium STRUGAL"
-               width="1200" height="900" loading="lazy">
+          <img src="/assets/coulissant-teaser.jpg" alt="Baie coulissante aluminium STRUGAL" width="1200" height="900" loading="lazy">
         </span>
         <span class="v3d-prod-body">
           <span class="adv-mark mono">BAIE VITRÉE</span>
@@ -364,10 +366,9 @@
           <span class="more">Demander l'accès →</span>
         </span>
       </a>
-      <a class="v3d-prod" rel="nofollow" href="/ar/">
+      <a class="v3d-prod" rel="noopener noreferrer" href="https://prompolu.com/ar/" target="_blank">
         <span class="v3d-prod-img">
-          <img src="/assets/battant-teaser.jpg" alt="Fenêtre battante aluminium ouverte à 95 degrés"
-               width="1200" height="900" loading="lazy">
+          <img src="/assets/battant-teaser.jpg" alt="Fenêtre battante aluminium ouverte à 95 degrés" width="1200" height="900" loading="lazy">
         </span>
         <span class="v3d-prod-body">
           <span class="adv-mark mono">FENÊTRE &amp; PORTE</span>
@@ -390,7 +391,7 @@
          arrivent sur son WhatsApp. Écrivez-nous pour recevoir le vôtre.</p>
     </div>
     <div class="hero-actions">
-      <a rel="nofollow" href="/ar/" class="btn btn-solid">Demander l'accès</a>
+      <a rel="noopener noreferrer" href="https://prompolu.com/ar/" class="btn btn-solid" target="_blank">Demander l'accès</a>
     </div>
   </div>
 </section>
@@ -419,13 +420,13 @@
       <div class="step">
         <span class="step-num">03</span>
         <h3>Il la voit chez lui</h3>
-        <p>Il pointe son téléphone vers sa terrasse ou son balcon. Le produit s'y pose à taille réelle&nbsp;;
+        <p>Il pointe son téléphone vers sa terrasse ou son balcon. Le produit s'y pose à taille réelle ;
            il tourne autour, il recule, il compare avec sa maison.</p>
       </div>
       <div class="step">
         <span class="step-num">04</span>
         <h3>La demande arrive chez vous</h3>
-        <p>Un bouton, et vous recevez sur WhatsApp sa configuration complète&nbsp;: cotes,
+        <p>Un bouton, et vous recevez sur WhatsApp sa configuration complète : cotes,
            finition, options. Vous chiffrez sans relance ni malentendu.</p>
       </div>
     </div>
@@ -437,13 +438,13 @@
     <div class="section-head">
       <h2>Ce que ça change sur le terrain</h2>
       <p>Une pergola, un garde-corps vitré, une grande baie coulissante ou un lot de fenêtres est un budget. Ce qui bloque
-         la signature, ce n'est presque jamais le prix seul&nbsp;: c'est le doute.</p>
+         la signature, ce n'est presque jamais le prix seul : c'est le doute.</p>
     </div>
     <div class="adv-grid">
       <div class="adv">
         <span class="adv-mark mono">TAILLE RÉELLE</span>
-        <h3>Fini «&nbsp;je n'arrive pas à me projeter&nbsp;»</h3>
-        <p>Le client ne devine plus l'encombrement&nbsp;: il le voit sur sa propre terrasse,
+        <h3>Fini « je n'arrive pas à me projeter »</h3>
+        <p>Le client ne devine plus l'encombrement : il le voit sur sa propre terrasse,
            au centimètre, et comprend enfin ce qu'il achète.</p>
       </div>
       <div class="adv">
@@ -456,21 +457,21 @@
         <span class="adv-mark mono">AUCUNE APPLI</span>
         <h3>Un simple lien</h3>
         <p>Ça s'ouvre dans le navigateur du téléphone, Android comme iPhone.
-           Rien à télécharger&nbsp;: personne n'installe une application pour un devis.</p>
+           Rien à télécharger : personne n'installe une application pour un devis.</p>
       </div>
       <div class="adv">
         <span class="adv-mark mono">≈ 1 SECONDE</span>
         <h3>Léger, donc réellement utilisé</h3>
-        <p>Chaque modèle pèse environ 150&nbsp;Ko et s'affiche en une seconde en 4G.
-           La plupart des configurateurs 3D pèsent 5 à 20&nbsp;Mo — le client part avant la fin.</p>
+        <p>Chaque modèle pèse environ 150 Ko et s'affiche en une seconde en 4G.
+           La plupart des configurateurs 3D pèsent 5 à 20 Mo — le client part avant la fin.</p>
       </div>
       <div class="adv">
         <span class="adv-mark mono">DEVIS COMPLET</span>
         <h3>Plus de mauvaises surprises</h3>
-        <p>La demande vous arrive écrite&nbsp;: 4,20&nbsp;×&nbsp;6,00&nbsp;m, RAL&nbsp;7016,
-           28 lames, LED. Ou&nbsp;: garde-corps Glass Line 4,73&nbsp;m, RAL&nbsp;9006, main courante.
-           Ou&nbsp;: baie coulissante S90RP, 3&nbsp;vantaux, 3,60&nbsp;×&nbsp;2,20&nbsp;m, RAL&nbsp;9016.
-           Ou&nbsp;: fenêtre S53RP+ 2&nbsp;vantaux oscillo-battants, 1,40&nbsp;×&nbsp;1,20&nbsp;m, Gris nuit.
+        <p>La demande vous arrive écrite : 4,20 × 6,00 m, RAL 7016,
+           28 lames, LED. Ou : garde-corps Glass Line 4,73 m, RAL 9006, main courante.
+           Ou : baie coulissante S90RP, 3 vantaux, 3,60 × 2,20 m, RAL 9016.
+           Ou : fenêtre S53RP+ 2 vantaux oscillo-battants, 1,40 × 1,20 m, Gris nuit.
            Vous ne rappelez plus trois fois pour obtenir les cotes.</p>
       </div>
     </div>
@@ -487,7 +488,7 @@
       <li><b>C'est un outil commercial, pas un plan d'atelier.</b> La géométrie est fidèle
           à l'œil et conforme aux spécifications publiées, mais elle ne remplace pas les
           plans de fabrication. On ne découpe pas d'après la 3D.</li>
-      <li><b>Les teintes sont indicatives.</b> Un écran ne remplace pas un nuancier&nbsp;:
+      <li><b>Les teintes sont indicatives.</b> Un écran ne remplace pas un nuancier :
           le laquage et la lumière du lieu changent la perception. Gardez vos échantillons.</li>
       <li><b>Les cotes restent à confirmer sur site.</b> Le relevé du menuisier est
           indispensable. La 3D sert à décider, pas à mesurer.</li>
@@ -541,38 +542,27 @@
 <section id="contact" class="contact-section">
   <div class="wrap">
     <div class="section-head">
-      <h2>Vous voulez votre lien&nbsp;?</h2>
+      <h2>Vous voulez votre lien ?</h2>
       <p>L'outil est réservé aux menuisiers et fabricants qui s'approvisionnent chez PROMPOLU.
-         Dites-nous votre nom d'atelier et votre numéro WhatsApp&nbsp;: nous vous créons votre lien.</p>
+         Dites-nous votre nom d'atelier et votre numéro WhatsApp : nous vous créons votre lien.</p>
     </div>
     <div class="hero-actions">
-      <a href="https://wa.me/212668378538?text=Bonjour%20PROMPOLU%2C%20je%20souhaite%20obtenir%20mon%20lien%20de%20visualisation%203D%20pour%20mes%20clients." class="btn btn-solid" target="_blank" rel="noopener">Demander mon lien sur WhatsApp</a>
+      <a href="https://wa.me/212668378538?text=Bonjour%20PROMPOLU%2C%20je%20souhaite%20obtenir%20mon%20lien%20de%20visualisation%203D%20pour%20mes%20clients." class="btn btn-solid" target="_blank" rel="noopener noreferrer">Demander mon lien sur WhatsApp</a>
       <a href="/contact" class="btn btn-outline">Nous écrire</a>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <div class="footer-top">
-      <img src="/assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="130" height="18">
-      <nav class="footer-nav">
-        <a href="/coulissants">Systèmes coulissants</a>
-        <a href="/battants">Fenêtres &amp; portes battantes</a>
-        <a href="/agencement">Profilés d'agencement</a>
-        <a href="/exterieur">Solutions extérieures</a>
-        <a href="/visualisation-3d">Réalité augmentée</a>
-        <a href="/conseils/">Guides techniques</a>
-        <a href="/showroom-sefrou">Showroom de Sefrou</a>
-        <a href="/notre-activite">Qui sommes-nous</a>
-        <a href="/contact">Contact</a>
-      </nav>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 PROMPOLU ALUMINIUM — Fès &amp; Sefrou, Maroc</span>
-      <span>La qualité, notre meilleur profil</span>
-    </div>
-  </div>
-</footer>
-</body>
+</main><nav class="page-directory section-pad" aria-label="Toutes les rubriques PROMPOLU">
+    <div><h2>Nos gammes</h2><a href="/coulissants">Systèmes coulissants →</a><a href="/battants">Fenêtres &amp; portes battantes →</a><a href="/agencement">Profilés d’agencement →</a><a href="/exterieur">Solutions extérieures →</a></div>
+    <div><h2>Découvrir PROMPOLU</h2><a href="/visualisation-3d">Visualisation 3D →</a><a href="https://prompolu.com/ar/" target="_blank" rel="noopener noreferrer">Espace de réalité augmentée ↗</a><a href="/notre-activite">Notre activité →</a><a href="/showroom-sefrou">Showroom de Sefrou →</a><a href="/contact">Contact &amp; devis →</a></div>
+    <div><h2>Conseils &amp; ressources</h2><a href="/conseils/">Tous les guides techniques →</a><a href="/conseils/guide-choisir-systeme-coulissant-aluminium">Choisir un système coulissant →</a><a href="/conseils/coulissant-ou-battant-comment-choisir">Coulissant ou battant ? →</a><a href="/conseils/rupture-de-pont-thermique-aluminium">La rupture de pont thermique →</a><a href="/distributeur-strugal-maroc">Distributeur STRUGAL au Maroc →</a><a href="/grossiste-aluminium-fes">Grossiste aluminium à Fès →</a></div>
+  </nav>
+  <div class="social-links" aria-label="Réseaux sociaux"><a href="https://www.instagram.com/fesal.aluminium" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>
+      <a href="https://www.tiktok.com/@fesal.aluminium" target="_blank" rel="noopener noreferrer" aria-label="TikTok">TikTok</a>
+      <a href="https://www.facebook.com/PROMPOLU/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">Facebook</a>
+      <a href="https://wa.me/212668378538" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">WhatsApp</a>
+    </div><footer class="site-footer"><a href="/" aria-label="Retour à l’accueil"><img src="/assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="602" height="83" loading="lazy"></a><p>La qualité, notre meilleur profil.</p><span>© <span id="year">2026</span> PROMPOLU ALUMINIUM</span><a class="back-top" href="#top">En haut <span aria-hidden="true">↑</span></a></footer>
+
+  <script src="/assets/nav.js" defer></script><script src="/app.js" defer></script><script src="/assets/analytics.js" defer></script></body>
 </html>

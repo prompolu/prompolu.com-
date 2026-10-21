@@ -23,6 +23,10 @@ test('all 15 public sitemap destinations match existing pages and self canonical
     const file = fileFor(location);
     assert.ok(existsSync(root + file), file);
     const page = read(file);
+    assert.doesNotMatch(page, /<meta[^>]+(?:name="robots"|http-equiv="X-Robots-Tag")[^>]+content="[^"]*noindex/i, file);
+    for (const [, href] of page.matchAll(/<link rel="stylesheet" href="(\/[^"]+)"/g)) {
+      assert.ok(existsSync(root + href.slice(1)), href);
+    }
     assert.equal(page.match(/<link rel="canonical" href="([^"]+)"/)[1], location, file);
     assert.equal(page.match(/<meta property="og:url" content="([^"]+)"/)[1], location, file);
     assert.equal((page.match(/<h1[\s>]/g) || []).length, 1, file);
