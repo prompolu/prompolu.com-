@@ -138,7 +138,7 @@
 <link rel="stylesheet" href="/preview/bardage/prototype.css">
 </head>
 <body class="inner-page bardage-prototype" id="top">
-<aside class="prototype-bar" aria-label="Prototype à valider"><div><strong>PROTOTYPE — EXTÉRIEUR + BARDAGE</strong><span>La page publique reste inchangée.</span></div><label class="prototype-upload">Choisir votre photo<input id="bardage-photo-input" type="file" accept="image/jpeg,image/png,image/webp"></label></aside>
+<aside class="prototype-bar" aria-label="Prototype à valider"><div><strong>PROTOTYPE — EXTÉRIEUR + BARDAGE</strong><span>La page publique reste inchangée.</span></div><label class="prototype-upload">Essayer une autre photo<input id="bardage-photo-input" type="file" accept="image/jpeg,image/png,image/webp"></label></aside>
 <a class="skip-link" href="#main">Aller au contenu</a><svg class="svg-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
     <clipPath id="window-curve" clipPathUnits="objectBoundingBox"><path d="M.29 .105 L.94 .005 Q1 -.01 1 .07 L1 .86 Q1 .94 .90 .955 L.08 1 Q-.055 1 .025 .82 L.235 .285 Q.25 .14 .29 .105Z"></path></clipPath>
     <symbol id="arrow" viewBox="0 0 32 32"><path d="M4 16h23M18 7l9 9-9 9"></path></symbol>
@@ -221,7 +221,7 @@
           <a class="bardage-quote" href="https://prompolu.com/contact?systeme=Pergolas#formulaire">Demander un devis <span aria-hidden="true">↗</span></a>
         </div>
         <div class="cat-card bardage-card">
-          <div class="cat-photo bardage-photo"><img id="bardage-photo" src="/preview/bardage/bardage-illustration.svg" width="1427" height="1102" alt="Illustration provisoire d’une façade habillée de lames verticales, à remplacer par votre photo"><span class="preview-visual-label" id="bardage-visual-label">Visuel provisoire</span></div>
+          <div class="cat-photo bardage-photo"><img id="bardage-photo" src="/preview/bardage/bardage-villa.png" width="1427" height="1102" alt="Villa contemporaine avec habillage de façade à lames verticales de teinte bois"><span class="preview-visual-label" id="bardage-visual-label" hidden>Votre photo — aperçu</span></div>
           <h3>Bardage aluminium</h3>
           <p>Pour habiller les façades et les murs extérieurs avec une ligne architecturale soignée.</p>
           <a class="bardage-quote" href="https://prompolu.com/contact?systeme=Bardage%20aluminium#formulaire">Demander un devis <span aria-hidden="true">↗</span></a>
@@ -322,6 +322,7 @@
     image.src = objectUrl;
     image.alt = 'Votre photo de façade avec bardage, dans la maquette de la gamme Extérieur';
     label.textContent = 'Votre photo — aperçu';
+    label.hidden = false;
   });
 })();
 </script>
