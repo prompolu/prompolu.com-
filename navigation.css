@@ -82,3 +82,36 @@
   }
 }
 .mobile-nav > a.button[aria-current] { color: #fff; text-decoration: none; }
+
+/* Keep the quote label inside its pill on mobile, including current-page links. */
+@media (max-width: 900px) {
+  #mainNav > a.menu-quote {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 28px;
+    align-items: center;
+    justify-content: normal;
+    align-self: stretch;
+    width: 100%;
+    min-height: 52px;
+    padding: 14px 22px;
+    gap: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #fff;
+    text-decoration: none;
+  }
+  #mainNav > a.menu-quote > .menu-quote-label {
+    padding: 0;
+    min-width: 0;
+    color: inherit;
+    font: 600 14px/24px var(--body);
+    letter-spacing: 0;
+    text-align: center;
+  }
+  #mainNav > a.menu-quote > svg {
+    width: 28px;
+    height: 24px;
+    margin: 0;
+    justify-self: end;
+  }
+}
