@@ -1,7 +1,7 @@
 /* Keep complete products visible inside the approved architectural design. */
 .approved-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, .65fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   align-items: center;
   gap: 24px;
   height: auto;
@@ -17,8 +17,7 @@
 .approved-hero .hero-cta { min-width: 0; max-width: 100%; gap: 16px; }
 .approved-hero .bronze-sheet { top: 0; right: 0; height: 100%; width: 49%; z-index: -1; }
 .approved-hero .hero-sweep { display: none; }
-.approved-hero .hero-window,
-.approved-hero .product-panel {
+.approved-hero .hero-window {
   position: relative;
   inset: auto;
   width: 100%;
@@ -32,9 +31,7 @@
   background: transparent;
 }
 .approved-hero .hero-window { aspect-ratio: 1536 / 1067; }
-.approved-hero .product-panel { aspect-ratio: 1179 / 1545; }
 .approved-hero .hero-window img,
-.approved-hero .product-panel img,
 .page-visual img,
 .range-image > img {
   position: static;
@@ -48,7 +45,6 @@
   transform: none;
 }
 .page-visual { aspect-ratio: 1; max-height: 480px; border-radius: 20px; }
-.page-visual-profile { aspect-ratio: 1179 / 1545; background: transparent; }
 .page-visual-window { aspect-ratio: 1536 / 1067; background: transparent; }
 .range-card-top { position: static; height: auto; min-height: 76px; background: var(--paper); }
 .range-image { height: auto; aspect-ratio: 4 / 3; }
@@ -63,7 +59,7 @@
   .approved-hero h1 { font-size: clamp(50px, 8vw, 76px); }
   .approved-hero h1 span { display: inline; }
   .approved-hero h1 span + span::before { content: ' '; }
-  .approved-hero .product-panel { width: 65%; justify-self: center; }
+  .approved-hero .hero-window { grid-column: 1 / -1; max-width: 680px; justify-self: center; }
   .approved-hero .bronze-sheet { top: auto; bottom: 0; height: 50%; }
 }
 @media (max-width: 640px) {
@@ -72,8 +68,9 @@
   .approved-hero h1 { font-size: 14vw; }
   .approved-hero h1 span { display: block; }
   .approved-hero h1 span + span::before { content: none; }
-  .approved-hero .product-panel { width: 64%; }
   .page-visual { max-height: 360px; }
-  .page-visual-profile { width: 72%; justify-self: center; }
   .spec-row .sys-quote { grid-column: 1 / -1; }
 }
+
+/* Text-only page introductions after removal of the profile photograph. */
+.page-hero-grid.page-hero-text { grid-template-columns: minmax(0, 1fr); gap: 0; }
