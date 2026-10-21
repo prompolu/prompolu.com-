@@ -1,0 +1,20 @@
+.prototype-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px var(--gutter);background:#15171a;color:#fff;font-family:var(--body)}
+.prototype-bar>div{display:flex;align-items:center;flex-wrap:wrap;gap:8px 20px}
+.prototype-bar strong{font-size:11px;letter-spacing:.12em;font-weight:600}
+.prototype-bar span{font-size:12px;color:#d7d1c6}
+.prototype-upload{position:relative;display:inline-flex;flex-shrink:0;align-items:center;justify-content:center;background:#f1f0ec;color:#15171a;border:1px solid #f1f0ec;border-radius:25px;padding:9px 17px;font-size:12px;line-height:1.4;cursor:pointer}
+.prototype-upload:focus-within{outline:3px solid #c4a783;outline-offset:4px}
+.prototype-upload input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.bardage-prototype .mobile-nav{top:148px}
+.bardage-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.bardage-grid .cat-card{display:flex;flex-direction:column;min-width:0;padding:22px}
+.bardage-grid .cat-photo{position:relative;aspect-ratio:1.3;margin-bottom:12px;flex-shrink:0}
+.bardage-grid .cat-photo img{width:100%;height:100%;object-fit:contain}
+.bardage-grid .cat-card h3{min-height:70px;display:flex;align-items:flex-start;font-size:29px;line-height:1.2;margin:16px 0 12px}
+.bardage-grid .cat-card p{flex:1;font-size:14px;line-height:1.8;margin-bottom:22px}
+.bardage-quote{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;font-weight:600;color:var(--bronze-dark)}
+.bardage-quote:hover{text-decoration:underline;text-underline-offset:5px}
+.bardage-quote span{font-size:23px;line-height:1}
+.preview-visual-label{position:absolute;bottom:7px;left:7px;right:7px;background:rgba(241,240,236,.94);color:#625c53;padding:4px 8px;border-radius:5px;font-size:9px;line-height:1.4;text-align:center}
+@media(max-width:1100px){.bardage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bardage-grid .cat-card h3{min-height:36px}}
+@media(max-width:640px){.prototype-bar{align-items:flex-start;padding:12px var(--gutter);gap:12px;flex-direction:column}.prototype-bar>div{gap:4px}.prototype-bar span{font-size:11px}.prototype-upload{font-size:11px;padding:8px 14px}.bardage-prototype .mobile-nav{top:213px;max-height:calc(100dvh - 230px)}.bardage-grid{grid-template-columns:minmax(0,1fr)}.bardage-grid .cat-card h3{min-height:0}.bardage-grid .cat-photo{aspect-ratio:1.3}}

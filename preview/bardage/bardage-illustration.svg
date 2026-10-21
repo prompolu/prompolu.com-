@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1427" height="1102" viewBox="0 0 1427 1102" role="img" aria-label="Illustration provisoire de façade avec bardage vertical">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#9abbd0"/><stop offset="1" stop-color="#e7ece7"/></linearGradient><linearGradient id="wood"><stop stop-color="#ad845e"/><stop offset=".5" stop-color="#86603f"/><stop offset="1" stop-color="#b58c61"/></linearGradient><pattern id="slats" width="35" height="200" patternUnits="userSpaceOnUse"><path fill="url(#wood)" d="M0 0h35v200H0z"/><path stroke="#60452f" stroke-width="4" d="M2 0v200"/></pattern></defs>
+<path fill="url(#sky)" d="M0 0h1427v1102H0z"/><path fill="#d6d0c3" d="M0 830h1427v272H0z"/><path fill="#829280" d="M0 860h1427v110H0z"/>
+<path fill="#e2ded6" d="M170 410L650 300 1260 390v490H170z"/><path fill="#f6f4ed" d="M110 310L550 180 1100 300v570H110z"/><path fill="url(#slats)" d="M835 245l400 80v540H835z"/>
+<path fill="#f9f7f0" d="M500 260L920 140l260 120v450H500z"/><path fill="#dad6ca" d="M920 140l260 120v450l-72-20V300L920 215z"/>
+<path fill="#2b3b3d" d="M195 485h250v360H195zM582 328h365v310H582z"/><path fill="#617e89" d="M215 505h210v320H215zM605 350h320v265H605z"/><path stroke="#29383a" stroke-width="15" d="M320 495v340M765 340v285"/>
+<path fill="#f9f7f0" d="M182 840h1050v24H182z"/><path fill="#bacbd1" d="M0 989h1427v113H0z"/><path stroke="#dce4e3" stroke-width="3" d="M0 1010h1427M200 1102l180-113M730 1102l90-113M1210 1102l10-113"/>
+<path fill="#7b8b70" d="M30 830q60-155 120 0zM1220 870q70-170 140 0z"/>
+</svg>
