@@ -16,6 +16,7 @@ test('all 15 public sitemap destinations match existing pages and self canonical
   assert.equal(locations.length, 15);
   assert.equal(new Set(locations).size, 15);
   const titles = new Set();
+  const organizationDescriptions = new Set();
   for (const location of locations) {
     const url = new URL(location);
     assert.equal(url.origin, 'https://prompolu.com');
@@ -29,6 +30,7 @@ test('all 15 public sitemap destinations match existing pages and self canonical
     }
     assert.equal(page.match(/<link rel="canonical" href="([^"]+)"/)[1], location, file);
     assert.equal(page.match(/<meta property="og:url" content="([^"]+)"/)[1], location, file);
+    assert.equal(page.match(/<meta property="og:site_name" content="([^"]+)"/)?.[1], 'PROMPOLU ALUMINIUM', file);
     assert.equal((page.match(/<h1[\s>]/g) || []).length, 1, file);
     titles.add(page.match(/<title>([^<]+)<\/title>/)[1]);
     assert.doesNotMatch(page, /href="\/(?!ar\/)[^"?#]*\.html(?:["?#])/);
@@ -37,6 +39,10 @@ test('all 15 public sitemap destinations match existing pages and self canonical
       const data = JSON.parse(match[1]);
       assert.doesNotMatch(JSON.stringify(data), /https:\/\/(?:www\.)?prompolu\.com\/[^"\s]*\.html/);
       if (data['@graph']) {
+        for (const org of data['@graph'].filter((n) => n['@type'] === 'Organization')) {
+          assert.ok(org.description, file);
+          organizationDescriptions.add(org.description);
+        }
         const branches = data['@graph'].filter((n) => n['@type'] === 'HomeAndConstructionBusiness');
         for (const branch of branches) {
           const expected = branch['@id'].endsWith('magasin-fes') ? '/grossiste-aluminium-fes' : '/showroom-sefrou';
@@ -46,6 +52,7 @@ test('all 15 public sitemap destinations match existing pages and self canonical
     }
   }
   assert.equal(titles.size, 15);
+  assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });
 
