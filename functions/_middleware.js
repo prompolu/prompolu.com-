@@ -43,6 +43,10 @@ const PUBLIC_PAGES = new Set([
   '/coulissants/s90rp',
   '/coulissants/s125rp',
   '/coulissants/s140rp',
+  '/coulissants/s70',
+  '/battants/s47',
+  '/exterieur/mur-rideau-s52',
+  '/exterieur/volets-roulants',
 ]);
 
 function publicRedirect(request, url) {
