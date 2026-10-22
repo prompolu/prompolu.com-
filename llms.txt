@@ -1,6 +1,6 @@
 # PROMPOLU ALUMINIUM
 
-> Entreprise fassie, distributeur et showroom officiel STRUGAL (showroom et point de distribution a Sefrou, magasin historique a Fes). Fournit aux menuisiers et fabricants des profilés et systèmes aluminium en matière première : coulissants, fenêtres et portes battantes, agencement intérieur, garde-corps, volets roulants, pergolas et bardage aluminium. Plus de 18 ans d'expérience.
+> Entreprise fassie, distributeur et showroom officiel STRUGAL (showroom et point de distribution à Sefrou, magasin historique à Fès). Fournit aux menuisiers et fabricants des profilés et systèmes aluminium en matière première : coulissants, fenêtres et portes battantes, agencement intérieur, garde-corps, volets roulants, pergolas et bardage aluminium. Plus de 18 ans d'expérience.
 
 PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de matière première aluminium destiné aux menuisiers, fabricants et architectes.
 
@@ -11,13 +11,19 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 - [Fenêtres & portes battantes](https://prompolu.com/battants): systèmes battants STRUGAL (S53RP+, S46) et portes ALUDOORS (A400K, A200 4FH2).
 - [Agencement intérieur](https://prompolu.com/agencement): profilés pour cuisines équipées et dressings sur-mesure, accessoires STARAX.
 - [Extérieur & confort](https://prompolu.com/exterieur): garde-corps, volets roulants, pergolas et bardage aluminium.
-- [Showroom STRUGAL de Sefrou](https://prompolu.com/showroom-sefrou): le point de distribution sous convention STRUGAL et le showroom de la marque, Route d'El Menzel, Sefrou 31000 ; la gamme STRUGAL y est exposee en profiles reels, du lundi au samedi de 9h a 19h.
-- [Grossiste en profilés aluminium à Fès](https://prompolu.com/grossiste-aluminium-fes): comment se passe une commande de matiere premiere (barres, mètres linéaires, transport, compte professionnel), magasin de Fès, retrait ou livraison nationale.
-- [Distributeur officiel STRUGAL au Maroc](https://prompolu.com/distributeur-strugal-maroc): ce que recouvre la convention de distribution, les normes EN 12207/12208/12210, le perimetre couvert et les systemes distribues.
+- [Showroom STRUGAL de Sefrou](https://prompolu.com/showroom-sefrou): le point de distribution sous convention STRUGAL et le showroom de la marque, Route d'El Menzel, Sefrou 31000 ; la gamme STRUGAL y est exposée en profilés réels, du lundi au samedi de 9h à 19h.
+- [Grossiste en profilés aluminium à Fès](https://prompolu.com/grossiste-aluminium-fes): comment se passe une commande de matière première (barres, mètres linéaires, transport, compte professionnel), magasin de Fès, retrait ou livraison nationale.
+- [Distributeur officiel STRUGAL au Maroc](https://prompolu.com/distributeur-strugal-maroc): ce que recouvre la convention de distribution, les normes EN 12207/12208/12210, le périmètre couvert et les systèmes distribués.
 - [Notre activité](https://prompolu.com/notre-activite): historique, positionnement de grossiste, engagement qualité.
 - [Contact](https://prompolu.com/contact): coordonnées, plan d'accès, devis.
 - [Visualisation 3D et réalité augmentée](https://prompolu.com/visualisation-3d): outil de réalité augmentée en marque blanche mis à disposition des menuisiers clients ; leur client voit la pergola, le garde-corps, la baie coulissante ou la menuiserie battante à taille réelle chez lui, depuis son téléphone.
-- [Conseils](https://prompolu.com/conseils/): guides techniques pour menuisiers, dont le guide de choix des systèmes coulissants.
+- [Conseils](https://prompolu.com/conseils/): guides techniques pour menuisiers et fabricants.
+
+## Guides techniques
+
+- [Comment choisir son système coulissant aluminium ?](https://prompolu.com/conseils/guide-choisir-systeme-coulissant-aluminium): choix entre les onze systèmes coulissants STRUGAL selon l'usage, les dimensions, le poids de vantail, l'isolation et le budget.
+- [Coulissant ou battant : comment choisir ?](https://prompolu.com/conseils/coulissant-ou-battant-comment-choisir): comparatif encombrement, étanchéité, dimensions maximales et coût, avec les erreurs de choix les plus fréquentes.
+- [La rupture de pont thermique, expliquée simplement](https://prompolu.com/conseils/rupture-de-pont-thermique-aluminium): principe, lecture des coefficients Uw et Rw, intérêt sous le climat marocain et erreurs de mise en œuvre à l'atelier.
 
 ## Visualisation 3D et réalité augmentée
 
