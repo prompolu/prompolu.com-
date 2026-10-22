@@ -24,6 +24,7 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 - [Comment choisir son système coulissant aluminium ?](https://prompolu.com/conseils/guide-choisir-systeme-coulissant-aluminium): choix entre les onze systèmes coulissants STRUGAL selon l'usage, les dimensions, le poids de vantail, l'isolation et le budget.
 - [Coulissant ou battant : comment choisir ?](https://prompolu.com/conseils/coulissant-ou-battant-comment-choisir): comparatif encombrement, étanchéité, dimensions maximales et coût, avec les erreurs de choix les plus fréquentes.
 - [La rupture de pont thermique, expliquée simplement](https://prompolu.com/conseils/rupture-de-pont-thermique-aluminium): principe, lecture des coefficients Uw et Rw, intérêt sous le climat marocain et erreurs de mise en œuvre à l'atelier.
+- [Thermolaquage, anodisation, bicolore : choisir la finition d'un profilé aluminium](https://prompolu.com/conseils/finitions-aluminium-thermolaquage-anodisation): brut, anodisé, thermolaqué, effet bois et bicolore comparés ; labels Qualicoat et Qualanod, finitions pour le bord de mer, choix d'une teinte RAL.
 
 ## Visualisation 3D et réalité augmentée
 

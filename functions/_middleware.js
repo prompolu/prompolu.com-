@@ -31,6 +31,7 @@ const PUBLIC_PAGES = new Set([
   '/conseils/guide-choisir-systeme-coulissant-aluminium',
   '/conseils/coulissant-ou-battant-comment-choisir',
   '/conseils/rupture-de-pont-thermique-aluminium',
+  '/conseils/finitions-aluminium-thermolaquage-anodisation',
   '/visualisation-3d', '/showroom-sefrou', '/grossiste-aluminium-fes',
   '/distributeur-strugal-maroc',
 ]);
