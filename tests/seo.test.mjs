@@ -130,6 +130,18 @@ test('private 3D routes and model assets remain denied without a signed token', 
   }
 });
 
+test('repository notes, tests and marketing context are not served; crawler files stay public', async () => {
+  for (const path of ['/README.md', '/COURRIER-STRUGAL.md', '/LISEZ-MOI-DEPLOIEMENT.txt', '/CNAME', '/tests/seo.test.mjs', '/.agents/product-marketing.md']) {
+    const response = await invoke('https://prompolu.com' + path);
+    assert.equal(response.status, 404, path);
+    assert.equal(response.headers.get('X-Test-Next'), null, path);
+    assert.equal(response.headers.get('X-Robots-Tag'), 'noindex', path);
+  }
+  for (const path of ['/robots.txt', '/llms.txt', '/sitemap.xml', '/assets/battants.webp']) {
+    assert.equal((await invoke('https://prompolu.com' + path)).headers.get('X-Test-Next'), '1', path);
+  }
+});
+
 const keys = await webcrypto.subtle.generateKey('Ed25519', true, ['sign', 'verify']);
 const publicKey = Buffer.from(await webcrypto.subtle.exportKey('raw', keys.publicKey)).toString('hex');
 const testEnv = { AR_TEST_KEYS: publicKey };

@@ -20,6 +20,9 @@ const COOKIE = 'prompolu_ar';
 const DAY = 86_400_000;
 
 const isProtected = (path) => path === '/ar' || path.startsWith('/ar/') || /\.(glb|usdz)$/i.test(path);
+// The repository root is published as-is: its notes, tests and marketing context are
+// not pages, so search engines and AI assistants must not fetch, index or quote them.
+const INTERNAL = /^\/(?:README\.md|CNAME|(?:COURRIER|LISEZ-MOI)[^/]*|(?:tests|\.agents)\/.*)$/;
 // Public documents use the same extension-less URLs as Pages' static routing.
 // Leave preview hosts, signed AR links and non-page resources on their own routes.
 const PUBLIC_PAGES = new Set([
@@ -309,6 +312,9 @@ footer{max-width:1240px;margin:16px auto 0;display:flex;justify-content:space-be
 export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
+  if (INTERNAL.test(url.pathname)) {
+    return new Response('Page introuvable', { status: 404, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'X-Robots-Tag': 'noindex' } });
+  }
   const redirect = publicRedirect(request, url);
   if (redirect) return redirect;
   if (!isProtected(url.pathname)) return context.next();
