@@ -105,7 +105,8 @@ test('guide structured data mirrors the visible headline, dates, breadcrumbs and
     assert.equal(article.headline, visibleText(page.match(/<h1>([\s\S]*?)<\/h1>/)[1]), file);
     assert.equal(article.mainEntityOfPage, location, file);
     assert.equal(article.author['@id'], 'https://prompolu.com/#organization', file);
-    assert.match(article.image, /^https:\/\/prompolu\.com\/assets\/og-image\.jpg$/, file);
+    assert.match(article.image, /^https:\/\/prompolu\.com\/assets\/[\w-]+\.(jpg|webp)$/, file);
+    assert.ok(existsSync(root + new URL(article.image).pathname.slice(1)), file);
     const meta = visibleText(page.match(/<p class="post-meta">([\s\S]*?)<\/p>/)[1]);
     const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
     const frDate = (iso) => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${months[m - 1]} ${y}`; };
