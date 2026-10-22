@@ -34,6 +34,15 @@ const PUBLIC_PAGES = new Set([
   '/conseils/finitions-aluminium-thermolaquage-anodisation',
   '/visualisation-3d', '/showroom-sefrou', '/grossiste-aluminium-fes',
   '/distributeur-strugal-maroc',
+  '/battants/s53rp',
+  '/battants/s46',
+  '/coulissants/s86rp',
+  '/coulissants/s88r',
+  '/coulissants/s88rp',
+  '/coulissants/s90r',
+  '/coulissants/s90rp',
+  '/coulissants/s125rp',
+  '/coulissants/s140rp',
 ]);
 
 function publicRedirect(request, url) {

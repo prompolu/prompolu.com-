@@ -187,3 +187,11 @@ article.post table th,article.post table td{border-color:#d9d0c3}
 .post .answer-first{padding:24px 28px;border:1px solid #d6cabb;border-left:4px solid var(--bronze-dark);background:#e9e2d7;border-radius:14px;color:#2f2c27;margin:8px 0 36px}
 @media(max-width:640px){.post .answer-first{padding:20px}}
 .spec-row[id]{scroll-margin-top:110px}
+
+.post .system-figure{margin:0 0 30px;max-width:420px}
+.post .system-figure img{width:100%;height:auto}
+.post table th[scope=row]{text-align:left;width:38%;letter-spacing:.02em;font-size:12px}
+.post .spec-note{font-size:13px;color:#73695b;margin-top:14px}
+.post a.button{color:#fff;text-decoration:none}
+.spec-row .sys-desc a{color:var(--bronze-dark);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+@media(max-width:640px){.post table.spec-table{min-width:0}.post .spec-table th[scope=row],.post .spec-table td{display:block;width:auto}.post .spec-table th[scope=row]{padding:14px 16px 6px;border-bottom:0}.post .spec-table td{padding:4px 16px 14px}}

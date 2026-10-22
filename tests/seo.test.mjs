@@ -12,9 +12,9 @@ const fileFor = (url) => {
   return path.endsWith('/') ? path.slice(1) + 'index.html' : path.slice(1) + '.html';
 };
 
-test('all 16 public sitemap destinations match existing pages and self canonicals', () => {
-  assert.equal(locations.length, 16);
-  assert.equal(new Set(locations).size, 16);
+test('all 25 public sitemap destinations match existing pages and self canonicals', () => {
+  assert.equal(locations.length, 25);
+  assert.equal(new Set(locations).size, 25);
   const titles = new Set();
   const organizationDescriptions = new Set();
   for (const location of locations) {
@@ -51,7 +51,7 @@ test('all 16 public sitemap destinations match existing pages and self canonical
       }
     }
   }
-  assert.equal(titles.size, 16);
+  assert.equal(titles.size, 25);
   assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });
@@ -122,6 +122,28 @@ test('guide structured data mirrors the visible headline, dates, breadcrumbs and
   }
   const listed = jsonLdNodes(read('conseils/index.html')).find((n) => n['@type'] === 'CollectionPage').mainEntity.itemListElement;
   assert.deepEqual(listed.map((i) => i.url).sort(), guides.sort());
+});
+
+test('each STRUGAL system page carries Product data, breadcrumbs and a FAQ that mirror the page', () => {
+  const systems = locations.filter((l) => /\/(?:coulissants|battants)\/[^/]+$/.test(l));
+  assert.equal(systems.length, 9);
+  for (const location of systems) {
+    const file = fileFor(location);
+    const page = read(file);
+    const nodes = jsonLdNodes(page);
+    const [product] = nodes.filter((n) => n['@type'] === 'Product');
+    assert.equal(product.url, location, file);
+    assert.equal(product.name, visibleText(page.match(/<h1>([\s\S]*?)<\/h1>/)[1]), file);
+    assert.ok(existsSync(root + new URL(product.image).pathname.slice(1)), file);
+    const crumbs = nodes.find((n) => n['@type'] === 'BreadcrumbList').itemListElement;
+    const hub = location.replace(/\/[^/]+$/, '');
+    assert.deepEqual(crumbs.map((c) => c.item), ['https://prompolu.com/', hub, location], file);
+    assert.ok(read(fileFor(hub)).includes(`href="${new URL(location).pathname}"`), file);
+    const visibleFaq = [...page.matchAll(/<details class="faq-item">\s*<summary>([\s\S]*?)<\/summary>\s*<p class="faq-a">([\s\S]*?)<\/p>/g)]
+      .map(([, q, a]) => [visibleText(q), visibleText(a)]);
+    const faq = nodes.find((n) => n['@type'] === 'FAQPage');
+    assert.deepEqual(faq.mainEntity.map((q) => [q.name, q.acceptedAnswer.text]), visibleFaq, file);
+  }
 });
 
 const moduleSource = read('functions/_middleware.js');
