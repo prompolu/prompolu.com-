@@ -80,6 +80,42 @@ test('technical corrections cite the regional manufacturer and state configurati
   }
 });
 
+const visibleText = (fragment) => fragment.replace(/<span class="q-mark">\+<\/span>/g, '').replace(/<[^>]+>/g, '')
+  .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+const jsonLdNodes = (page) => [...page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .flatMap((m) => { const data = JSON.parse(m[1]); return data['@graph'] || [data]; });
+
+test('guide structured data mirrors the visible headline, dates, breadcrumbs and FAQ', () => {
+  const guides = locations.filter((l) => /\/conseils\/[^/]+$/.test(l));
+  assert.equal(guides.length, 3);
+  for (const location of guides) {
+    const file = fileFor(location);
+    const page = read(file);
+    const nodes = jsonLdNodes(page);
+    const byType = (type) => nodes.filter((n) => n['@type'] === type);
+    assert.ok(byType('Organization').some((n) => n['@id'] === 'https://prompolu.com/#organization'), file);
+    const [article] = byType('Article');
+    assert.equal(article.headline, visibleText(page.match(/<h1>([\s\S]*?)<\/h1>/)[1]), file);
+    assert.equal(article.mainEntityOfPage, location, file);
+    assert.equal(article.author['@id'], 'https://prompolu.com/#organization', file);
+    assert.match(article.image, /^https:\/\/prompolu\.com\/assets\/og-image\.jpg$/, file);
+    const meta = visibleText(page.match(/<p class="post-meta">([\s\S]*?)<\/p>/)[1]);
+    const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const frDate = (iso) => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${months[m - 1]} ${y}`; };
+    assert.ok(meta.includes('Publié le ' + frDate(article.datePublished)), file);
+    if (article.dateModified !== article.datePublished) assert.ok(meta.includes('Mis à jour le ' + frDate(article.dateModified)), file);
+    const crumbs = byType('BreadcrumbList')[0].itemListElement;
+    assert.deepEqual(crumbs.map((c) => c.item), ['https://prompolu.com/', 'https://prompolu.com/conseils/', location], file);
+    const visibleFaq = [...page.matchAll(/<details class="faq-item">\s*<summary>([\s\S]*?)<\/summary>\s*<p class="faq-a">([\s\S]*?)<\/p>/g)]
+      .map(([, q, a]) => [visibleText(q), visibleText(a)]);
+    const faq = byType('FAQPage');
+    if (!visibleFaq.length) { assert.equal(faq.length, 0, file); continue; }
+    assert.deepEqual(faq[0].mainEntity.map((q) => [q.name, q.acceptedAnswer.text]), visibleFaq, file);
+  }
+  const listed = jsonLdNodes(read('conseils/index.html')).find((n) => n['@type'] === 'CollectionPage').mainEntity.itemListElement;
+  assert.deepEqual(listed.map((i) => i.url).sort(), guides.sort());
+});
+
 const moduleSource = read('functions/_middleware.js');
 const middleware = await import('data:text/javascript;base64,' + Buffer.from(moduleSource).toString('base64'));
 const invoke = (url, { method = 'GET', cookie, env = {} } = {}) => {
