@@ -6,3 +6,17 @@
 # Unlisted motion-design approval previews only; public site indexing stays enabled.
 /preview/*
   X-Robots-Tag: noindex, nofollow, noarchive
+
+# Fichiers stables : polices et images produits (renommer le fichier pour forcer une mise à jour).
+/assets/font-0.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/assets/font-1.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/assets/font-2.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/assets/font-3.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/assets/font-4.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/assets/products/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400

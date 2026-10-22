@@ -6,6 +6,10 @@ Les pages publiques utilisent des URL sans `.html` : `/coulissants`, `/contact`,
 et `/conseils/` pour le dossier de guides. Conserver cette forme dans les liens,
 les données structurées, les balises canonical, `sitemap.xml` et `llms.txt`.
 
+La racine du dépôt est publiée telle quelle. Les notes internes (`README.md`,
+`COURRIER-*`, `LISEZ-MOI*`, `CNAME`, `tests/`, `.agents/`) sont renvoyées en 404
+par `functions/_middleware.js` ; une nouvelle note interne doit suivre ces noms.
+
 ## Vérification locale
 
 Avec Node.js 22 ou une version plus récente, sans dépendance à installer :

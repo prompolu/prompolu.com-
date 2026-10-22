@@ -12,10 +12,11 @@ const fileFor = (url) => {
   return path.endsWith('/') ? path.slice(1) + 'index.html' : path.slice(1) + '.html';
 };
 
-test('all 15 public sitemap destinations match existing pages and self canonicals', () => {
-  assert.equal(locations.length, 15);
-  assert.equal(new Set(locations).size, 15);
+test('all 25 public sitemap destinations match existing pages and self canonicals', () => {
+  assert.equal(locations.length, 25);
+  assert.equal(new Set(locations).size, 25);
   const titles = new Set();
+  const organizationDescriptions = new Set();
   for (const location of locations) {
     const url = new URL(location);
     assert.equal(url.origin, 'https://prompolu.com');
@@ -29,6 +30,7 @@ test('all 15 public sitemap destinations match existing pages and self canonical
     }
     assert.equal(page.match(/<link rel="canonical" href="([^"]+)"/)[1], location, file);
     assert.equal(page.match(/<meta property="og:url" content="([^"]+)"/)[1], location, file);
+    assert.equal(page.match(/<meta property="og:site_name" content="([^"]+)"/)?.[1], 'PROMPOLU ALUMINIUM', file);
     assert.equal((page.match(/<h1[\s>]/g) || []).length, 1, file);
     titles.add(page.match(/<title>([^<]+)<\/title>/)[1]);
     assert.doesNotMatch(page, /href="\/(?!ar\/)[^"?#]*\.html(?:["?#])/);
@@ -37,6 +39,10 @@ test('all 15 public sitemap destinations match existing pages and self canonical
       const data = JSON.parse(match[1]);
       assert.doesNotMatch(JSON.stringify(data), /https:\/\/(?:www\.)?prompolu\.com\/[^"\s]*\.html/);
       if (data['@graph']) {
+        for (const org of data['@graph'].filter((n) => n['@type'] === 'Organization')) {
+          assert.ok(org.description, file);
+          organizationDescriptions.add(org.description);
+        }
         const branches = data['@graph'].filter((n) => n['@type'] === 'HomeAndConstructionBusiness');
         for (const branch of branches) {
           const expected = branch['@id'].endsWith('magasin-fes') ? '/grossiste-aluminium-fes' : '/showroom-sefrou';
@@ -45,7 +51,8 @@ test('all 15 public sitemap destinations match existing pages and self canonical
       }
     }
   }
-  assert.equal(titles.size, 15);
+  assert.equal(titles.size, 25);
+  assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });
 
@@ -77,6 +84,65 @@ test('technical corrections cite the regional manufacturer and state configurati
   for (const file of ['conseils/index.html', 'conseils/guide-choisir-systeme-coulissant-aluminium.html', 'conseils/rupture-de-pont-thermique-aluminium.html']) {
     assert.match(read(file), /137 mm/);
     assert.doesNotMatch(read(file), /Le chiffre (?:indique|donne) la largeur du cadre/);
+  }
+});
+
+const visibleText = (fragment) => fragment.replace(/<span class="q-mark">\+<\/span>/g, '').replace(/<[^>]+>/g, '')
+  .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+const jsonLdNodes = (page) => [...page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .flatMap((m) => { const data = JSON.parse(m[1]); return data['@graph'] || [data]; });
+
+test('guide structured data mirrors the visible headline, dates, breadcrumbs and FAQ', () => {
+  const guides = locations.filter((l) => /\/conseils\/[^/]+$/.test(l));
+  assert.equal(guides.length, 4);
+  for (const location of guides) {
+    const file = fileFor(location);
+    const page = read(file);
+    const nodes = jsonLdNodes(page);
+    const byType = (type) => nodes.filter((n) => n['@type'] === type);
+    assert.ok(byType('Organization').some((n) => n['@id'] === 'https://prompolu.com/#organization'), file);
+    const [article] = byType('Article');
+    assert.equal(article.headline, visibleText(page.match(/<h1>([\s\S]*?)<\/h1>/)[1]), file);
+    assert.equal(article.mainEntityOfPage, location, file);
+    assert.equal(article.author['@id'], 'https://prompolu.com/#organization', file);
+    assert.match(article.image, /^https:\/\/prompolu\.com\/assets\/[\w-]+\.(jpg|webp)$/, file);
+    assert.ok(existsSync(root + new URL(article.image).pathname.slice(1)), file);
+    const meta = visibleText(page.match(/<p class="post-meta">([\s\S]*?)<\/p>/)[1]);
+    const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const frDate = (iso) => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${months[m - 1]} ${y}`; };
+    assert.ok(meta.includes('Publié le ' + frDate(article.datePublished)), file);
+    if (article.dateModified !== article.datePublished) assert.ok(meta.includes('Mis à jour le ' + frDate(article.dateModified)), file);
+    const crumbs = byType('BreadcrumbList')[0].itemListElement;
+    assert.deepEqual(crumbs.map((c) => c.item), ['https://prompolu.com/', 'https://prompolu.com/conseils/', location], file);
+    const visibleFaq = [...page.matchAll(/<details class="faq-item">\s*<summary>([\s\S]*?)<\/summary>\s*<p class="faq-a">([\s\S]*?)<\/p>/g)]
+      .map(([, q, a]) => [visibleText(q), visibleText(a)]);
+    const faq = byType('FAQPage');
+    if (!visibleFaq.length) { assert.equal(faq.length, 0, file); continue; }
+    assert.deepEqual(faq[0].mainEntity.map((q) => [q.name, q.acceptedAnswer.text]), visibleFaq, file);
+  }
+  const listed = jsonLdNodes(read('conseils/index.html')).find((n) => n['@type'] === 'CollectionPage').mainEntity.itemListElement;
+  assert.deepEqual(listed.map((i) => i.url).sort(), guides.sort());
+});
+
+test('each STRUGAL system page carries Product data, breadcrumbs and a FAQ that mirror the page', () => {
+  const systems = locations.filter((l) => /\/(?:coulissants|battants)\/[^/]+$/.test(l));
+  assert.equal(systems.length, 9);
+  for (const location of systems) {
+    const file = fileFor(location);
+    const page = read(file);
+    const nodes = jsonLdNodes(page);
+    const [product] = nodes.filter((n) => n['@type'] === 'Product');
+    assert.equal(product.url, location, file);
+    assert.equal(product.name, visibleText(page.match(/<h1>([\s\S]*?)<\/h1>/)[1]), file);
+    assert.ok(existsSync(root + new URL(product.image).pathname.slice(1)), file);
+    const crumbs = nodes.find((n) => n['@type'] === 'BreadcrumbList').itemListElement;
+    const hub = location.replace(/\/[^/]+$/, '');
+    assert.deepEqual(crumbs.map((c) => c.item), ['https://prompolu.com/', hub, location], file);
+    assert.ok(read(fileFor(hub)).includes(`href="${new URL(location).pathname}"`), file);
+    const visibleFaq = [...page.matchAll(/<details class="faq-item">\s*<summary>([\s\S]*?)<\/summary>\s*<p class="faq-a">([\s\S]*?)<\/p>/g)]
+      .map(([, q, a]) => [visibleText(q), visibleText(a)]);
+    const faq = nodes.find((n) => n['@type'] === 'FAQPage');
+    assert.deepEqual(faq.mainEntity.map((q) => [q.name, q.acceptedAnswer.text]), visibleFaq, file);
   }
 });
 
@@ -127,6 +193,18 @@ test('private 3D routes and model assets remain denied without a signed token', 
     assert.equal(response.status, 403, path);
     assert.equal(response.headers.get('location'), null, path);
     assert.equal(response.headers.get('cache-control'), 'no-store', path);
+  }
+});
+
+test('repository notes, tests and marketing context are not served; crawler files stay public', async () => {
+  for (const path of ['/README.md', '/COURRIER-STRUGAL.md', '/LISEZ-MOI-DEPLOIEMENT.txt', '/CNAME', '/tests/seo.test.mjs', '/.agents/product-marketing.md']) {
+    const response = await invoke('https://prompolu.com' + path);
+    assert.equal(response.status, 404, path);
+    assert.equal(response.headers.get('X-Test-Next'), null, path);
+    assert.equal(response.headers.get('X-Robots-Tag'), 'noindex', path);
+  }
+  for (const path of ['/robots.txt', '/llms.txt', '/sitemap.xml', '/assets/battants.webp']) {
+    assert.equal((await invoke('https://prompolu.com' + path)).headers.get('X-Test-Next'), '1', path);
   }
 });
 
