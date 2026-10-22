@@ -151,7 +151,7 @@ article.post table th,article.post table td{border-color:#d9d0c3}
 .v3d-prod-body .more{margin-top:25px}
 .v3d-limits{max-width:none;gap:30px 60px}
 .v3d-limits li{font-size:15px;line-height:1.8}
-.page-directory h2{font-family:var(--display)}
+.page-directory .directory-title{font-family:var(--display)}
 .home-page #pourquoi{background:#e9e2d7;border-radius:4vw 0 0 0}
 .home-page #conseils-teaser .blog-grid{grid-template-columns:1fr;max-width:750px}
 @media(min-width:1700px){.page-hero h1{font-size:88px}.site-header{max-width:1800px;margin:auto}}
