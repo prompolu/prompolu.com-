@@ -43,10 +43,13 @@ const PUBLIC_PAGES = new Set([
   '/coulissants/s90rp',
   '/coulissants/s125rp',
   '/coulissants/s140rp',
-  '/coulissants/s70',
   '/battants/s47',
   '/exterieur/mur-rideau-s52',
   '/exterieur/volets-roulants',
+]);
+// Pages taken off the site: their old URLs send visitors to the closest live page.
+const REMOVED_PAGES = new Map([
+  ['/coulissants/s70', '/coulissants'],
 ]);
 
 function publicRedirect(request, url) {
@@ -54,6 +57,7 @@ function publicRedirect(request, url) {
   if (url.hostname !== 'prompolu.com' && url.hostname !== 'www.prompolu.com') return null;
   var path = url.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
   if (path === '/conseils') path = '/conseils/';
+  if (REMOVED_PAGES.has(path)) path = REMOVED_PAGES.get(path);
   if (!PUBLIC_PAGES.has(path)) return null;
   if (url.hostname === 'prompolu.com' && url.protocol === 'https:' && url.pathname === path) return null;
   const target = new URL(url);
