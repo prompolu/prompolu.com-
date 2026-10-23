@@ -12,9 +12,9 @@ const fileFor = (url) => {
   return path.endsWith('/') ? path.slice(1) + 'index.html' : path.slice(1) + '.html';
 };
 
-test('all 29 public sitemap destinations match existing pages and self canonicals', () => {
-  assert.equal(locations.length, 29);
-  assert.equal(new Set(locations).size, 29);
+test('all 28 public sitemap destinations match existing pages and self canonicals', () => {
+  assert.equal(locations.length, 28);
+  assert.equal(new Set(locations).size, 28);
   const titles = new Set();
   const organizationDescriptions = new Set();
   for (const location of locations) {
@@ -51,13 +51,13 @@ test('all 29 public sitemap destinations match existing pages and self canonical
       }
     }
   }
-  assert.equal(titles.size, 29);
+  assert.equal(titles.size, 28);
   assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });
 
 test('all product quote links carry their exact reference, including plus signs and spaces', () => {
-  for (const [file, count] of [['coulissants.html', 12], ['battants.html', 5]]) {
+  for (const [file, count] of [['coulissants.html', 11], ['battants.html', 5]]) {
     const cards = [...read(file).matchAll(/<div class="sys-name display">([^<]+)<\/div>[\s\S]*?<a class="sys-quote" href="([^"]+)"/g)];
     assert.equal(cards.length, count);
     for (const [, name, href] of cards) {
@@ -126,7 +126,7 @@ test('guide structured data mirrors the visible headline, dates, breadcrumbs and
 
 test('each STRUGAL system page carries Product data, breadcrumbs and a FAQ that mirror the page', () => {
   const systems = locations.filter((l) => /\/(?:coulissants|battants)\/[^/]+$/.test(l));
-  assert.equal(systems.length, 11);
+  assert.equal(systems.length, 10);
   for (const location of systems) {
     const file = fileFor(location);
     const page = read(file);
@@ -174,6 +174,14 @@ test('production public aliases redirect once to the intended canonical and reta
     const www = await invoke(`https://www.prompolu.com${target.pathname}`, { method: 'HEAD' });
     assert.equal(www.status, 308);
     assert.equal(www.headers.get('location'), canonical);
+  }
+});
+
+test('removed pages redirect permanently to their hub', async () => {
+  for (const path of ['/coulissants/s70', '/coulissants/s70.html']) {
+    const response = await invoke('https://www.prompolu.com' + path);
+    assert.equal(response.status, 308, path);
+    assert.equal(response.headers.get('location'), 'https://prompolu.com/coulissants', path);
   }
 });
 
