@@ -12,9 +12,9 @@ const fileFor = (url) => {
   return path.endsWith('/') ? path.slice(1) + 'index.html' : path.slice(1) + '.html';
 };
 
-test('all 31 public sitemap destinations match existing pages and self canonicals', () => {
-  assert.equal(locations.length, 31);
-  assert.equal(new Set(locations).size, 31);
+test('all 38 public sitemap destinations match existing pages and self canonicals', () => {
+  assert.equal(locations.length, 38);
+  assert.equal(new Set(locations).size, 38);
   const titles = new Set();
   const organizationDescriptions = new Set();
   for (const location of locations) {
@@ -51,13 +51,13 @@ test('all 31 public sitemap destinations match existing pages and self canonical
       }
     }
   }
-  assert.equal(titles.size, 31);
+  assert.equal(titles.size, 38);
   assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });
 
 test('all product quote links carry their exact reference, including plus signs and spaces', () => {
-  for (const [file, count] of [['coulissants.html', 11], ['battants.html', 5]]) {
+  for (const [file, count] of [['coulissants.html', 13], ['battants.html', 7]]) {
     const cards = [...read(file).matchAll(/<div class="sys-name display">([^<]+)<\/div>[\s\S]*?<a class="sys-quote" href="([^"]+)"/g)];
     assert.equal(cards.length, count);
     for (const [, name, href] of cards) {
@@ -126,7 +126,7 @@ test('guide structured data mirrors the visible headline, dates, breadcrumbs and
 
 test('each STRUGAL system page carries Product data, breadcrumbs and a FAQ that mirror the page', () => {
   const systems = locations.filter((l) => /\/(?:coulissants|battants)\/[^/]+$/.test(l));
-  assert.equal(systems.length, 10);
+  assert.equal(systems.length, 17);
   for (const location of systems) {
     const file = fileFor(location);
     const page = read(file);
