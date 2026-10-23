@@ -133,7 +133,11 @@ test('each STRUGAL system page carries Product data, breadcrumbs and a FAQ that 
     const nodes = jsonLdNodes(page);
     const [product] = nodes.filter((n) => n['@type'] === 'Product');
     assert.equal(product.url, location, file);
-    assert.equal(product.name, visibleText(page.match(/<h1>([\s\S]*?)<\/h1>/)[1]), file);
+    const h1 = page.match(/<h1>([\s\S]*?)<\/h1>/)[1];
+    assert.equal(product.name, visibleText(h1.replace(/\s*<span class="h1-kicker">[\s\S]*?<\/span>/, '')), file);
+    assert.match(h1, /<span class="h1-kicker">[^<]+<\/span>/, file);
+    assert.ok(product.alternateName.length > 0 && product.model, file);
+    assert.match(page, /<title>[^<]*(?:Fès|Maroc)[^<]*<\/title>/, file);
     assert.ok(existsSync(root + new URL(product.image).pathname.slice(1)), file);
     const crumbs = nodes.find((n) => n['@type'] === 'BreadcrumbList').itemListElement;
     const hub = location.replace(/\/[^/]+$/, '');

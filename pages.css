@@ -35,6 +35,7 @@ section{padding:80px 0}
 .page-hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr);align-items:center;gap:6vw}
 .page-hero-copy{position:relative;z-index:1;padding:25px 0}
 .page-hero-copy>.eyebrow{font-size:11px;margin:0 0 23px;letter-spacing:.22em}
+.page-hero h1 .h1-kicker{display:block;font:500 clamp(16px,1.45vw,22px)/1.35 var(--body);letter-spacing:-.01em;text-transform:none;margin-top:16px;color:#5e5b55;max-width:34ch}
 .page-hero h1,.page-hero .hero-title{font:400 clamp(45px,5.4vw,89px)/1.08 var(--display);letter-spacing:-.015em;text-transform:uppercase;max-width:21ch}
 .page-hero .lead,.page-hero .hero-sub{font:400 16px/1.8 var(--body);color:#625c53;margin-top:25px;max-width:59ch}
 .page-hero .hero-actions{margin-top:28px}
