@@ -32,6 +32,8 @@ const PUBLIC_PAGES = new Set([
   '/conseils/coulissant-ou-battant-comment-choisir',
   '/conseils/rupture-de-pont-thermique-aluminium',
   '/conseils/finitions-aluminium-thermolaquage-anodisation',
+  '/conseils/s88rp-ou-s90rp',
+  '/conseils/prix-fenetre-aluminium-maroc',
   '/visualisation-3d', '/showroom-sefrou', '/grossiste-aluminium-fes',
   '/distributeur-strugal-maroc',
   '/battants/s53rp',
