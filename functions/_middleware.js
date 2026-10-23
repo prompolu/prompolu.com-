@@ -46,6 +46,9 @@ const PUBLIC_PAGES = new Set([
   '/battants/s47',
   '/exterieur/mur-rideau-s52',
   '/exterieur/volets-roulants',
+  '/exterieur/garde-corps',
+  '/exterieur/pergolas',
+  '/exterieur/bardage-aluminium',
 ]);
 // Pages taken off the site: their old URLs send visitors to the closest live page.
 const REMOVED_PAGES = new Map([

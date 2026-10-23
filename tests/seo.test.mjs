@@ -12,9 +12,9 @@ const fileFor = (url) => {
   return path.endsWith('/') ? path.slice(1) + 'index.html' : path.slice(1) + '.html';
 };
 
-test('all 28 public sitemap destinations match existing pages and self canonicals', () => {
-  assert.equal(locations.length, 28);
-  assert.equal(new Set(locations).size, 28);
+test('all 31 public sitemap destinations match existing pages and self canonicals', () => {
+  assert.equal(locations.length, 31);
+  assert.equal(new Set(locations).size, 31);
   const titles = new Set();
   const organizationDescriptions = new Set();
   for (const location of locations) {
@@ -51,7 +51,7 @@ test('all 28 public sitemap destinations match existing pages and self canonical
       }
     }
   }
-  assert.equal(titles.size, 28);
+  assert.equal(titles.size, 31);
   assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });
@@ -143,6 +143,23 @@ test('each STRUGAL system page carries Product data, breadcrumbs and a FAQ that 
     const hub = location.replace(/\/[^/]+$/, '');
     assert.deepEqual(crumbs.map((c) => c.item), ['https://prompolu.com/', hub, location], file);
     assert.ok(read(fileFor(hub)).includes(`href="${new URL(location).pathname}"`), file);
+    const visibleFaq = [...page.matchAll(/<details class="faq-item">\s*<summary>([\s\S]*?)<\/summary>\s*<p class="faq-a">([\s\S]*?)<\/p>/g)]
+      .map(([, q, a]) => [visibleText(q), visibleText(a)]);
+    const faq = nodes.find((n) => n['@type'] === 'FAQPage');
+    assert.deepEqual(faq.mainEntity.map((q) => [q.name, q.acceptedAnswer.text]), visibleFaq, file);
+  }
+});
+
+test('each exterior product page carries breadcrumbs and a FAQ that mirror the page', () => {
+  const products = locations.filter((l) => /\/exterieur\/[^/]+$/.test(l));
+  assert.equal(products.length, 5);
+  for (const location of products) {
+    const file = fileFor(location);
+    const page = read(file);
+    const nodes = jsonLdNodes(page);
+    const crumbs = nodes.find((n) => n['@type'] === 'BreadcrumbList').itemListElement;
+    assert.deepEqual(crumbs.map((c) => c.item), ['https://prompolu.com/', 'https://prompolu.com/exterieur', location], file);
+    assert.ok(read('exterieur.html').includes(`href="${new URL(location).pathname}"`), file);
     const visibleFaq = [...page.matchAll(/<details class="faq-item">\s*<summary>([\s\S]*?)<\/summary>\s*<p class="faq-a">([\s\S]*?)<\/p>/g)]
       .map(([, q, a]) => [visibleText(q), visibleText(a)]);
     const faq = nodes.find((n) => n['@type'] === 'FAQPage');
