@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#15171a">
+<title>PROMPOLU — Aperçu de l’accueil immersif</title>
+<link rel="icon" href="/assets/favicon.ico">
+<link rel="preload" href="/assets/font-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts.css">
+<link rel="stylesheet" href="accueil.css">
+<script>document.documentElement.classList.replace('no-js', 'js');</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<a class="skip" href="#gammes">Aller aux gammes</a>
+<p class="preview-tag" aria-hidden="true">Aperçu de style · non publié</p>
+
+<header class="nav" data-ink="light">
+  <a class="brand" href="/" aria-label="PROMPOLU ALUMINIUM, accueil"><img src="/assets/logo-prompolu.png" alt="" width="602" height="83"></a>
+  <nav aria-label="Navigation principale">
+    <a href="/coulissants">Coulissants</a>
+    <a href="/battants">Battants</a>
+    <a href="/agencement">Agencement</a>
+    <a href="/exterieur">Extérieur</a>
+    <a class="nav-cta" href="/contact#formulaire">Demander un devis</a>
+  </nav>
+  <a class="nav-mobile" href="/contact#formulaire">Devis</a>
+</header>
+
+<div class="loader" aria-label="Chargement">
+  <svg class="loader-cover" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+    <defs><radialGradient id="cover-light" cx="50%" cy="42%" r="75%"><stop stop-color="#23272b"/><stop offset=".65" stop-color="#17191c"/><stop offset="1" stop-color="#0f1113"/></radialGradient></defs>
+    <path class="loader-sheet" fill="url(#cover-light)" fill-rule="evenodd" d="M-12 -12H1012V1012H-12Z"/>
+    <path class="loader-edge" fill="none" stroke="#a97c50" stroke-width=".7" vector-effect="non-scaling-stroke"/>
+  </svg>
+  <div class="loader-identity">
+    <div class="loader-logo" aria-hidden="true"><img src="/assets/logo-prompolu.png" alt="" width="602" height="83"><img class="loader-logo-fill" src="/assets/logo-prompolu.png" alt="" width="602" height="83"></div>
+    <div class="loader-meta"><span class="loader-status" role="status">Chargement de l’expérience</span><span class="loader-count" aria-hidden="true">00</span></div>
+    <div class="loader-track" aria-hidden="true"><span></span></div>
+  </div>
+  <div class="loader-foot"><span>Profilés STRUGAL · Fès &amp; Sefrou</span><button type="button" class="loader-skip">Voir la page</button></div>
+</div>
+
+<main>
+<section class="journey" id="top" aria-label="Le passage">
+  <div class="stage">
+    <canvas class="stage-canvas" aria-hidden="true"></canvas>
+    <div class="stage-fallback" aria-hidden="true"></div>
+    <div class="stage-shade" aria-hidden="true"></div>
+    <div class="topline"><span>Distributeur officiel STRUGAL</span><span>Fès · Sefrou · tout le Maroc</span></div>
+
+    <div class="copy copy-hero" data-copy="hero">
+      <p class="label"><i class="dot"></i>PROMPOLU ALUMINIUM · depuis plus de 18 ans</p>
+      <h1><span class="line"><span>La qualité,</span></span><span class="line"><span>notre meilleur profil.</span></span></h1>
+      <p class="lead">Des profilés aluminium STRUGAL pour les ateliers de Fès et de Sefrou, livrés partout au Maroc.</p>
+      <a class="text-link" href="#gammes">Entrer dans le profil <span class="cue" aria-hidden="true"></span></a>
+    </div>
+
+    <div class="copy copy-beat copy-beat--left" data-copy="b1">
+      <p class="label"><span>01</span> Profil</p>
+      <h2><span class="line"><span>Testés aux normes</span></span><span class="line"><span>européennes</span></span></h2>
+      <p class="note">EN 12207 · EN 12208 · EN 12210</p>
+    </div>
+    <div class="copy copy-beat copy-beat--right" data-copy="b2">
+      <p class="label"><span>02</span> Gamme</p>
+      <h2><span class="line"><span>Jusqu’à 400 kg</span></span><span class="line"><span>par vantail</span></span></h2>
+      <p class="note">Du S70P résidentiel au S125RP lift &amp; slide.</p>
+    </div>
+    <div class="copy copy-beat" data-copy="b3">
+      <p class="label"><span>03</span> Atelier</p>
+      <h2><span class="line"><span>Livrés là où</span></span><span class="line"><span>vous fabriquez</span></span></h2>
+      <p class="note">Retrait à Fès ou à Sefrou, livraison partout au Royaume.</p>
+    </div>
+
+    <div class="stage-bar">
+      <a class="scroll-invite" href="#gammes">Faire défiler <span class="cue" aria-hidden="true"></span></a>
+      <nav class="chapters" aria-label="Chapitres">
+        <a href="#top" data-n="1" aria-current="step">Profil</a><a href="#top" data-n="2">Passage</a><a href="#gammes" data-n="3">Atelier</a>
+      </nav>
+      <button class="motion-toggle" type="button" aria-pressed="false">Pause <span aria-hidden="true">Ⅱ</span></button>
+    </div>
+    <div class="stage-track" aria-hidden="true"><span></span></div>
+    <div class="stage-flood" aria-hidden="true"></div>
+  </div>
+</section>
+
+<section class="paper gammes" id="gammes" aria-labelledby="gammes-title" data-tone="paper">
+  <div class="rail"><span>01 / Nos gammes</span><span>Matière première STRUGAL</span></div>
+  <div class="head">
+    <h2 id="gammes-title" class="display" data-rise><span class="line"><span>À chaque projet,</span></span><span class="line"><span><em>son profil.</em></span></span></h2>
+    <div class="head-aside" data-reveal>
+      <p class="eyebrow">Le catalogue</p>
+      <p>Une matière première aluminium adaptée à chaque fabrication : du coulissant résidentiel au grand format architectural.</p>
+      <a class="text-link text-link--ink" href="/coulissants">Voir les coulissants <span class="signal" aria-hidden="true"></span></a>
+    </div>
+  </div>
+  <div class="grid">
+    <article class="card card--wide" data-sheet>
+      <a class="card-media" href="/coulissants"><img src="/assets/window-1100.webp" alt="Baie coulissante aluminium ouverte sur les toits de Fès" width="1100" height="764" loading="lazy"><span class="card-arrow" aria-hidden="true">↗</span></a>
+      <div class="card-cap"><span class="cap-cat">01 / Systèmes coulissants</span><span class="cap-status">Du S70P au S140RP</span><h3><a href="/coulissants">Coulissants</a></h3><p>Les systèmes STRUGAL disponibles en matière première, du S70P économique au S140RP Infinity grand format.</p></div>
+    </article>
+    <article class="card" data-sheet>
+      <a class="card-media" href="/battants"><img src="/assets/battants.webp" alt="Fenêtre battante aluminium" width="1254" height="1254" loading="lazy"><span class="card-arrow" aria-hidden="true">↗</span></a>
+      <div class="card-cap"><span class="cap-cat">02 / Fenêtres &amp; portes</span><span class="cap-status">S53RP+ · S46</span><h3><a href="/battants">Battants</a></h3><p>Systèmes battants STRUGAL, complétés par les portes ALUDOORS A400K et A200 4FH2.</p></div>
+    </article>
+    <article class="card card--offset" data-sheet>
+      <a class="card-media" href="/agencement"><img src="/assets/agencement.webp" alt="Agencement intérieur avec profilés aluminium et façades bois" width="1254" height="1254" loading="lazy"><span class="card-arrow" aria-hidden="true">↗</span></a>
+      <div class="card-cap"><span class="cap-cat">03 / Agencement intérieur</span><span class="cap-status">Cuisines · dressings</span><h3><a href="/agencement">Agencement</a></h3><p>Profilés pour cuisines équipées et dressings sur-mesure, poignée intégrée et finitions minimalistes.</p></div>
+    </article>
+    <article class="card" data-sheet>
+      <a class="card-media" href="/exterieur"><img src="/assets/garde-corps-teaser.jpg" alt="Garde-corps vitré aluminium sur une terrasse" width="1200" height="900" loading="lazy"><span class="card-arrow" aria-hidden="true">↗</span></a>
+      <div class="card-cap"><span class="cap-cat">04 / Solutions extérieures</span><span class="cap-status">Garde-corps · pergolas</span><h3><a href="/exterieur">Extérieur</a></h3><p>Garde-corps, volets roulants, pergolas et bardage aluminium pour vos réalisations extérieures.</p></div>
+    </article>
+    <article class="card card--offset" data-sheet>
+      <a class="card-media" href="/visualisation-3d"><img src="/assets/visualisation-3d-teaser.jpg" alt="Visualisation d’un produit aluminium en réalité augmentée sur téléphone" width="1200" height="900" loading="lazy"><span class="card-arrow" aria-hidden="true">↗</span></a>
+      <div class="card-cap"><span class="cap-cat">05 / Pour les ateliers</span><span class="cap-status">Réservé aux clients pros</span><h3><a href="/visualisation-3d">Visualisation 3D</a></h3><p>Votre client voit le produit chez lui, à taille réelle, avant de signer.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="paper systemes" aria-labelledby="systemes-title" data-tone="paper">
+  <div class="rail"><span>02 / Coulissants</span><span>Cinq systèmes, cinq usages</span></div>
+  <h2 id="systemes-title" class="subhead" data-rise><span class="line"><span>Du résidentiel</span></span><span class="line"><span><em>au grand format.</em></span></span></h2>
+  <ol class="profiles">
+    <li data-reveal><a href="/coulissants/s70p"><figure><img src="/assets/products/cutouts/s70p.webp" alt="Coupe du profilé S70P" width="700" height="588" loading="lazy"></figure><span class="p-name">S70P</span><span class="p-type">Coulissant standard</span><dl><dt>Poids max/vantail</dt><dd>80 kg</dd><dt>Configurations</dt><dd>2 à 6 vantaux</dd></dl></a></li>
+    <li data-reveal><a href="/coulissants/s86rp"><figure><img src="/assets/products/cutouts/s86rp.webp" alt="Coupe du profilé S86RP" width="700" height="588" loading="lazy"></figure><span class="p-name">S86RP</span><span class="p-type">Minimaliste, RPT</span><dl><dt>Poids max/vantail</dt><dd>140 kg</dd><dt>Section centrale</dt><dd>42 mm</dd></dl></a></li>
+    <li data-reveal><a href="/coulissants/s88rp"><figure><img src="/assets/products/cutouts/s88rp.webp" alt="Coupe du profilé S88RP" width="700" height="588" loading="lazy"></figure><span class="p-name">S88RP</span><span class="p-type">Coulissant &amp; levage</span><dl><dt>Poids max/vantail</dt><dd>200 – 300 kg</dd><dt>Options</dt><dd>Galandage, monorail</dd></dl></a></li>
+    <li data-reveal><a href="/coulissants/s125rp"><figure><img src="/assets/products/cutouts/s125rp.webp" alt="Coupe du profilé S125RP" width="700" height="588" loading="lazy"></figure><span class="p-name">S125RP</span><span class="p-type">Lift &amp; slide premium</span><dl><dt>Poids max/vantail</dt><dd>jusqu’à 400 kg*</dd><dt>Vitrage</dt><dd>jusqu’à 40 mm*</dd></dl></a></li>
+    <li data-reveal><a href="/coulissants/s140rp"><figure><img src="/assets/products/cutouts/s140rp.webp" alt="Coupe du profilé S140RP" width="700" height="588" loading="lazy"></figure><span class="p-name">S140RP</span><span class="p-type">Lift &amp; slide Infinity</span><dl><dt>Meneau central</dt><dd>25 mm</dd><dt>Résistance au vent</dt><dd>Classe C5</dd></dl></a></li>
+  </ol>
+  <p class="footnote">* S125RP : limites publiées par STRUGAL Maroc. La version du système, la quincaillerie, le vitrage et les dimensions sont à valider avant fabrication.</p>
+</section>
+
+<section class="dark pourquoi" aria-labelledby="pourquoi-title" data-tone="dark">
+  <div class="rail"><span>03 / Pourquoi PROMPOLU</span><span>+18 ans au service des ateliers</span></div>
+  <div class="why-head">
+    <h2 id="pourquoi-title" aria-label="Pourquoi PROMPOLU">
+      <span class="why-line" aria-hidden="true"><span class="g">P</span><span class="g">o</span><span class="g">u</span><span class="g">r</span><span class="g">q</span><span class="g">u</span><span class="g">o</span><span class="g">i</span></span>
+      <span class="why-line why-line--brand" aria-hidden="true"><em class="why-brand" data-fill="PROMPOLU">PROMPOLU</em></span>
+    </h2>
+    <p class="why-aside">Le fournisseur de matière première aluminium des menuisiers de Fès et de Sefrou.<span>Distributeur officiel STRUGAL</span></p>
+  </div>
+  <div class="rows">
+    <article class="row is-open">
+      <h3><button type="button" class="row-toggle" aria-expanded="true" aria-controls="row-1" id="row-1-t"><span class="row-n">01</span><span class="row-title">+18 ans d’expérience</span><span class="row-plus" aria-hidden="true"></span></button></h3>
+      <div class="row-panel" id="row-1" role="region" aria-labelledby="row-1-t"><div class="row-inner"><p>Plus de 18 ans passés à fournir aux menuisiers une matière première dont la qualité ne se discute pas à la livraison.</p><figure class="row-art"><img src="/assets/products/s140rp.jpg" alt="Baie coulissante S140RP" width="560" height="470" loading="lazy"></figure></div></div>
+    </article>
+    <article class="row">
+      <h3><button type="button" class="row-toggle" aria-expanded="false" aria-controls="row-2" id="row-2-t"><span class="row-n">02</span><span class="row-title">STRUGAL, testé EN</span><span class="row-plus" aria-hidden="true"></span></button></h3>
+      <div class="row-panel" id="row-2" role="region" aria-labelledby="row-2-t" hidden><div class="row-inner"><p>Notre établissement de Sefrou est distributeur officiel STRUGAL pour Fès, Sefrou et leur région : systèmes espagnols testés aux normes EN 12207, EN 12208 et EN 12210.</p><figure class="row-art"><img src="/assets/products/s86rp.jpg" alt="Système coulissant S86RP" width="560" height="470" loading="lazy"></figure></div></div>
+    </article>
+    <article class="row">
+      <h3><button type="button" class="row-toggle" aria-expanded="false" aria-controls="row-3" id="row-3-t"><span class="row-n">03</span><span class="row-title">Fès &amp; Sefrou</span><span class="row-plus" aria-hidden="true"></span></button></h3>
+      <div class="row-panel" id="row-3" role="region" aria-labelledby="row-3-t" hidden><div class="row-inner"><p>Notre magasin historique de Fès et notre showroom de Sefrou, où la gamme STRUGAL est exposée : stock et conseil technique pour approvisionner vos ateliers.</p><figure class="row-art"><img src="/assets/products/mur-rideau.webp" alt="Façade en mur-rideau aluminium" width="640" height="480" loading="lazy"></figure></div></div>
+    </article>
+    <article class="row">
+      <h3><button type="button" class="row-toggle" aria-expanded="false" aria-controls="row-4" id="row-4-t"><span class="row-n">04</span><span class="row-title">Livraison nationale</span><span class="row-plus" aria-hidden="true"></span></button></h3>
+      <div class="row-panel" id="row-4" role="region" aria-labelledby="row-4-t" hidden><div class="row-inner"><p>Retrait à Fès ou à Sefrou, ou livraison en atelier et sur chantier partout au Royaume.</p><figure class="row-art"><img src="/assets/products/pergola.jpg" alt="Pergola aluminium" width="640" height="479" loading="lazy"></figure></div></div>
+    </article>
+  </div>
+  <div class="steps">
+    <h3 class="subhead" data-rise><span class="line"><span>Comment se passe</span></span><span class="line"><span><em>une commande</em></span></span></h3>
+    <ol data-reveal>
+      <li><span>01 / Besoin</span>Vous décrivez le besoin, par téléphone, WhatsApp, e-mail ou formulaire.</li>
+      <li><span>02 / Chiffrage</span>Nous chiffrons selon la référence, les quantités, la finition et la destination.</li>
+      <li><span>03 / Validation</span>Vous confirmez le devis et nous préparons la commande.</li>
+      <li><span>04 / Retrait ou livraison</span>À Fès, à Sefrou, en atelier ou sur chantier, partout au Maroc.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="paper contact" id="contact" aria-labelledby="contact-title" data-tone="paper">
+  <div class="contact-copy">
+    <p class="label">04 / Votre prochain chantier</p>
+    <h2 id="contact-title" class="section-title" data-rise><span class="line"><span>Votre prochain chantier</span></span><span class="line"><span><em>commence ici.</em></span></span></h2>
+    <p>Décrivez la référence, les quantités et la finition : nous chiffrons. Une question technique se règle au téléphone.</p>
+    <a class="cta" href="/contact#formulaire"><span>Demander un devis</span><span class="cta-tile" aria-hidden="true"><i></i><i></i><i></i></span></a>
+    <dl class="stores">
+      <div><dt>Magasin de Fès</dt><dd>N° 21, Rue Pékin, Av. El Wafaa 2, Rte de Sefrou — Fès 30050</dd></div>
+      <div><dt>Showroom de Sefrou</dt><dd>Route d’El Menzel, Sefrou 31000</dd></div>
+      <div><dt>Horaires</dt><dd>Du lundi au samedi, de 9h à 19h</dd></div>
+      <div><dt>WhatsApp</dt><dd><a href="https://wa.me/212668378538">+212 668 378 538</a></dd></div>
+    </dl>
+  </div>
+  <figure class="section-3d">
+    <canvas class="section-canvas" aria-label="Coupe 3D illustrative d’un profilé aluminium à rupture de pont thermique"></canvas>
+    <figcaption><span>Coupe illustrative</span>Profilé à rupture de pont thermique, double vitrage. Bougez la souris pour l’orienter.</figcaption>
+  </figure>
+</section>
+</main>
+
+<footer class="end" data-tone="dark">
+  <div class="horizon" aria-hidden="true"><svg viewBox="0 0 1000 80" preserveAspectRatio="none"><defs><linearGradient id="hz" x1="0" x2="1"><stop stop-color="#8d9197"/><stop offset=".35" stop-color="#c7c9cc"/><stop offset=".6" stop-color="#a97c50"/><stop offset="1" stop-color="#a4927c"/></linearGradient><filter id="hzb" x="-10%" y="-100%" width="120%" height="300%"><feGaussianBlur stdDeviation="4"/></filter></defs><path class="horizon-fill" d="M0 60Q500 -3 1000 60V82H0Z"/><path d="M0 60Q500 -3 1000 60" fill="none" stroke="url(#hz)" stroke-width="16" opacity=".22" filter="url(#hzb)"/><path d="M0 60Q500 -3 1000 60" fill="none" stroke="url(#hz)" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".85"/></svg></div>
+  <div class="end-top">
+    <div><p class="kicker">PROMPOLU ALUMINIUM / Distributeur officiel STRUGAL</p><p class="end-title">La qualité,<br><em>notre meilleur profil.</em></p><p class="end-note">Profilés et systèmes aluminium à Fès et Sefrou.<br>Livraison partout au Maroc.</p></div>
+    <nav aria-label="Pied de page"><p class="kicker">Explorer</p><a href="/coulissants">Coulissants</a><a href="/battants">Battants</a><a href="/agencement">Agencement</a><a href="/exterieur">Extérieur</a><a href="/conseils/">Conseils &amp; guides</a></nav>
+    <div><p class="kicker">Nous écrire</p><a href="mailto:PROMPOLU@LIVE.FR">PROMPOLU@LIVE.FR</a><p class="end-note">+212 668 378 538 · +212 669 594 774<br>Fès · Sefrou</p></div>
+  </div>
+  <p class="wordmark" aria-hidden="true">PROMPOLU</p>
+  <div class="end-bottom"><p>© 2026 PROMPOLU ALUMINIUM</p><p>Fès · Sefrou</p><a href="#top">Haut de page <span>01</span></a></div>
+</footer>
+
+<script type="module" src="accueil.js"></script>
+</body>
+</html>
