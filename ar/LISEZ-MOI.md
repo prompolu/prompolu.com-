@@ -92,6 +92,11 @@ téléphone, prête à être posée sur sa terrasse.
   une peinture (non métallique) ; RAL 9006 et l'anodisé restent métalliques.
   Cela ne change que l'affichage dans le navigateur, pas les fichiers de la
   vue réelle.
+- **Détails des profils** (coulissant, battant, garde-corps, dessinés dans le
+  navigateur) : angles coupés d'onglet à 45°, gorge d'ombre sur le dormant,
+  parclose biseautée, joints EPDM noirs autour de chaque vitrage, joints de
+  serrage et embouts du profil en U Glass Line, poignées à béquille ou de
+  tirage. Formes reconstituées pour l'aspect, pas les DXF STRUGAL.
 - Poids : `.glb` ≈ 150 Ko, chargé en environ une seconde en 4G. La plupart des
   configurateurs 3D pèsent 5 à 20 Mo et le visiteur part avant la fin.
 

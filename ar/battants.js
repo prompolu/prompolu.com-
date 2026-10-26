@@ -71,18 +71,87 @@ Mesh.prototype.tri=function(a,b,c){
   for(const p of [a,b,c]){this.pos.push(p[0],p[1],p[2]);this.nrm.push(nx,ny,nz);}
   this.idx.push(base,base+1,base+2);
 };
-Mesh.prototype.extrude=function(pts,len,m){
-  const h=len/2,n=pts.length/2,P=(i,z)=>M.apply(m,pts[i*2],pts[i*2+1],z);
+/* cut (facultatif) : recul de chaque bout, sommet par sommet. Avec la
+   distance a l'arete exterieure du cadre, les bouts sont coupes a 45° :
+   un assemblage d'onglet, comme en atelier.                          */
+Mesh.prototype.extrude=function(pts,len,m,cut){
+  const h=len/2,n=pts.length/2;
+  const P=(i,s)=>M.apply(m,pts[i*2],pts[i*2+1],s*(h-(cut?cut[i]:0)));
   for(let i=0;i<n;i++){const j=(i+1)%n;
-    this.tri(P(i,-h),P(j,-h),P(j,h)); this.tri(P(i,-h),P(j,h),P(i,h));}
+    this.tri(P(i,-1),P(j,-1),P(j,1)); this.tri(P(i,-1),P(j,1),P(i,1));}
   const t=earcut(pts);
   for(let k=0;k<t.length;k+=3){
-    this.tri(P(t[k],h),P(t[k+1],h),P(t[k+2],h));
-    this.tri(P(t[k+2],-h),P(t[k+1],-h),P(t[k],-h));}
+    this.tri(P(t[k],1),P(t[k+1],1),P(t[k+2],1));
+    this.tri(P(t[k+2],-1),P(t[k+1],-1),P(t[k],-1));}
 };
 Mesh.prototype.box=function(sx,sy,sz,m){
   this.extrude([-sx/2,-sy/2, sx/2,-sy/2, sx/2,sy/2, -sx/2,sy/2], sz, m);
 };
+
+/* ---------- profils ----------
+   Sections dessinees « a plat » : u en travers de la masse vue (0 = arete
+   exterieure du cadre, cote mur ou cote dormant), v dans l'epaisseur
+   (+ = interieur, la face vue par defaut). Formes reconstituees, pas les
+   DXF : ce sont les details qui font lire un profil d'aluminium a deux
+   metres — chanfreins, gorge d'ombre, parclose biseautee, coupe d'onglet.
+   Gorges et ressauts en pente douce : un flanc droit de 2 mm, vu de biais,
+   fait moins d'un pixel et ne s'affiche qu'en pointilles brillants.      */
+function frameUV(F, D){
+  const h=D/2, ch=2.5*MM, g=F*0.42;
+  return [ch,-h, F-ch,-h, F,-h+ch, F,h-4*MM, F-4*MM,h,
+          g+4*MM,h, g+2*MM,h-1.2*MM, g,h,
+          ch,h, 0,h-ch, 0,-h+ch];
+}
+/* ouvrant : parclose biseautee cote vitrage, cote interieur (et cote
+   exterieur si `both`), en retrait de la masse vue.
+   Sur un ouvrant mince, la parclose s'aplatit (k) au lieu de deborder.  */
+function sashUV(C, d, both){
+  const h=d/2, ch=2.5*MM, k=Math.min(1,(h-1*MM)/(6*MM));
+  const bead=s=>[C,s*(h-6*MM*k), C-9*MM,s*(h-2*MM*k), C-13*MM,s*(h-2*MM*k),
+                 C-16*MM,s*h];
+  const p=[ch,-h];
+  if(both){ const b=bead(-1); for(let i=b.length-2;i>=0;i-=2) p.push(b[i],b[i+1]); }
+  else p.push(C-1.5*MM,-h, C,-h+1.5*MM);
+  p.push(...bead(1), ch,h, 0,h-ch, 0,-h+ch);
+  return p;
+}
+/* section (u,v) -> repere local d'un montant (d'une traverse si `horiz`),
+   du cote s. Rendue dans le sens direct : faces tournees vers l'exterieur. */
+function place(uv, face, s, horiz){
+  let pts=[], cut=[];
+  for(let i=0;i<uv.length;i+=2){
+    const a=s*(face/2-uv[i]), b=-uv[i+1];
+    if(horiz) pts.push(b,a); else pts.push(a,b);
+    cut.push(uv[i]);
+  }
+  let area=0;
+  for(let i=0,n=cut.length;i<n;i++){const j=(i+1)%n;
+    area+=pts[i*2]*pts[j*2+1]-pts[j*2]*pts[i*2+1];}
+  if(area<0){
+    const q=[]; for(let i=cut.length-1;i>=0;i--) q.push(pts[i*2],pts[i*2+1]);
+    pts=q; cut=cut.reverse();
+  }
+  return {pts, cut};
+}
+/* cadre w x h hors-tout, centre sur `base` : quatre profils coupes d'onglet */
+function rectFrame(mesh, w, h, face, uv, base){
+  for(const s of [-1,1]){
+    const v=place(uv,face,s,false), t=place(uv,face,s,true);
+    mesh.extrude(v.pts, h, M.mul(base, M.mul(M.T(s*(w/2-face/2),0,0), M.RX(-PI/2))), v.cut);
+    mesh.extrude(t.pts, w, M.mul(base, M.mul(M.T(0,s*(h/2-face/2),0), M.RY(PI/2))), t.cut);
+  }
+}
+/* joint EPDM noir autour du vitrage (w x h vus), sur ses deux faces */
+function gaskets(mesh, w, h, t, base){
+  const b=5*MM, e=3*MM;
+  for(const sz of [-1,1]){
+    const z=sz*(t/2+e/2);
+    for(const s of [-1,1]){
+      mesh.box(w, b, e, M.mul(base, M.T(0, s*(h/2-b/2), z)));
+      mesh.box(b, h-2*b, e, M.mul(base, M.T(s*(w/2-b/2), 0, z)));
+    }
+  }
+}
 
 /* ---------- la gamme ---------- */
 const SYSTEMS = {
@@ -116,13 +185,21 @@ function frameSection(depth, face, ch){
           hd-ch,hf, -hd+ch,hf, -hd,hf-ch, -hd,-hf+ch];
 }
 
-/* cadre rectangulaire w x h hors-tout, centre a l'origine du repere 'base' */
-function rectFrame(mesh, w, h, face, depth, base){
-  const secV=frameSection(face, depth), secH=frameSection(depth, face);
-  for(const sx of [-1,1])
-    mesh.extrude(secV, h, M.mul(base, M.mul(M.T(sx*(w/2-face/2),0,0), M.RX(-PI/2))));
-  for(const sy of [-1,1])
-    mesh.extrude(secH, w-2*face, M.mul(base, M.mul(M.T(0,sy*(h/2-face/2),0), M.RY(PI/2))));
+/* poignee : rosace, fut et bequille. Fenetre : bequille vers le bas
+   (position fermee). Porte : plaque longue, bequille horizontale vers le
+   milieu du vantail, et cylindre.                                       */
+function lever(mesh, base, door){
+  const at=(x,y,z)=>M.mul(base, M.T(x,y,z));
+  if(door){
+    mesh.box(42*MM, 250*MM, 10*MM, at(0, -40*MM, 5*MM));
+    mesh.box(18*MM, 18*MM, 42*MM, at(0, 0, 31*MM));
+    mesh.box(140*MM, 20*MM, 16*MM, at(62*MM, 0, 52*MM));
+    mesh.box(16*MM, 30*MM, 6*MM, at(0, -130*MM, 13*MM));
+  } else {
+    mesh.box(30*MM, 80*MM, 10*MM, at(0, 0, 5*MM));
+    mesh.box(16*MM, 16*MM, 30*MM, at(0, 20*MM, 25*MM));
+    mesh.box(18*MM, 130*MM, 14*MM, at(0, -35*MM, 47*MM));
+  }
 }
 
 function build(o){
@@ -135,10 +212,10 @@ function build(o){
 
   const D=S.depth*MM, F=S.frame*MM, C=S.sash*MM, gt=S.glass*MM;
   const lt=D*0.80;                       // epaisseur de l'ouvrant
-  const alu=new Mesh(), glz=new Mesh(), pan=new Mesh();
+  const alu=new Mesh(), glz=new Mesh(), pan=new Mesh(), seal=new Mesh();
 
-  /* dormant */
-  rectFrame(alu, width, height, F, D, M.T(0, height/2, 0));
+  /* dormant, coupe d'onglet aux quatre angles */
+  rectFrame(alu, width, height, F, frameUV(F, D), M.T(0, height/2, 0));
 
   /* seuil / rejet d'eau, pour que la menuiserie ne semble pas flotter */
   if(!isDoor) alu.box(width, 12*MM, D+14*MM, M.T(0, 6*MM, 7*MM));
@@ -172,25 +249,25 @@ function build(o){
       Tl=M.T(lcx, cy, lcz);
     }
 
-    rectFrame(alu, leafW, clearH, C, lt, Tl);
+    rectFrame(alu, leafW, clearH, C, sashUV(C, lt, false), Tl);
     if(isDoor){
       pan.box(leafW-2*C+4*MM, clearH-2*C+4*MM, lt*0.62, Tl);
-      alu.box(26*MM, 210*MM, 26*MM,
-        M.mul(Tl, M.T(-leafW/2+C*0.6, -clearH*0.06, lt/2+13*MM)));
+      lever(alu, M.mul(Tl, M.T(-leafW/2+C*0.6, -clearH*0.06, lt/2)), true);
     } else {
       glz.box(leafW-2*C, clearH-2*C, gt, Tl);
+      gaskets(seal, leafW-2*C, clearH-2*C, gt, Tl);
       if(service)
-        alu.box(22*MM, 150*MM, 22*MM,
-          M.mul(Tl, M.T(-leafW/2+C*0.55, 0, lt/2+11*MM)));
+        lever(alu, M.mul(Tl, M.T(-leafW/2+C*0.55, 0, lt/2)), false);
     }
   }
   /* saillie reelle dans la piece : mesuree sur la geometrie, pas estimee.
      C'est le chiffre qui decide sur un battant. */
   let zmax=-1e9;
-  for(const m of [alu, glz, pan])
+  for(const m of [alu, glz, pan, seal])
     for(let k=2;k<m.pos.length;k+=3) if(m.pos[k]>zmax) zmax=m.pos[k];
 
   return {alu, glz:glz.pos.length?glz:null, pan:pan.pos.length?pan:null,
+          seal:seal.pos.length?seal:null,
           leafW, clearH, swing:zmax};
 }
 
@@ -211,6 +288,7 @@ function toGLB(parts, finish, tint){
     {m:parts.pan, mat:{name:'panneau', color:finish.lin,
        metallic:Math.max(0,finish.m-0.15), rough:Math.min(1,finish.r+0.10), alpha:1}},
     {m:parts.glz, mat:{name:'verre', color:tint.lin, metallic:0, rough:tint.r, alpha:tint.a, blend:true}},
+    {m:parts.seal, mat:{name:'seal', color:[0.035,0.035,0.04], metallic:0, rough:0.85, alpha:1}},
   ];
   for(const g of groups){
     if(!g.m || !g.m.pos.length) continue;
