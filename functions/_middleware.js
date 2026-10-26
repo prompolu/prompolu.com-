@@ -34,6 +34,7 @@ const PUBLIC_PAGES = new Set([
   '/conseils/finitions-aluminium-thermolaquage-anodisation',
   '/conseils/s88rp-ou-s90rp',
   '/conseils/prix-fenetre-aluminium-maroc',
+  '/conseils/s53rp-ou-s46',
   '/visualisation-3d', '/showroom-sefrou', '/grossiste-aluminium-fes',
   '/distributeur-strugal-maroc',
   '/battants/s53rp',
