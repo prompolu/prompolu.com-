@@ -19,7 +19,7 @@ function earcut(d){
   for(let i=0;i<n;i++) V.push(i);
   let area=0;
   for(let i=0,j=n-1;i<n;j=i++) area += (d[j*2]-d[i*2])*(d[i*2+1]+d[j*2+1]);
-  if(area>0) V.reverse();
+  if(area<0) V.reverse();
   const inTri=(ax,ay,bx,by,cx,cy,px,py)=>{
     const d1=(px-bx)*(ay-by)-(ax-bx)*(py-by);
     const d2=(px-cx)*(by-cy)-(bx-cx)*(py-cy);
@@ -65,18 +65,87 @@ Mesh.prototype.tri=function(a,b,c){
   for(const p of [a,b,c]){this.pos.push(p[0],p[1],p[2]);this.nrm.push(nx,ny,nz);}
   this.idx.push(base,base+1,base+2);
 };
-Mesh.prototype.extrude=function(pts,len,m){
-  const h=len/2,n=pts.length/2,P=(i,z)=>M.apply(m,pts[i*2],pts[i*2+1],z);
+/* cut (facultatif) : recul de chaque bout, sommet par sommet. Avec la
+   distance a l'arete exterieure du cadre, les bouts sont coupes a 45° :
+   un assemblage d'onglet, comme en atelier.                          */
+Mesh.prototype.extrude=function(pts,len,m,cut){
+  const h=len/2,n=pts.length/2;
+  const P=(i,s)=>M.apply(m,pts[i*2],pts[i*2+1],s*(h-(cut?cut[i]:0)));
   for(let i=0;i<n;i++){const j=(i+1)%n;
-    this.tri(P(i,-h),P(j,-h),P(j,h)); this.tri(P(i,-h),P(j,h),P(i,h));}
+    this.tri(P(i,-1),P(j,-1),P(j,1)); this.tri(P(i,-1),P(j,1),P(i,1));}
   const t=earcut(pts);
   for(let k=0;k<t.length;k+=3){
-    this.tri(P(t[k],h),P(t[k+1],h),P(t[k+2],h));
-    this.tri(P(t[k+2],-h),P(t[k+1],-h),P(t[k],-h));}
+    this.tri(P(t[k],1),P(t[k+1],1),P(t[k+2],1));
+    this.tri(P(t[k+2],-1),P(t[k+1],-1),P(t[k],-1));}
 };
 Mesh.prototype.box=function(sx,sy,sz,m){
   this.extrude([-sx/2,-sy/2, sx/2,-sy/2, sx/2,sy/2, -sx/2,sy/2], sz, m);
 };
+
+/* ---------- profils ----------
+   Sections dessinees « a plat » : u en travers de la masse vue (0 = arete
+   exterieure du cadre, cote mur ou cote dormant), v dans l'epaisseur
+   (+ = interieur, la face vue par defaut). Formes reconstituees, pas les
+   DXF : ce sont les details qui font lire un profil d'aluminium a deux
+   metres — chanfreins, gorge d'ombre, parclose biseautee, coupe d'onglet.
+   Gorges et ressauts en pente douce : un flanc droit de 2 mm, vu de biais,
+   fait moins d'un pixel et ne s'affiche qu'en pointilles brillants.      */
+function frameUV(F, D){
+  const h=D/2, ch=2.5*MM, g=F*0.42;
+  return [ch,-h, F-ch,-h, F,-h+ch, F,h-4*MM, F-4*MM,h,
+          g+4*MM,h, g+2*MM,h-1.2*MM, g,h,
+          ch,h, 0,h-ch, 0,-h+ch];
+}
+/* ouvrant : parclose biseautee cote vitrage, cote interieur (et cote
+   exterieur si `both`), en retrait de la masse vue.
+   Sur un ouvrant mince, la parclose s'aplatit (k) au lieu de deborder.  */
+function sashUV(C, d, both){
+  const h=d/2, ch=2.5*MM, k=Math.min(1,(h-1*MM)/(6*MM));
+  const bead=s=>[C,s*(h-6*MM*k), C-9*MM,s*(h-2*MM*k), C-13*MM,s*(h-2*MM*k),
+                 C-16*MM,s*h];
+  const p=[ch,-h];
+  if(both){ const b=bead(-1); for(let i=b.length-2;i>=0;i-=2) p.push(b[i],b[i+1]); }
+  else p.push(C-1.5*MM,-h, C,-h+1.5*MM);
+  p.push(...bead(1), ch,h, 0,h-ch, 0,-h+ch);
+  return p;
+}
+/* section (u,v) -> repere local d'un montant (d'une traverse si `horiz`),
+   du cote s. Rendue dans le sens direct : faces tournees vers l'exterieur. */
+function place(uv, face, s, horiz){
+  let pts=[], cut=[];
+  for(let i=0;i<uv.length;i+=2){
+    const a=s*(face/2-uv[i]), b=-uv[i+1];
+    if(horiz) pts.push(b,a); else pts.push(a,b);
+    cut.push(uv[i]);
+  }
+  let area=0;
+  for(let i=0,n=cut.length;i<n;i++){const j=(i+1)%n;
+    area+=pts[i*2]*pts[j*2+1]-pts[j*2]*pts[i*2+1];}
+  if(area<0){
+    const q=[]; for(let i=cut.length-1;i>=0;i--) q.push(pts[i*2],pts[i*2+1]);
+    pts=q; cut=cut.reverse();
+  }
+  return {pts, cut};
+}
+/* cadre w x h hors-tout, centre sur `base` : quatre profils coupes d'onglet */
+function rectFrame(mesh, w, h, face, uv, base){
+  for(const s of [-1,1]){
+    const v=place(uv,face,s,false), t=place(uv,face,s,true);
+    mesh.extrude(v.pts, h, M.mul(base, M.mul(M.T(s*(w/2-face/2),0,0), M.RX(-PI/2))), v.cut);
+    mesh.extrude(t.pts, w, M.mul(base, M.mul(M.T(0,s*(h/2-face/2),0), M.RY(PI/2))), t.cut);
+  }
+}
+/* joint EPDM noir autour du vitrage (w x h vus), sur ses deux faces */
+function gaskets(mesh, w, h, t, base){
+  const b=5*MM, e=3*MM;
+  for(const sz of [-1,1]){
+    const z=sz*(t/2+e/2);
+    for(const s of [-1,1]){
+      mesh.box(w, b, e, M.mul(base, M.T(0, s*(h/2-b/2), z)));
+      mesh.box(b, h-2*b, e, M.mul(base, M.T(s*(w/2-b/2), 0, z)));
+    }
+  }
+}
 
 /* ---------- la gamme ---------- */
 const SYSTEMS = {
@@ -93,26 +162,22 @@ const SYSTEMS = {
   S140RP:{depth:140, centre:25, vmax:[2600,3200], kg:300, glass:32, tag:'Lift & slide Infinity',     exact:true},
 };
 
-function frameSection(depth, face, ch){
-  ch = ch===undefined ? 3*MM : ch;
-  const hd=depth/2, hf=face/2;
-  return [-hd+ch,-hf, hd-ch,-hf, hd,-hf+ch, hd,hf-ch,
-          hd-ch,hf, -hd+ch,hf, -hd,hf-ch, -hd,-hf+ch];
+/* poignee de tirage du vantail de service : platine, deux pieds, prise */
+function pull(mesh, base){
+  mesh.box(24*MM, 200*MM, 5*MM, M.mul(base, M.T(0, 0, 2.5*MM)));
+  for(const s of [-1,1])
+    mesh.box(10*MM, 10*MM, 14*MM, M.mul(base, M.T(0, s*70*MM, 12*MM)));
+  mesh.box(16*MM, 170*MM, 10*MM, M.mul(base, M.T(0, 0, 24*MM)));
 }
 
 function build(o){
   const S = SYSTEMS[o.system] || SYSTEMS.S90RP;
   const width=o.width, height=o.height, leaves=o.leaves;
-  const D=S.depth*MM, F=54*MM, C=S.centre*MM, gt=S.glass*MM;
-  const alu=new Mesh(), glz=new Mesh();
+  const D=S.depth*MM, F=54*MM, C=S.centre*MM;
+  const alu=new Mesh(), glz=new Mesh(), seal=new Mesh();
 
-  /* dormant. Orientation : un montant veut sa masse vue en X local et sa
-     profondeur en Y local ; une traverse veut l'inverse. */
-  const secV=frameSection(F,D), secH=frameSection(D,F);
-  for(const sx of [-1,1])
-    alu.extrude(secV, height, M.mul(M.T(sx*(width/2-F/2), height/2, 0), M.RX(-PI/2)));
-  for(const yy of [F/2, height-F/2])
-    alu.extrude(secH, width-2*F, M.mul(M.T(0, yy, 0), M.RY(PI/2)));
+  /* dormant, coupe d'onglet aux quatre angles */
+  rectFrame(alu, width, height, F, frameUV(F, D), M.T(0, height/2, 0));
 
   /* rails */
   const ntr=Math.max(2, Math.min(leaves,4));
@@ -125,7 +190,10 @@ function build(o){
   const clearW=width-2*F, clearH=height-2*F;
   const leafW=(clearW+(leaves-1)*C)/leaves;
   const lt=pitch*0.72;
-  const lsecV=frameSection(C,lt), lsecH=frameSection(lt,C);
+  /* a 3 ou 4 rails, le vantail dessine est plus mince que le vitrage annonce :
+     le verre trace tient dans son profil (la fiche garde la cote du systeme). */
+  const gt=Math.min(S.glass*MM, lt-6*MM);
+  const sash=sashUV(C, lt, true);
   /* ouverture : le vantail 0 (celui qui porte la poignee) coulisse sur son
      propre rail et vient se ranger derriere son voisin. Course : leafW - C. */
   const op=Math.min(1, Math.max(0, +o.opening || 0));
@@ -134,17 +202,13 @@ function build(o){
     let cx=x0+leafW/2;
     if(i===0 && op>0) cx += (leafW-C)*op;
     const cz=z0+(i%ntr)*pitch;
-    for(const sx of [-1,1])
-      alu.extrude(lsecV, clearH,
-        M.mul(M.T(cx+sx*(leafW/2-C/2), F+clearH/2, cz), M.RX(-PI/2)));
-    for(const yy of [F+C/2, height-F-C/2])
-      alu.extrude(lsecH, leafW-2*C, M.mul(M.T(cx, yy, cz), M.RY(PI/2)));
-    glz.box(leafW-2*C, clearH-2*C, gt, M.T(cx, height/2, cz));
-    if(i===0)
-      alu.box(20*MM, 190*MM, 22*MM,
-        M.T(cx+leafW/2-C/2, height*0.45, cz+lt/2+11*MM));
+    const base=M.T(cx, height/2, cz);
+    rectFrame(alu, leafW, clearH, C, sash, base);
+    glz.box(leafW-2*C, clearH-2*C, gt, base);
+    gaskets(seal, leafW-2*C, clearH-2*C, gt, base);
+    if(i===0) pull(alu, M.T(cx+leafW/2-C/2, height*0.45, cz+lt/2));
   }
-  return {alu, glz, leafW};
+  return {alu, glz, seal, leafW};
 }
 
 /* ---------- export GLB ---------- */
@@ -162,6 +226,7 @@ function toGLB(parts, finish, tint){
   const groups=[
     {m:parts.alu, mat:{name:'alu', color:finish.lin, metallic:finish.m, rough:finish.r, alpha:1}},
     {m:parts.glz, mat:{name:'verre', color:tint.lin, metallic:0, rough:tint.r, alpha:tint.a, blend:true}},
+    {m:parts.seal, mat:{name:'seal', color:[0.035,0.035,0.04], metallic:0, rough:0.85, alpha:1}},
   ];
   for(const g of groups){
     if(!g.m || !g.m.pos.length) continue;

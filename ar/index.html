@@ -11,6 +11,7 @@
 <script type="module" src="vendor/model-viewer.min.js"></script>
 <script src="vendor/qrcode.js"></script>
 <script src="pergola.js"></script>
+<script src="rendu.js" defer></script>
 <style>
 :root{
   --bg:#0e1116; --panel:#161b22; --line:#242c37; --txt:#e8edf3;
@@ -298,12 +299,15 @@ const s2l = c => c <= .04045 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4);
 /* h est SANS le '#' -> les octets sont aux offsets 0,2,4 */
 const hexLin = h => [0,2,4].map(i => s2l(parseInt(h.substr(i,2),16)/255));
 
+/* Laques RAL : une peinture, pas un metal (metallic ~0) — sinon la teinte
+   s'assombrit et 7016 ressemble a 9005. RAL 9006 (pigment alu) et
+   l'anodise restent metalliques.                                      */
 const FINISHES = [
-  {id:'ral7016-anthracite', hex:'#383E42', m:.60, r:.38, nm:'RAL 7016'},
-  {id:'ral9016-white',      hex:'#F1F0EA', m:.25, r:.50, nm:'RAL 9016'},
+  {id:'ral7016-anthracite', hex:'#383E42', m:.05, r:.42, nm:'RAL 7016'},
+  {id:'ral9016-white',      hex:'#F1F0EA', m:.02, r:.46, nm:'RAL 9016'},
   {id:'ral9006-silver',     hex:'#A1A1A0', m:.88, r:.28, nm:'RAL 9006'},
   {id:'bronze-anodised',    hex:'#4A3B2A', m:.85, r:.32, nm:'Bronze'},
-  {id:'ral9005-black',      hex:'#0A0A0D', m:.55, r:.40, nm:'RAL 9005'},
+  {id:'ral9005-black',      hex:'#0A0A0D', m:.05, r:.40, nm:'RAL 9005'},
 ];
 /* Cotes libres, en centimetres. Les bornes ne sont pas arbitraires :
    4,20 x 6,00 m est le module maximal d'une Climatika. Au-dela il faut
@@ -499,6 +503,7 @@ function applyMaterial(){
         st.led ? [1,.97,.90,1] : [.05,.05,.05,1]);
     }
   }
+  if(window.Rendu) Rendu.tune();   /* vernis selon la finition (rendu.js) */
 }
 mv.addEventListener('load', ()=>{
   applyMaterial();

@@ -11,6 +11,7 @@
 <script type="module" src="../vendor/model-viewer.min.js"></script>
 <script src="../vendor/qrcode.js"></script>
 <script src="../coulissants.js"></script>
+<script src="../rendu.js" defer></script>
 <style>
 :root{
   --bg:#0e1116; --panel:#161b22; --line:#242c37; --txt:#e8edf3;
@@ -269,13 +270,16 @@ const S = Coulissant.SYSTEMS;
 const s2l = c => c <= .04045 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4);
 const hexLin = h => [0,2,4].map(i => s2l(parseInt(h.substr(i,2),16)/255));
 
+/* Laques RAL : une peinture, pas un metal (metallic ~0) — sinon la teinte
+   s'assombrit et 7016 ressemble a 9005. RAL 9006 (pigment alu) et
+   l'anodise restent metalliques.                                      */
 const FINISHES = [
-  {id:'ral7016-anthracite', hex:'#383E42', m:.60, r:.38, nm:'RAL 7016'},
-  {id:'gris-nuit-7021',     hex:'#2F3234', m:.58, r:.38, nm:'Gris nuit'},
-  {id:'quartz-1019',        hex:'#A48F7A', m:.40, r:.46, nm:'Quartz 1019'},
-  {id:'ral9016-white',      hex:'#F1F0EA', m:.25, r:.50, nm:'RAL 9016'},
+  {id:'ral7016-anthracite', hex:'#383E42', m:.05, r:.42, nm:'RAL 7016'},
+  {id:'gris-nuit-7021',     hex:'#2F3234', m:.05, r:.42, nm:'Gris nuit'},
+  {id:'quartz-1019',        hex:'#A48F7A', m:.05, r:.46, nm:'Quartz 1019'},
+  {id:'ral9016-white',      hex:'#F1F0EA', m:.02, r:.46, nm:'RAL 9016'},
   {id:'ral9006-silver',     hex:'#A1A1A0', m:.88, r:.28, nm:'RAL 9006'},
-  {id:'ral9005-black',      hex:'#0A0A0D', m:.55, r:.40, nm:'RAL 9005'},
+  {id:'ral9005-black',      hex:'#0A0A0D', m:.05, r:.40, nm:'RAL 9005'},
 ];
 const TINTS = [
   {id:'clair',  nm:'Clair',  lin:[0.74,0.88,0.83], a:0.30, r:0.03},

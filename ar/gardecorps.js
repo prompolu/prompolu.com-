@@ -21,7 +21,7 @@ function earcut(d) {
   let area = 0;
   for (let i = 0, j = n - 1; i < n; j = i++)
     area += (d[j*2] - d[i*2]) * (d[i*2+1] + d[j*2+1]);
-  if (area > 0) V.reverse();
+  if (area < 0) V.reverse();
   const inTri = (ax,ay,bx,by,cx,cy,px,py) => {
     const d1=(px-bx)*(ay-by)-(ax-bx)*(py-by);
     const d2=(px-cx)*(by-cy)-(bx-cx)*(py-cy);
@@ -121,14 +121,24 @@ const BAR_GAP_MAX = 110*MM;   // jour maxi : un enfant ne doit pas passer
 function buildGlassLine(o){
   const length=o.length, height=o.height;
   const t=(GLASS[o.glass]||17.5)*MM, uh=90*MM;
-  const alu=new Mesh(), glz=new Mesh(), led=new Mesh();
+  const alu=new Mesh(), glz=new Mesh(), led=new Mesh(), seal=new Mesh();
 
   if (o.recessed){
     /* encastre : on ne modelise que ce qui depasse de la dalle, sinon la
        partie enterree ferait flotter tout l'objet en RA. */
     alu.box(length, 6*MM, 150*MM, M.T(0, 3*MM, 0));
+    for(const zs of [-1,1])
+      seal.box(length-0.03, 4*MM, 4*MM, M.T(0, 8*MM, zs*(t/2+2*MM)));
   } else {
     alu.extrudeX(uSection(), length, 0, 0);
+    /* joints de serrage : le verre est cale dans la gorge du U, et le
+       joint noir affleure des deux cotes, comme sur chantier          */
+    const gap=(26*MM-t)/2;
+    for(const zs of [-1,1])
+      seal.box(length-0.03, 10*MM, gap, M.T(0, uh-3*MM, zs*(t/2+gap/2)));
+    /* embouts : la gorge du U est fermee aux deux bouts */
+    for(const xs of [-1,1])
+      alu.box(4*MM, 62*MM, 26*MM, M.T(xs*(length/2-2*MM), uh-31*MM, 0));
     const n = Math.max(2, Math.round(length/(150*MM)));   // M12 tous les 150 mm
     for(let i=0;i<n;i++){
       const x=-length/2+(i+0.5)*(length/n);
@@ -143,7 +153,7 @@ function buildGlassLine(o){
   if (o.led) for(const zs of [-1,1])
     led.box(length-0.06, 6*MM, 5*MM, M.T(0, gBot+14*MM, zs*(t/2+6*MM)));
 
-  return {alu, glz, led};
+  return {alu, glz, led, seal};
 }
 
 /* ============================== S80B =============================== */
@@ -212,6 +222,7 @@ function toGLB(parts, finish, tint, ledOn){
     {m:parts.alu, mat:{name:'alu', color:finish.lin, metallic:finish.m, rough:finish.r, alpha:1}},
     {m:parts.glz, mat:{name:'verre', color:tint.lin, metallic:0, rough:tint.r,
                        alpha:tint.a, blend:true}},
+    {m:parts.seal, mat:{name:'seal', color:[0.035,0.035,0.04], metallic:0, rough:0.85, alpha:1}},
   ];
   if (parts.led && parts.led.pos.length) groups.push({m:parts.led, mat:{
     name:'led', color: ledOn?[1,0.94,0.86]:[0.05,0.05,0.05], metallic:0, rough:0.25,
