@@ -187,6 +187,8 @@ article.post table th,article.post table td{border-color:#d9d0c3}
 
 .post .answer-first{padding:24px 28px;border:1px solid #d6cabb;border-left:4px solid var(--bronze-dark);background:#e9e2d7;border-radius:14px;color:#2f2c27;margin:8px 0 36px}
 @media(max-width:640px){.post .answer-first{padding:20px}}
+.hub-answer{padding:0 0 18px}.hub-answer .answer-first{max-width:80ch;padding:24px 28px;border:1px solid #d6cabb;border-left:4px solid var(--bronze-dark);background:#e9e2d7;border-radius:14px;color:#2f2c27;margin:0;font-size:16px;line-height:1.7}.hub-answer .answer-first a{color:var(--bronze-dark)}
+@media(max-width:640px){.hub-answer .answer-first{padding:20px;font-size:15px}}
 .spec-row[id]{scroll-margin-top:110px}
 
 .post .system-figure{margin:0 0 30px;max-width:420px}
