@@ -23,7 +23,7 @@ function earcut(data) {
   let area = 0;
   for (let i = 0, j = n - 1; i < n; j = i++)
     area += (data[j*2] - data[i*2]) * (data[i*2+1] + data[j*2+1]);
-  if (area > 0) V.reverse();
+  if (area < 0) V.reverse();
 
   const inTri = (ax,ay,bx,by,cx,cy,px,py) => {
     const d1=(px-bx)*(ay-by)-(ax-bx)*(py-by);
@@ -149,7 +149,7 @@ function bladeSection(w, t) {
     const x=-1+2*i/(n-1);
     top.push(x*w/2, (t/2)*Math.pow(Math.max(0,1-x*x),0.55));
   }
-  for (let i=n-1;i>=0;i--){
+  for (let i=n-2;i>=1;i--){        // bouts = ceux du dessus : pas de sommet en double
     const x=-1+2*i/(n-1);
     bot.push(x*w/2, -(t/2)*0.62*Math.pow(Math.max(0,1-x*x),0.5));
   }

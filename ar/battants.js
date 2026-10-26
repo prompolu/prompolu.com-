@@ -25,7 +25,7 @@ function earcut(d){
   for(let i=0;i<n;i++) V.push(i);
   let area=0;
   for(let i=0,j=n-1;i<n;j=i++) area += (d[j*2]-d[i*2])*(d[i*2+1]+d[j*2+1]);
-  if(area>0) V.reverse();
+  if(area<0) V.reverse();
   const inTri=(ax,ay,bx,by,cx,cy,px,py)=>{
     const d1=(px-bx)*(ay-by)-(ax-bx)*(py-by);
     const d2=(px-cx)*(by-cy)-(bx-cx)*(py-cy);

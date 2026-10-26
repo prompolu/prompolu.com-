@@ -85,6 +85,13 @@ téléphone, prête à être posée sur sa terrasse.
 - Les `.usdz` (iPhone) ne peuvent pas être recolorés à la volée — Apple Quick
   Look charge un fichier figé. D'où un `.usdz` par taille **et** par teinte,
   aux lames inclinées.
+- **Rendu à l'écran** (`ar/rendu.js`, commun aux quatre pages) : éclairage
+  studio `ar/studio.hdr` (74 Ko, refait par `python3 ar/studio-hdr.py`),
+  couleurs « PBR Neutral » fidèles aux RAL, ombre portée nette au sol, vernis
+  satiné du thermolaquage, LED lumineuses. Les laques RAL sont rendues comme
+  une peinture (non métallique) ; RAL 9006 et l'anodisé restent métalliques.
+  Cela ne change que l'affichage dans le navigateur, pas les fichiers de la
+  vue réelle.
 - Poids : `.glb` ≈ 150 Ko, chargé en environ une seconde en 4G. La plupart des
   configurateurs 3D pèsent 5 à 20 Mo et le visiteur part avant la fin.
 
