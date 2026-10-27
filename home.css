@@ -7,7 +7,7 @@
 .home-page .distributor-caption{font:500 10px/1.2 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--bronze-dark);white-space:nowrap}
 
 /* Hero: the offer label is readable at every width. */
-.home-page .hero .eyebrow{font-size:clamp(12px,.9vw,14px);letter-spacing:.2em;line-height:1.6}
+.home-page .hero .eyebrow{font-size:clamp(12px,.9vw,14px);letter-spacing:.2em;line-height:1.6;text-wrap:balance}
 .home-page .hero-description{color:var(--ink)}
 
 /* Ranges: intro sits above the cards; each card has one call to action. */
@@ -54,8 +54,15 @@
 /* Contact: every phone, email and WhatsApp link is a full-height tap target. */
 .home-page .contact-line{align-items:center;padding:12px 0}
 .home-page .contact-section .contact-line .k{font-size:12px}
-.home-page .contact-line .v a{display:flex;align-items:center;min-height:44px}
+.home-page .contact-line .v a{display:flex;align-items:center;gap:8px;min-height:44px}
 .home-page .contact-section .map-open{font-size:13px;min-height:44px}
+
+/* Partner strip and 3D buttons use the body font at a readable size. */
+.home-page .partner-strip .plabel{font-family:var(--body);font-size:13px;color:var(--text-soft)}
+.home-page #visualisation-3d .btn{font-size:15px}
+
+/* Order steps: numbers match the proof figures above. */
+.home-page .step .step-num{font:400 34px/1 var(--display);color:var(--bronze-dark);margin-bottom:0}
 
 /* Mobile contact bar (hidden on larger screens). */
 .mobile-cta-bar{display:none}
@@ -72,14 +79,22 @@
   .home-page .distributor-mark{padding-left:10px}
   .home-page .distributor-caption{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
   .home-page .menu-toggle{height:44px}
-  .home-page .hero .eyebrow{font-size:12px;letter-spacing:.14em}
+  .home-page .hero .eyebrow{font-size:12px;letter-spacing:.06em}
   .home-page .bronze-sheet{display:none}
   .home-page .v3d-teaser-copy .v3d-title{font-size:10vw}
-  .home-page .partner-strip .plabel:last-child{font-size:12px}
+  .home-page .partner-strip .plabel:last-child{font-size:13px;line-height:1.6}
+  .home-page #visualisation-3d .hero-actions{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+  .home-page #visualisation-3d .btn{justify-content:center;min-height:50px}
+  .home-page .back-top{margin-top:0}
   .home-page .page-directory a{padding:6px 0}
   .home-page .social-links a{padding:10px 0}
   .mobile-cta-bar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(241,240,236,.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
-  .mobile-cta-bar a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:99px;border:1px solid #cfc7b9;background:var(--paper);color:var(--ink);font:600 15px/1 var(--body)}
-  .mobile-cta-bar svg{width:20px;height:20px;stroke-width:1.6}
+  .mobile-cta-bar a{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:0 6px;border-radius:99px;border:1px solid #cfc7b9;background:var(--paper);color:var(--ink);font:600 14px/1 var(--body);white-space:nowrap}
+  .mobile-cta-bar svg{width:18px;height:18px;stroke-width:1.6}
   .mobile-cta-bar .mcb-quote{background:var(--bronze-dark);border-color:var(--bronze-dark);color:#fff}
+}
+
+@media(max-width:359px){
+  .mobile-cta-bar{gap:6px;padding-left:8px;padding-right:8px}
+  .mobile-cta-bar a svg{display:none}
 }
