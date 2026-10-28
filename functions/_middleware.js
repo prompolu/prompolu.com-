@@ -44,6 +44,7 @@ const PUBLIC_PAGES = new Set([
   '/coulissants/s88rp',
   '/coulissants/s90r',
   '/coulissants/s90rp',
+  '/coulissants/s110p',
   '/coulissants/s125rp',
   '/coulissants/s140rp',
   '/coulissants/s70p',

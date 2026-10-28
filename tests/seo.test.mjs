@@ -12,9 +12,9 @@ const fileFor = (url) => {
   return path.endsWith('/') ? path.slice(1) + 'index.html' : path.slice(1) + '.html';
 };
 
-test('all 41 public sitemap destinations match existing pages and self canonicals', () => {
-  assert.equal(locations.length, 41);
-  assert.equal(new Set(locations).size, 41);
+test('all 42 public sitemap destinations match existing pages and self canonicals', () => {
+  assert.equal(locations.length, 42);
+  assert.equal(new Set(locations).size, 42);
   const titles = new Set();
   const organizationDescriptions = new Set();
   for (const location of locations) {
@@ -51,7 +51,7 @@ test('all 41 public sitemap destinations match existing pages and self canonical
       }
     }
   }
-  assert.equal(titles.size, 41);
+  assert.equal(titles.size, 42);
   assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });
@@ -126,7 +126,7 @@ test('guide structured data mirrors the visible headline, dates, breadcrumbs and
 
 test('each STRUGAL system page carries Product data, breadcrumbs and a FAQ that mirror the page', () => {
   const systems = locations.filter((l) => /\/(?:coulissants|battants)\/[^/]+$/.test(l));
-  assert.equal(systems.length, 17);
+  assert.equal(systems.length, 18);
   for (const location of systems) {
     const file = fileFor(location);
     const page = read(file);
