@@ -198,3 +198,5 @@ article.post table th,article.post table td{border-color:#d9d0c3}
 .post a.button{color:#fff;text-decoration:none}
 .spec-row .sys-desc a{color:var(--bronze-dark);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 @media(max-width:640px){.post table.spec-table{min-width:0}.post .spec-table th[scope=row],.post .spec-table td{display:block;width:auto}.post .spec-table th[scope=row]{padding:14px 16px 6px;border-bottom:0}.post .spec-table td{padding:4px 16px 14px}}
+.page-hero .hero-datasheet{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;margin-top:24px}
+.page-hero .hero-datasheet .datasheet-link{font:600 14px/1.5 var(--body);color:inherit;text-decoration:underline;text-underline-offset:3px}
