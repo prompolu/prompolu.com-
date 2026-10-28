@@ -7,7 +7,7 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 ## Pages principales
 
 - [Accueil](https://prompolu.com/): présentation générale de l'activité et des quatre gammes de produits.
-- [Systèmes coulissants](https://prompolu.com/coulissants): systèmes STRUGAL (S70P, S70R, S86RP, S88R, S88RP, S88RP Prime, S88RP élevable, S90P, S90R, S90RP, S110P, S125RP, S140RP Infinity) avec fiches techniques (poids, dimensions, performances) et un tableau comparatif des douze systèmes (https://prompolu.com/coulissants#comparatif).
+- [Systèmes coulissants](https://prompolu.com/coulissants): systèmes STRUGAL (S70P, S70R, S86RP, S88R, S88RP, S88RP Prime, S88RP élevable, S90P, S90R, S90RP, S110P, S125RP, S140RP Infinity) avec fiches techniques (poids, dimensions, performances) et un tableau comparatif des douze systèmes qui ont une fiche technique (https://prompolu.com/coulissants#comparatif). La gamme coulissante compte treize systèmes : douze ont une fiche détaillée sur le site ; le S110P, grand format, est présenté sur la page des coulissants et documenté sur demande.
 - [Fenêtres & portes battantes](https://prompolu.com/battants): systèmes battants STRUGAL (S53RP+, S46, S40), porte coplanaire S45C, fenêtre et porte pliante S47 et portes ALUDOORS (A400K, A200 4FH2), avec un tableau comparatif des cinq systèmes.
 - [Profilés aluminium pour cuisines et dressings](https://prompolu.com/agencement): profilés pour cuisinistes et menuisiers (Fès et tout le Maroc), ouvrant cuisine à poignée intégrée, profil dressing, accessoires STARAX. PROMPOLU ne vend pas de cuisines finies.
 - [Extérieur & confort](https://prompolu.com/exterieur): garde-corps, volets roulants, pergolas et bardage aluminium, mur rideau STRUGAL S52.
@@ -52,7 +52,7 @@ Chaque fiche donne les caractéristiques publiées par STRUGAL (guide des systè
 
 ## Guides techniques
 
-- [Comment choisir son système coulissant aluminium ?](https://prompolu.com/conseils/guide-choisir-systeme-coulissant-aluminium): choix entre les onze systèmes coulissants STRUGAL selon l'usage, les dimensions, le poids de vantail, l'isolation et le budget.
+- [Comment choisir son système coulissant aluminium ?](https://prompolu.com/conseils/guide-choisir-systeme-coulissant-aluminium): choix entre les systèmes coulissants STRUGAL, du S70P au S140RP Infinity, selon l'usage, les dimensions, le poids de vantail, l'isolation et le budget.
 - [Coulissant ou battant : comment choisir ?](https://prompolu.com/conseils/coulissant-ou-battant-comment-choisir): comparatif encombrement, étanchéité, dimensions maximales et coût, avec les erreurs de choix les plus fréquentes.
 - [La rupture de pont thermique, expliquée simplement](https://prompolu.com/conseils/rupture-de-pont-thermique-aluminium): principe, lecture des coefficients Uw et Rw, intérêt sous le climat marocain et erreurs de mise en œuvre à l'atelier.
 - [Thermolaquage, anodisation, bicolore : choisir la finition d'un profilé aluminium](https://prompolu.com/conseils/finitions-aluminium-thermolaquage-anodisation): brut, anodisé, thermolaqué, effet bois et bicolore comparés ; labels Qualicoat et Qualanod, finitions pour le bord de mer, choix d'une teinte RAL.
@@ -68,7 +68,7 @@ Chaque fiche donne les caractéristiques publiées par STRUGAL (guide des systè
 - Quatre produits sont configurables, aux cotes libres au centimètre :
   - Pergola bioclimatique à lames orientables, jusqu'à 4,20 × 6,00 m par module, éclairage LED en option.
   - Garde-corps aluminium : Glass Line en verre feuilleté sans montant, ou S80B à barreaudage ; longueur libre, trois hauteurs, main courante et LED en option.
-  - Baie coulissante STRUGAL : les onze systèmes, du S70P au S140RP Infinity, en 2, 3 ou 4 vantaux, vantail manœuvrant ouvert ou fermé, avec une alerte si un vantail dépasse la capacité du système choisi.
+  - Baie coulissante STRUGAL : onze des treize systèmes de la gamme (tous sauf S88RP Prime et S88RP élevable), du S70P au S140RP Infinity, en 2, 3 ou 4 vantaux, vantail manœuvrant ouvert ou fermé, avec une alerte si un vantail dépasse la capacité du système choisi.
   - Menuiserie battante : fenêtres S53RP+ (rupture de pont thermique) et S46 (canal européen), un ou deux vantaux, ouverture à la française à 95° ou oscillo-battant ; 120 kg et 1500 × 2400 mm maxi par vantail. Portes ALUDOORS A400K (entrée) et A200 4FH2 (intérieure), vantail plein. L'outil affiche la saillie du vantail dans la pièce, mesurée sur la géométrie — c'est le critère qui décide entre un battant et un coulissant.
 - Six finitions : RAL 7016 anthracite, Gris nuit (RAL 7021), Quartz 1019 (RAL 1019), RAL 9016 blanc, RAL 9006 argent, RAL 9005 noir.
 - Chaque modèle 3D pèse environ 150 Ko et s'affiche en une seconde en 4G.
