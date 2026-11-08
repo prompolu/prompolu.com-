@@ -1,0 +1,153 @@
+/* Full-bleed video background for the homepage's opening section. */
+.home-page .range-image-window { aspect-ratio: 4 / 3; }
+.home-page .site-header {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: #fff;
+}
+.home-page .site-header .brand img { filter: brightness(0) invert(1); }
+.home-page .site-header .distributor-mark {
+  background: transparent;
+  border-left-color: rgb(255 255 255 / 35%);
+}
+.home-page .site-header .distributor-mark img { filter: url(#header-logo-white); }
+.home-page .site-header .distributor-caption { color: #fff; }
+.home-page .site-header .desktop-nav {
+  color: #fff;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 65%);
+}
+.home-page .site-header .nav-panel { color: var(--ink); text-shadow: none; }
+.home-page .site-header .menu-toggle span { background: #fff; }
+.home-page .approved-hero {
+  --hero-header-height: 96px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: max(600px, 100svh);
+  padding: calc(var(--hero-header-height) + clamp(56px, 7vw, 110px)) var(--gutter) clamp(56px, 7vw, 110px);
+  isolation: isolate;
+  overflow: hidden;
+  background: #20231f;
+  color: #fff;
+}
+.home-page .approved-hero .hero-video-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  aspect-ratio: auto;
+  margin: 0;
+  border-radius: 0;
+  clip-path: none;
+}
+.home-page .hero-video-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(10 15 13 / 48%) 0, rgb(10 15 13 / 20%) 160px);
+}
+.home-page .approved-hero .hero-copy {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 920px);
+  max-width: 920px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  text-align: center;
+  text-shadow: 0 2px 10px rgb(0 0 0 / 75%);
+}
+.home-page .approved-hero h1 { color: #fff; }
+.home-page .approved-hero .eyebrow { color: #f2e3ca; }
+.home-page .approved-hero .hero-description {
+  color: #fff;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.home-page .approved-hero .bronze-sheet,
+.home-page .approved-hero .hero-sweep { display: none; }
+.approved-hero .home-hero-video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.hero-video-toggle {
+  position: absolute;
+  right: var(--gutter);
+  top: calc(var(--hero-header-height) + 16px);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid #ffffff70;
+  border-radius: 50%;
+  background: #191b1bc7;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+.hero-video-toggle[hidden] { display: none; }
+.hero-video-toggle:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+
+.hero-video-toggle span { width: 12px; height: 14px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
+.hero-video-toggle[data-paused="true"] span { border: 0; background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+
+@media (min-width: 1900px) {
+  .home-page .approved-hero { --hero-header-height: 120px; }
+}
+@media (max-width: 1190px) {
+  .home-page .approved-hero { --hero-header-height: 88px; }
+}
+@media (max-width: 900px) {
+  .home-page .approved-hero { --hero-header-height: 85px; }
+}
+@media (max-width: 640px) {
+  .home-page .approved-hero {
+    --hero-header-height: 82px;
+    min-height: max(620px, 100svh);
+    padding: calc(var(--hero-header-height) + 48px) var(--gutter) 120px;
+  }
+  .approved-hero .home-hero-video { object-position: 58% center; }
+}
+
+/* Keep the centred hero still while Anton and DM Sans load: the stand-in
+   fonts are scaled to the same widths (measured against Arial) so lines
+   break in the same places, and each headline line stays on one line. */
+@font-face {
+  font-family: 'Anton Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('Arimo'), local('Roboto');
+  size-adjust: 70%;
+}
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('Arimo'), local('Roboto');
+  size-adjust: 102.6%;
+}
+@font-face {
+  font-family: 'DM Sans Caps Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('Arimo'), local('Roboto');
+  size-adjust: 91.5%;
+}
+.home-page .approved-hero h1 { font-family: Anton, 'Anton Fallback', Impact, 'Arial Narrow', sans-serif; }
+.home-page .approved-hero h1 > span { white-space: nowrap; }
+.home-page .approved-hero .hero-description { font-family: 'DM Sans', 'DM Sans Fallback', Arial, sans-serif; }
+.home-page .approved-hero .eyebrow { font-family: 'DM Sans', 'DM Sans Caps Fallback', Arial, sans-serif; }

@@ -26,6 +26,7 @@
   // --- Chargement différé : uniquement après acceptation ---
   function charger() {
     if (chargee) return;
+    if (!['prompolu.com', 'www.prompolu.com'].includes(location.hostname)) return;
     chargee = true;
 
     gtag('js', new Date());
@@ -93,7 +94,7 @@
       if (h.indexOf('tel:') === 0) nom = 'clic_telephone';
       else if (h.indexOf('wa.me') > -1) nom = 'clic_whatsapp';
       else if (h.indexOf('mailto:') === 0) nom = 'clic_email';
-      else if (a.classList.contains('cta')) nom = 'clic_demander_devis';
+      else if (a.matches('.cta, .header-quote, .menu-quote, .mcb-quote')) nom = 'clic_demander_devis';
 
       if (nom) {
         gtag('event', nom, {
