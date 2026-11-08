@@ -1,7 +1,7 @@
 /* Homepage motion is isolated from the existing product and guide pages. */
-/* On wide screens, the four categories pass from left to right as the page scrolls. */
+/* A single category follows a shallow orbital path into view at each scroll step. */
 html.has-range-motion .home-page .ranges {
-  min-height: 365svh;
+  min-height: 400svh;
   padding: 0;
   overflow: clip;
 }
@@ -12,39 +12,48 @@ html.has-range-motion .home-page .ranges-motion-inner {
   flex-direction: column;
   justify-content: center;
   height: 100svh;
-  min-height: 720px;
-  padding: 40px var(--gutter);
+  padding: 28px var(--gutter);
   overflow: hidden;
 }
 html.has-range-motion .home-page .ranges>.ranges-motion-inner>.display { margin-bottom: 10px; }
-html.has-range-motion .home-page .ranges-summary { margin-bottom: 20px; }
+html.has-range-motion .home-page .ranges-summary { margin-bottom: 18px; }
 html.has-range-motion .home-page .range-grid {
   position: relative;
-  display: flex;
-  flex-direction: row-reverse;
-  width: max-content;
-  gap: clamp(18px, 2.5vw, 32px);
-  transform: translate3d(var(--range-x, 0px), 0, 0);
-  will-change: transform;
+  display: block;
+  width: 100%;
+  height: min(66svh, 600px);
+  perspective: 1200px;
+  overflow: hidden;
 }
-html.has-range-motion .home-page .range-card {
-  flex: 0 0 clamp(350px, 38vw, 530px);
+html.has-range-motion .home-page .range-grid .range-card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
   width: clamp(350px, 38vw, 530px);
   border-radius: 0;
+  transform: translateX(-50%);
+  transform-style: preserve-3d;
+  transition: none;
 }
+html.has-range-motion .home-page .range-grid .range-card[hidden] { display: none !important; }
+html.has-range-motion .home-page .range-grid .range-card:hover { transform: translateX(-50%) translateY(-5px); }
 html.has-range-motion .home-page .range-card-top { min-height: 55px; padding-block: 7px; }
 html.has-range-motion .home-page .range-card-bottom { min-height: 132px; }
-html.has-range-motion .home-page .image-caption { margin-top: 12px; }
+.home-page .range-motion-status { float: right; color: var(--bronze-dark); }
 @media (max-height: 760px) and (min-width: 851px) {
-  html.has-range-motion .home-page .ranges-motion-inner { justify-content: flex-start; min-height: 0; padding-block: 18px; }
-  html.has-range-motion .home-page .range-card { flex-basis: min(34vw, 430px); width: min(34vw, 430px); }
+  html.has-range-motion .home-page .ranges-motion-inner { justify-content: flex-start; padding-block: 18px; }
+  html.has-range-motion .home-page .range-grid .range-card { width: min(34vw, 430px); }
   html.has-range-motion .home-page .range-card-top { min-height: 45px; }
   html.has-range-motion .home-page .range-card-bottom { min-height: 110px; padding-block: 12px; }
 }
 @media (max-width: 850px) {
   .home-page .ranges-motion-inner { min-width: 0; }
-  .home-page .range-grid { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-inline: contain; padding-bottom: 10px; }
-  .home-page .range-grid .range-card { flex: 0 0 min(80vw, 480px); scroll-snap-align: start; }
+  .home-page .range-grid { display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-inline: contain; scrollbar-width: none; }
+  .home-page .range-grid::-webkit-scrollbar { display: none; }
+  .home-page .range-grid .range-card { flex: 0 0 100%; scroll-snap-align: center; }
+  .home-page .range-motion-status { display: block; float: none; margin-top: 5px; }
 }
 .home-page .range-card { transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s ease; }
 .home-page .range-card:hover { transform: translateY(-6px); }

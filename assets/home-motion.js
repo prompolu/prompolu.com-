@@ -12,30 +12,58 @@
   const ranges = document.getElementById('gammes');
   const rangeGrid = ranges?.querySelector('.range-grid');
   const rangeCards = rangeGrid ? [...rangeGrid.querySelectorAll('.range-card')] : [];
+  const rangeStatus = ranges?.querySelector('.range-motion-status');
   const wideScreen = matchMedia('(min-width: 851px)');
+  let activeRange = -1;
+  const showRange = (index, orbit = true) => {
+    if (index === activeRange) return;
+    const previous = activeRange;
+    activeRange = index;
+    rangeCards.forEach((card, cardIndex) => {
+      const current = cardIndex === index;
+      card.hidden = !current;
+      card.inert = !current;
+      card.setAttribute('aria-hidden', String(!current));
+      if (current) card.getAnimations().forEach(animation => animation.cancel());
+    });
+    if (rangeStatus) rangeStatus.textContent = `${String(index + 1).padStart(2, '0')} / 04 · Défiler pour explorer`;
+    if (!orbit || previous < 0) return;
+    const direction = index > previous ? -1 : 1;
+    rangeCards[index].animate([
+      { opacity: 0, transform: `translateX(calc(-50% + ${direction * 210}px)) translateY(34px) rotateY(${direction * 48}deg) scale(.82)` },
+      { opacity: .68, transform: `translateX(calc(-50% + ${direction * 46}px)) translateY(-12px) rotateY(${direction * 12}deg) scale(.97)`, offset: .68 },
+      { opacity: 1, transform: 'translateX(-50%) translateY(0) rotateY(0) scale(1)' }
+    ], { duration: 560, easing: 'cubic-bezier(.18,.7,.2,1)' });
+  };
   const renderRanges = () => {
     const enabled = wideScreen.matches && !reduced.matches && rangeCards.length > 1;
     document.documentElement.classList.toggle('has-range-motion', enabled);
     if (!enabled) {
-      rangeGrid?.style.removeProperty('--range-x');
+      if (activeRange !== -1) {
+        rangeCards.forEach(card => { card.hidden = false; card.inert = false; card.removeAttribute('aria-hidden'); card.getAnimations().forEach(animation => animation.cancel()); });
+        activeRange = -1;
+      }
       return;
     }
     const bounds = ranges.getBoundingClientRect();
     const travel = Math.max(1, bounds.height - innerHeight);
     const progress = clamp(-bounds.top / travel, 0, 1);
-    const center = (ranges.clientWidth - rangeCards[0].offsetWidth) / 2 - rangeGrid.offsetLeft;
-    const start = center - rangeCards[0].offsetLeft;
-    const end = center - rangeCards[rangeCards.length - 1].offsetLeft;
-    rangeGrid.style.setProperty('--range-x', `${(start + (end - start) * progress).toFixed(1)}px`);
+    const index = Math.min(rangeCards.length - 1, Math.floor(progress * rangeCards.length));
+    showRange(index, bounds.top < innerHeight && bounds.bottom > 0);
   };
   rangeGrid?.addEventListener('focusin', (event) => {
     if (!wideScreen.matches || reduced.matches) return;
-    const card = event.target.closest('.range-card');
-    const index = rangeCards.indexOf(card);
+    const index = rangeCards.indexOf(event.target.closest('.range-card'));
     if (index < 0) return;
     const top = ranges.getBoundingClientRect().top + scrollY;
-    scrollTo({ top: top + (ranges.offsetHeight - innerHeight) * index / (rangeCards.length - 1), behavior: 'smooth' });
+    scrollTo({ top: top + (ranges.offsetHeight - innerHeight) * (index + .5) / rangeCards.length, behavior: 'smooth' });
   });
+  rangeGrid?.addEventListener('scroll', () => {
+    if (wideScreen.matches || !rangeStatus) return;
+    const step = rangeCards[0]?.offsetWidth || 1;
+    const index = Math.min(rangeCards.length - 1, Math.round(rangeGrid.scrollLeft / step));
+    rangeStatus.textContent = `${String(index + 1).padStart(2, '0')} / 04 · Glisser pour explorer`;
+  }, { passive: true });
   const render = () => {
     frame = 0;
     renderRanges();
