@@ -128,3 +128,26 @@
   }
   .approved-hero .home-hero-video { object-position: 58% center; }
 }
+
+/* Keep the centred hero still while Anton and DM Sans load: the stand-in
+   fonts are scaled to the same widths (measured against Arial) so lines
+   break in the same places, and each headline line stays on one line. */
+@font-face {
+  font-family: 'Anton Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('Arimo'), local('Roboto');
+  size-adjust: 70%;
+}
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('Arimo'), local('Roboto');
+  size-adjust: 102.6%;
+}
+@font-face {
+  font-family: 'DM Sans Caps Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('Arimo'), local('Roboto');
+  size-adjust: 91.5%;
+}
+.home-page .approved-hero h1 { font-family: Anton, 'Anton Fallback', Impact, 'Arial Narrow', sans-serif; }
+.home-page .approved-hero h1 > span { white-space: nowrap; }
+.home-page .approved-hero .hero-description { font-family: 'DM Sans', 'DM Sans Fallback', Arial, sans-serif; }
+.home-page .approved-hero .eyebrow { font-family: 'DM Sans', 'DM Sans Caps Fallback', Arial, sans-serif; }
