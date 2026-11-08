@@ -89,6 +89,7 @@
   .home-page .page-directory a{padding:6px 0}
   .home-page .social-links a{padding:10px 0}
   .mobile-cta-bar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(241,240,236,.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+  .home-page .consent-bar{bottom:calc(69px + env(safe-area-inset-bottom))}
   .mobile-cta-bar a{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:0 6px;border-radius:99px;border:1px solid #cfc7b9;background:var(--paper);color:var(--ink);font:600 14px/1 var(--body);white-space:nowrap}
   .mobile-cta-bar svg{width:18px;height:18px;stroke-width:1.6}
   .mobile-cta-bar .mcb-quote{background:var(--bronze-dark);border-color:var(--bronze-dark);color:#fff}

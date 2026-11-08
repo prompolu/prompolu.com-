@@ -3,6 +3,9 @@
   Strict-Transport-Security: max-age=31536000
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: frame-ancestors 'self'
+  Permissions-Policy: geolocation=(), microphone=(), payment=(), usb=()
 
 # Unlisted motion-design approval previews only; public site indexing stays enabled.
 /preview/*
@@ -20,4 +23,44 @@
 /assets/font-4.woff2
   Cache-Control: public, max-age=31536000, immutable
 /assets/products/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# Accueil : vidéo et photos (renommer le fichier pour forcer une mise à jour).
+/assets/home-hero.mp4
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/home-hero-portrait.mp4
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/home-hero-poster.jpg
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/coulissants-approved.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/coulissants-approved-480.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/coulissants-approved-800.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/coulissants-approved-1100.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/battants-approved.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/battants-approved-480.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/battants-approved-800.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/battants-approved-1100.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/agencement-approved.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/agencement-approved-480.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/agencement-approved-800.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/agencement-approved-1100.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/exterieur-approved.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/exterieur-approved-480.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/exterieur-approved-800.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/assets/exterieur-approved-1100.webp
   Cache-Control: public, max-age=2592000, stale-while-revalidate=86400

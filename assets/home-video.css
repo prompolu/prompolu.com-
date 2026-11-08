@@ -56,7 +56,9 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg, rgb(10 15 13 / 48%) 0, rgb(10 15 13 / 20%) 160px);
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 58%, rgb(10 15 13 / 42%) 0, rgb(10 15 13 / 0) 100%),
+    linear-gradient(180deg, rgb(10 15 13 / 48%) 0, rgb(10 15 13 / 20%) 160px);
 }
 .home-page .approved-hero .hero-copy {
   position: relative;

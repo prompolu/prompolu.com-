@@ -15,7 +15,8 @@
   const play = () => {
     const source = video.querySelector('source[data-src]');
     if (source) {
-      source.src = source.dataset.src;
+      const portrait = window.matchMedia('(max-width: 640px) and (orientation: portrait)').matches;
+      source.src = (portrait && source.dataset.srcPortrait) || source.dataset.src;
       source.removeAttribute('data-src');
       video.load();
     }
