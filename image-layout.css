@@ -45,7 +45,7 @@
   transform: none;
 }
 .page-visual { aspect-ratio: 1; max-height: 480px; border-radius: 20px; }
-.page-visual-window { aspect-ratio: 1536 / 1067; background: transparent; }
+.page-visual-window { aspect-ratio: 1448 / 1086; background: transparent; }
 .range-card-top { position: static; height: auto; min-height: 76px; background: var(--paper); }
 .range-image { height: auto; aspect-ratio: 4 / 3; }
 .range-card:hover .range-image > img { transform: none; }
