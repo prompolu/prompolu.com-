@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PROMPOLU — Aperçu 3D</title>
+<!-- Aperçu non publié : ne pas indexer. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Aperçu non publié de la page d'accueil PROMPOLU en 3D interactive.">
+<meta name="theme-color" content="#0c0d0e">
+<link rel="icon" href="../../assets/favicon.ico" sizes="any">
+<link rel="preload" href="../../assets/font-0.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../assets/font-1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="style.css">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js" crossorigin>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+    "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.mjs"
+  }
+}
+</script>
+<script type="module" src="main.js"></script>
+</head>
+<body class="is-loading">
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<div class="loader" aria-hidden="true">
+  <img src="../../assets/logo-prompolu.png" alt="" width="602" height="83">
+  <div class="loader-bar"><span></span></div>
+  <p>Préparation de la scène 3D</p>
+</div>
+
+<div class="backdrop" aria-hidden="true"></div>
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="fx" aria-hidden="true"><div class="vignette"></div><div class="flash"></div><div class="grain"></div></div>
+<div class="labels" aria-hidden="true">
+  <svg class="leaders"></svg>
+  <p class="label" data-label="outer"><b>Demi-profilé extérieur</b><span>Thermolaqué, côté façade</span></p>
+  <p class="label" data-label="strip"><b>Barrettes polyamide</b><span>Vingt fois moins conductrices</span></p>
+  <p class="label" data-label="inner"><b>Demi-profilé intérieur</b><span>Ici anodisé : finition bicolore</span></p>
+  <p class="label" data-label="glass"><b>Double vitrage</b><span>Tenu par la parclose</span></p>
+  <p class="label" data-label="seal"><b>Joints d'étanchéité</b><span>Air et eau</span></p>
+</div>
+
+<header class="top">
+  <a class="brand" href="https://prompolu.com/" aria-label="PROMPOLU ALUMINIUM, site actuel"><img src="../../assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="602" height="83"></a>
+  <nav class="top-nav" aria-label="Navigation de l'aperçu">
+    <a href="#finitions">Finitions</a>
+    <a href="#gammes">Gammes</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a class="btn btn-ghost" href="https://prompolu.com/contact#formulaire">Demander un devis</a>
+</header>
+
+<nav class="rail" aria-label="Chapitres">
+  <a href="#chapitre-profil" data-rail="0"><span>01</span> Profil</a>
+  <a href="#chapitre-assemblage" data-rail="1"><span>02</span> Assemblage</a>
+  <a href="#chapitre-ouverture" data-rail="2"><span>03</span> Ouverture</a>
+  <a href="#chapitre-coeur" data-rail="3"><span>04</span> Rupture</a>
+  <a href="#finitions" data-rail="4"><span>05</span> Finitions</a>
+</nav>
+
+<!-- Récit fixe au-dessus de la scène : chaque bloc apparaît selon la progression P (0 → 5). -->
+<div class="story" id="contenu">
+  <div class="beat hero-copy" data-beat="0 .5">
+    <p class="eyebrow">Distributeur officiel STRUGAL · Fès &amp; Sefrou</p>
+    <h1 class="display"><span class="ln"><span>La qualité,</span></span> <span class="ln"><span>notre meilleur</span></span> <span class="ln"><span>profil.</span></span></h1>
+    <div class="hero-foot">
+      <p>Profilés et systèmes aluminium STRUGAL pour les menuisiers et fabricants de Fès et de Sefrou, livrés partout au Maroc.</p>
+      <div class="actions">
+        <a class="btn btn-bronze" href="#chapitre-assemblage">Entrer dans le profil <i aria-hidden="true">↓</i></a>
+        <a class="btn btn-ghost" href="https://prompolu.com/contact#formulaire">Demander un devis</a>
+      </div>
+    </div>
+  </div>
+
+  <article class="beat right" data-beat="1.04 1.36">
+    <p class="eyebrow"><span>02</span> Assemblage</p>
+    <h2 class="display">Une barre,<br>pensée au millimètre.</h2>
+    <p>Chambres, rainures et rails de roulement : chaque profilé STRUGAL porte déjà la fenêtre qu'il deviendra.</p>
+  </article>
+  <article class="beat right" data-beat="1.42 1.7">
+    <p class="eyebrow"><span>02</span> Assemblage</p>
+    <h2 class="display">Coupé à 45°,<br>assemblé chez vous.</h2>
+    <p>Nous fournissons la matière première aluminium ; vos ateliers coupent, assemblent et posent.</p>
+  </article>
+  <article class="beat right" data-beat="1.76 2.04">
+    <p class="eyebrow"><span>02</span> Assemblage</p>
+    <h2 class="display">Treize systèmes coulissants,<br>un seul catalogue.</h2>
+    <p>Du coulissant économique S70P au levant-coulissant S125RP.</p>
+  </article>
+
+  <article class="beat right" data-beat="2.08 2.42">
+    <p class="eyebrow"><span>03</span> Ouverture</p>
+    <h2 class="display">400 kg<br>par vantail.</h2>
+    <p>Le S125RP à levage va jusqu'à 400 kg et 3200 × 3000 mm par ouvrant (maxima selon configuration).</p>
+  </article>
+  <article class="beat right" data-beat="2.46 2.74">
+    <p class="eyebrow"><span>03</span> Ouverture</p>
+    <h2 class="display">Testés aux normes<br>européennes.</h2>
+    <ul class="norms">
+      <li><b>EN 12207</b> Perméabilité à l'air</li>
+      <li><b>EN 12208</b> Étanchéité à l'eau</li>
+      <li><b>EN 12210</b> Résistance au vent</li>
+    </ul>
+  </article>
+
+  <article class="beat left narrow" data-beat="3.08 3.9">
+    <p class="eyebrow"><span>04</span> Au cœur du profil</p>
+    <h2 class="display">La rupture<br>de pont thermique.</h2>
+    <p>Le profilé est séparé en deux demi-profilés reliés par des barrettes en polyamide, un matériau vingt fois moins conducteur. Le cadre laisse beaucoup moins passer la chaleur et le froid.</p>
+    <a class="link" href="https://prompolu.com/conseils/rupture-de-pont-thermique-aluminium">Lire le guide complet <i aria-hidden="true">→</i></a>
+    <p class="note">Coupe illustrative, dimensions indicatives.</p>
+  </article>
+
+  <div class="drag-zone" data-beat="4.1 9" aria-hidden="true"></div>
+  <article class="beat upper" data-beat="4.1 9">
+    <p class="eyebrow"><span>05</span> Finitions</p>
+    <h2 class="display">Votre finition,<br>en direct.</h2>
+    <p>Thermolaquage dans presque toutes les teintes RAL, anodisation, effet bois ou bicolore.</p>
+    <a class="link" href="https://prompolu.com/conseils/finitions-aluminium-thermolaquage-anodisation">Choisir une finition <i aria-hidden="true">→</i></a>
+  </article>
+  <div class="finish-ui" data-beat="4.16 9">
+    <p class="drag-hint" aria-hidden="true"><span>⟲</span> Faites tourner la baie</p>
+    <div class="swatches" role="radiogroup" aria-label="Choisir une finition"></div>
+    <p class="finish-name" aria-live="polite"><b>Anodisé</b> Naturel</p>
+  </div>
+</div>
+
+<main>
+  <!-- Espaces de défilement des cinq chapitres 3D (longueur en hauteurs d'écran). -->
+  <section class="chapter" id="chapitre-profil" data-chapter style="--len:1.6" aria-label="Chapitre 1 : le profil"></section>
+  <section class="chapter" id="chapitre-assemblage" data-chapter style="--len:2.6" aria-label="Chapitre 2 : l'assemblage"></section>
+  <section class="chapter" id="chapitre-ouverture" data-chapter style="--len:2.4" aria-label="Chapitre 3 : l'ouverture"></section>
+  <section class="chapter" id="chapitre-coeur" data-chapter style="--len:2.8" aria-label="Chapitre 4 : la rupture de pont thermique"></section>
+  <section class="chapter" id="finitions" data-chapter style="--len:2.2" aria-label="Chapitre 5 : les finitions"></section>
+
+  <section class="panel paper gammes" id="gammes" data-tone="paper">
+    <header class="panel-head" data-reveal>
+      <p class="eyebrow">Nos gammes</p>
+      <h2 class="display">À chaque projet,<br><em>son profil.</em></h2>
+      <p>Une matière première aluminium adaptée à chaque fabrication : du coulissant résidentiel au grand format architectural.</p>
+    </header>
+    <div class="cards">
+      <a class="card" href="https://prompolu.com/coulissants" data-reveal>
+        <span class="card-media"><img src="../../assets/coulissants-approved-800.webp" srcset="../../assets/coulissants-approved-480.webp 480w, ../../assets/coulissants-approved-800.webp 800w, ../../assets/coulissants-approved-1100.webp 1100w" sizes="(max-width:700px) 90vw, 25vw" alt="Baie coulissante en aluminium noir dans un intérieur contemporain" loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="card-body"><b>Coulissants</b><span>Du S70P économique au S140RP Infinity grand format.</span><i aria-hidden="true">→</i></span>
+        <span class="glare" aria-hidden="true"></span>
+      </a>
+      <a class="card" href="https://prompolu.com/battants" data-reveal>
+        <span class="card-media"><img src="../../assets/battants-approved-800.webp" srcset="../../assets/battants-approved-480.webp 480w, ../../assets/battants-approved-800.webp 800w, ../../assets/battants-approved-1100.webp 1100w" sizes="(max-width:700px) 90vw, 25vw" alt="Fenêtre battante en aluminium noir ouverte sur un patio" loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="card-body"><b>Battants</b><span>STRUGAL S53RP+ et S46, portes ALUDOORS A400K et A200 4FH2.</span><i aria-hidden="true">→</i></span>
+        <span class="glare" aria-hidden="true"></span>
+      </a>
+      <a class="card" href="https://prompolu.com/agencement" data-reveal>
+        <span class="card-media"><img src="../../assets/agencement-approved-800.webp" srcset="../../assets/agencement-approved-480.webp 480w, ../../assets/agencement-approved-800.webp 800w, ../../assets/agencement-approved-1100.webp 1100w" sizes="(max-width:700px) 90vw, 25vw" alt="Dressing sur-mesure avec portes en verre fumé" loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="card-body"><b>Agencement</b><span>Cuisines équipées et dressings sur-mesure, poignée intégrée.</span><i aria-hidden="true">→</i></span>
+        <span class="glare" aria-hidden="true"></span>
+      </a>
+      <a class="card" href="https://prompolu.com/exterieur" data-reveal>
+        <span class="card-media"><img src="../../assets/exterieur-approved-800.webp" srcset="../../assets/exterieur-approved-480.webp 480w, ../../assets/exterieur-approved-800.webp 800w, ../../assets/exterieur-approved-1100.webp 1100w" sizes="(max-width:700px) 90vw, 25vw" alt="Architecture contemporaine avec bardage gris et grandes baies" loading="lazy" decoding="async" width="800" height="600"></span>
+        <span class="card-body"><b>Extérieur</b><span>Garde-corps, volets roulants, pergolas et bardage aluminium.</span><i aria-hidden="true">→</i></span>
+        <span class="glare" aria-hidden="true"></span>
+      </a>
+    </div>
+    <p class="fine">Visuels d'ambiance à titre illustratif.</p>
+  </section>
+
+  <section class="panel dark proof" data-tone="dark">
+    <header class="panel-head" data-reveal>
+      <p class="eyebrow">Pourquoi PROMPOLU</p>
+      <h2 class="display">Le fournisseur des menuisiers<br>de Fès et de Sefrou.</h2>
+    </header>
+    <div class="stats">
+      <div class="stat" data-reveal><b><span class="count" data-count="18">18</span>+ ans</b><span>Expérience reconnue</span><p>Plus de 18 ans passés à fournir aux menuisiers une matière première dont la qualité ne se discute pas à la livraison.</p></div>
+      <div class="stat" data-reveal><b>STRUGAL</b><span>Distributeur officiel</span><p>Systèmes espagnols testés aux normes européennes EN 12207, EN 12208 et EN 12210.</p></div>
+      <div class="stat" data-reveal><b><span class="count" data-count="400">400</span> kg</b><span>Par vantail</span><p>Du coulissant économique S70P au levant-coulissant S125RP : treize systèmes coulissants sur un seul catalogue.</p></div>
+    </div>
+  </section>
+
+  <section class="panel paper contact" id="contact" data-tone="paper">
+    <div class="contact-grid">
+      <header data-reveal>
+        <p class="eyebrow">Contact</p>
+        <h2 class="display">Votre prochain chantier<br><em>commence ici.</em></h2>
+        <div class="actions">
+          <a class="btn btn-ink" href="https://prompolu.com/contact#formulaire">Demander un devis <i aria-hidden="true">→</i></a>
+          <a class="btn btn-line" href="https://wa.me/212668378538" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a class="btn btn-line" href="tel:+212668378538">06 68 37 85 38</a>
+        </div>
+      </header>
+      <div class="places" data-reveal>
+        <div><b>Magasin de Fès</b><p>N° 21, Rue Pékin, Av. El Wafaa 2, Rte de Sefrou — Fès 30050</p></div>
+        <div><b>Showroom STRUGAL, Sefrou</b><p>Route d'El Menzel, Sefrou</p></div>
+        <div><b>Livraison</b><p>Partout au Maroc.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="wordmark" aria-hidden="true">PROMPOLU</p>
+  <p>Aperçu 3D non publié · le site actuel reste sur <a href="https://prompolu.com/">prompolu.com</a></p>
+</footer>
+<p class="badge">Aperçu 3D · non publié</p>
+<noscript><p class="noscript">La scène 3D demande JavaScript ; le contenu reste lisible ci-dessous.</p></noscript>
+</body>
+</html>
