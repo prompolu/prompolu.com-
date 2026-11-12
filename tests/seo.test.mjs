@@ -12,9 +12,9 @@ const fileFor = (url) => {
   return path.endsWith('/') ? path.slice(1) + 'index.html' : path.slice(1) + '.html';
 };
 
-test('all 43 public sitemap destinations match existing pages and self canonicals', () => {
-  assert.equal(locations.length, 43);
-  assert.equal(new Set(locations).size, 43);
+test('all 44 public sitemap destinations match existing pages and self canonicals', () => {
+  assert.equal(locations.length, 44);
+  assert.equal(new Set(locations).size, 44);
   const titles = new Set();
   const organizationDescriptions = new Set();
   for (const location of locations) {
@@ -51,7 +51,7 @@ test('all 43 public sitemap destinations match existing pages and self canonical
       }
     }
   }
-  assert.equal(titles.size, 43);
+  assert.equal(titles.size, 44);
   assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });
@@ -138,7 +138,12 @@ test('each STRUGAL system page carries Product data, breadcrumbs and a FAQ that 
     assert.match(h1, /<span class="h1-kicker">[^<]+<\/span>/, file);
     assert.ok(product.alternateName.length > 0 && product.model, file);
     assert.match(page, /<title>[^<]*(?:Fès|Maroc)[^<]*<\/title>/, file);
-    assert.ok(existsSync(root + new URL(product.image).pathname.slice(1)), file);
+    const images = [].concat(product.image);
+    assert.ok(images.length >= 1, file);
+    for (const image of images) assert.ok(existsSync(root + new URL(image).pathname.slice(1)), file + ' ' + image);
+    const ogImage = page.match(/<meta property="og:image" content="([^"]+)"/)[1];
+    assert.ok(existsSync(root + new URL(ogImage).pathname.slice(1)), file + ' og:image');
+    assert.notEqual(new URL(ogImage).pathname, '/assets/og-image.jpg', file + ' needs its own preview image');
     const crumbs = nodes.find((n) => n['@type'] === 'BreadcrumbList').itemListElement;
     const hub = location.replace(/\/[^/]+$/, '');
     assert.deepEqual(crumbs.map((c) => c.item), ['https://prompolu.com/', hub, location], file);
