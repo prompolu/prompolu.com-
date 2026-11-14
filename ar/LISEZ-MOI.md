@@ -20,6 +20,12 @@ d'envoyer la page ou le moindre modèle 3D (`functions/_middleware.js`) : sans
 lien valable, le visiteur voit « Visualisation 3D — accès réservé » et un bouton
 WhatsApp vers PROMPOLU. Le reste du site reste public.
 
+Cache des navigateurs : les pages, scripts, styles et données de `/ar/` sont
+revérifiés à chaque visite ; les modèles 3D et l'éclairage restent en cache
+24 h. Après une modification d'un script, changer aussi le `?v=` de sa balise
+`<script>` dans la page (ex. `coulissants.js?v=…`) : un téléphone qui garde
+l'ancien script avec la nouvelle page affiche une scène vide.
+
 Projet Cloudflare Pages : `prompolu-com` (production : branche `main`). Chaque
 autre branche est publiée à part pour les essais, par exemple la branche
 `acces-3d` sur https://acces-3d.prompolu-com.pages.dev — pour y tester un lien
