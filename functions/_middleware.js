@@ -22,7 +22,7 @@ const DAY = 86_400_000;
 const isProtected = (path) => path === '/ar' || path.startsWith('/ar/') || /\.(glb|usdz)$/i.test(path);
 // The repository root is published as-is: its notes, tests and marketing context are
 // not pages, so search engines and AI assistants must not fetch, index or quote them.
-const INTERNAL = /^\/(?:README\.md|CNAME|(?:COURRIER|LISEZ-MOI)[^/]*|(?:tests|\.agents)\/.*)$/;
+const INTERNAL = /^\/(?:README\.md|CNAME|(?:COURRIER|LISEZ-MOI)[^/]*|(?:tests|\.agents|\.github)\/.*)$/;
 // Public documents use the same extension-less URLs as Pages' static routing.
 // Leave preview hosts, signed AR links and non-page resources on their own routes.
 const PUBLIC_PAGES = new Set([

@@ -1,0 +1,44 @@
+/* Refinements (Nov 2026): fixes from the design critique.
+   Loaded last in bundle-core.css. Visual only: no text changes, nothing hidden. */
+
+/* Readability: minimum text sizes, no uppercase on long labels */
+.breadcrumbs{font-size:13px;letter-spacing:.02em}
+.post-meta{font-size:13px}
+.spec-note{font-size:14px}
+.post table th,.post table th[scope=row]{font-size:13px;letter-spacing:.01em;text-transform:none}
+.desktop-nav a,.desktop-nav summary{font-size:14px}
+.page-directory a{font-size:14px}
+.social-links{font-size:14px}
+
+/* Tap targets of at least 24px */
+.breadcrumbs a,.breadcrumbs [aria-current]{display:inline-block;padding:6px 0}
+.post table th a{display:inline-block;min-height:24px;padding:4px 0}
+.social-links a{display:inline-block;padding:6px 0}
+.datasheet-link{display:inline-block;padding:3px 0}
+
+/* Long titles read better in sentence case than in condensed capitals */
+.blog-card h3,#comparaison-proches{font-family:var(--body);font-weight:600;text-transform:none;letter-spacing:-.01em;line-height:1.25}
+.blog-card h3{font-size:clamp(19px,1.5vw,22px)}
+#comparaison-proches{font-size:clamp(22px,2vw,28px);max-width:32ch}
+
+/* Product pages: the product image sits in the hero, beside the title */
+.page-visual-product{aspect-ratio:1/1;border-radius:18px;background:#f1f0ec;max-height:520px}
+.page-visual-product img{object-fit:contain}
+
+/* Long-form column starts on the same left edge as the page title */
+.inner-page article.post{margin-left:0;margin-right:auto}
+
+/* Page intro (« En bref ») as a lead paragraph rather than a boxed note */
+.hub-answer .answer-first{background:none;border:0;border-left:3px solid var(--bronze-dark);border-radius:0;padding:2px 0 2px 22px;font-size:clamp(17px,1.3vw,19px);line-height:1.65;max-width:68ch;color:#2f2c27}
+.hub-answer .answer-first strong{display:block;font:600 12px/1.4 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--bronze-dark);margin-bottom:8px}
+
+/* Maps before they are loaded: a quiet street pattern instead of an empty box */
+.map-load{background:#242729 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='160' viewBox='0 0 240 160'%3E%3Cg fill='none' stroke='%23343a3f' stroke-width='6'%3E%3Cpath d='M-10 40 L250 25'/%3E%3Cpath d='M-10 118 L250 135'/%3E%3Cpath d='M60 -10 L80 170'/%3E%3Cpath d='M170 -10 L150 170'/%3E%3C/g%3E%3Cg fill='none' stroke='%232e3237' stroke-width='2'%3E%3Cpath d='M-10 80 L250 78'/%3E%3Cpath d='M115 -10 L118 170'/%3E%3Cpath d='M20 -10 L35 170'/%3E%3Cpath d='M215 -10 L205 170'/%3E%3C/g%3E%3C/svg%3E") center/240px 160px repeat}
+.map-load:hover{background-color:#2a2e32}
+
+/* Homepage on phones: range cards become a swipe row instead of four full-height cards */
+@media (max-width:640px){
+  .home-page .range-grid{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:calc(-1 * var(--gutter));padding:0 var(--gutter) 10px 0;scrollbar-width:none}
+  .home-page .range-grid::-webkit-scrollbar{display:none}
+  .home-page .range-card{flex:0 0 82%;scroll-snap-align:start}
+}

@@ -9,7 +9,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 // L'ordre compte : c'est celui de la cascade. Les bundles sont dans /assets/,
 // les url() relatives de fonts.css restent donc valides.
 export const BUNDLES = {
-  'assets/bundle-core.css': ['assets/fonts.css', 'assets/site.css', 'assets/visualisation-3d.css', 'styles.css', 'navigation.css', 'pages.css', 'image-layout.css'],
+  'assets/bundle-core.css': ['assets/fonts.css', 'assets/site.css', 'assets/visualisation-3d.css', 'styles.css', 'navigation.css', 'pages.css', 'image-layout.css', 'assets/refinements.css'],
   'assets/bundle-home.css': ['home.css', 'assets/home-video.css'],
 };
 

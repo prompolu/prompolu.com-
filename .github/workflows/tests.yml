@@ -1,0 +1,24 @@
+# Runs the site's checks on every push and pull request, including the SEO/GEO guard
+# (tests/seo-guard.test.mjs). A red check means a change broke something search engines,
+# AI search or visitors rely on: fix it before merging.
+name: Site checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: CSS bundles are up to date, pages and SEO guard pass
+        run: node --test tests/*.test.mjs

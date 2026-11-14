@@ -231,7 +231,7 @@ test('private 3D routes and model assets remain denied without a signed token', 
 });
 
 test('repository notes, tests and marketing context are not served; crawler files stay public', async () => {
-  for (const path of ['/README.md', '/COURRIER-STRUGAL.md', '/LISEZ-MOI-DEPLOIEMENT.txt', '/CNAME', '/tests/seo.test.mjs', '/.agents/product-marketing.md']) {
+  for (const path of ['/README.md', '/COURRIER-STRUGAL.md', '/LISEZ-MOI-DEPLOIEMENT.txt', '/CNAME', '/tests/seo.test.mjs', '/.agents/product-marketing.md', '/.github/workflows/tests.yml']) {
     const response = await invoke('https://prompolu.com' + path);
     assert.equal(response.status, 404, path);
     assert.equal(response.headers.get('X-Test-Next'), null, path);
