@@ -275,4 +275,10 @@ test('expired or modified AR tokens remain denied and signed model requests stay
   assert.equal(model.status, 200);
   assert.equal(model.headers.get('cache-control'), 'private, max-age=86400');
   assert.equal(model.headers.get('X-Robots-Tag'), 'noindex');
+  // Scripts must never outlive their page in the browser cache.
+  for (const path of ['/ar/coulissants.js', '/ar/rendu.js', '/ar/theme.css']) {
+    const script = await invoke('https://prompolu.com' + path, { env: testEnv, cookie: 'prompolu_ar=' + valid });
+    assert.equal(script.status, 200, path);
+    assert.equal(script.headers.get('cache-control'), 'private, no-cache', path);
+  }
 });

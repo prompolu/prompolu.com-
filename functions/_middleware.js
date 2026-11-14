@@ -381,7 +381,12 @@ export async function onRequest(context) {
 
   const upstream = await context.next();
   const res = new Response(upstream.body, upstream);
-  res.headers.set('Cache-Control', page ? 'private, no-cache' : 'private, max-age=86400');
+  // Scripts, styles and data are revalidated on every visit: a page and the
+  // scripts it calls must change together after an update, or the page
+  // stops (an old cached coulissants.js left the new configurator empty).
+  // 3D models and lighting are heavy and stable: cached for a day.
+  const code = /\.(?:js|mjs|css|json)$/i.test(url.pathname);
+  res.headers.set('Cache-Control', page || code ? 'private, no-cache' : 'private, max-age=86400');
   res.headers.set('X-Robots-Tag', 'noindex');
   if (fromQuery !== null && fromQuery !== fromCookie) {
     const end = result.access.x ? Date.parse(`${result.access.x}T00:00:00Z`) + DAY : Date.now() + 400 * DAY;
