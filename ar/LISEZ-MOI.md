@@ -97,6 +97,24 @@ téléphone, prête à être posée sur sa terrasse.
   parclose biseautée, joints EPDM noirs autour de chaque vitrage, joints de
   serrage et embouts du profil en U Glass Line, poignées à béquille ou de
   tirage. Formes reconstituées pour l'aspect, pas les DXF STRUGAL.
+- **Coulissant** (`ar/coulissants.js`) : chaque système STRUGAL (13) a ses
+  traits de fiche — profondeur du dormant, masses vues, coupe d'onglet ou
+  coupe droite, nœud central (42 mm S86RP, 34 mm S88RP Prime / élevable,
+  25 mm S140RP, 20 mm en option S88RP), barrettes polyamide et bicolore sur
+  les profils à rupture, seuil plat et levier de levage sur les levants,
+  traverses cachées et seuil encastré sur l'Infinity, 3 rails S70P / S90P.
+  Double vitrage avec intercalaire, verre physique à l'écran, poignée sur
+  chaque vantail ouvrant côté mur, ouverture animée, coupe d'angle façon
+  catalogue, mise en situation dans un mur. Éclairage `ar/studio-clair.hdr`
+  (refait par `python3 ar/studio-clair-hdr.py`), plus clair pour que les
+  montants vus d'en haut ne paraissent pas noirs.
+  **Vue réelle du coulissant** : c'est le modèle affiché, aux cotes du client.
+  iPhone : `<model-viewer>` le convertit en `.usdz` au toucher (si la
+  conversion échoue, repli sur `models-co/`). Android : WebXR dans Chrome ;
+  sans WebXR, Scene Viewer avec le modèle statique le plus proche
+  (`models-co/`, quatre familles en 2,40 / 3,60 / 4,80 × 2,20 m). Le verre
+  passe en verre transparent pendant la vue réelle (Quick Look et la caméra
+  WebXR ignorent la transmission).
 - Poids : `.glb` ≈ 150 Ko, chargé en environ une seconde en 4G. La plupart des
   configurateurs 3D pèsent 5 à 20 Mo et le visiteur part avant la fin.
 
@@ -109,5 +127,6 @@ téléphone, prête à être posée sur sa terrasse.
 - **Les teintes sont indicatives.** Le rendu écran ne remplace pas un nuancier.
 - **Android** ouvre la vue réelle dans le navigateur (WebXR) : la teinte choisie
   est conservée. **iPhone** passe par Quick Look : la position des lames y est
-  celle par défaut (inclinées).
+  celle par défaut (inclinées). Coulissant sur iPhone : la baie s'affiche
+  ouverte ou fermée comme à l'écran au moment du toucher, sans animation.
 - Les cotes affichées sont nominales. Le relevé sur site reste indispensable.
