@@ -140,6 +140,7 @@
 <meta name="theme-color" content="#F1F0EC">
 <link rel="preload" href="/assets/font-0.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/font-1.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/assets/bundle-core.css"><link rel="preload" href="/assets/home-hero-poster.jpg" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/assets/bundle-home.css">
+<link rel="stylesheet" href="/assets/home-motion.css">
 </head>
 <body class="home-page" id="top"><a class="skip-link" href="#main">Aller au contenu</a><svg class="svg-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
     <filter id="header-logo-white" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
@@ -203,6 +204,7 @@
   </section>
 
     <section class="ranges section-pad" id="gammes" aria-labelledby="ranges-title">
+      <div class="ranges-motion-inner">
       <h2 class="display" id="ranges-title">À chaque projet, son profil.</h2>
       <div class="ranges-summary"><h3>Nos gammes de profilés et systèmes aluminium</h3>
         <p>Une matière première aluminium adaptée à chaque fabrication : du coulissant résidentiel au grand format architectural.</p>
@@ -229,7 +231,30 @@
           <span class="range-card-bottom"><span>Garde-corps, volets roulants, pergolas et bardage aluminium pour vos réalisations extérieures.</span><span>Découvrir la gamme <span aria-hidden="true">→</span></span></span>
         </a>
       </div>
-      <p class="image-caption">Visuels d’ambiance à titre illustratif.</p>
+      <p class="image-caption">Visuels d’ambiance à titre illustratif. <span class="range-motion-status" aria-hidden="true">01 / 04 · Défiler pour explorer</span></p>
+      </div>
+    </section>
+
+    <section class="profile-motion" id="profileMotion" aria-labelledby="profile-motion-title">
+      <div class="profile-motion-inner">
+        <div class="profile-motion-copy">
+          <p class="profile-motion-kicker">Le détail en mouvement <span aria-hidden="true">/ 01—03</span></p>
+          <h2 id="profile-motion-title">Trois vantaux.<br>Une ouverture.</h2>
+          <p>Suivez le mouvement d’une baie coulissante en aluminium : ses lignes, sa profondeur, puis l’ouverture des trois vantaux.</p>
+          <a href="/coulissants">Découvrir les coulissants <span aria-hidden="true">↗</span></a>
+          <div class="profile-motion-chapters" aria-hidden="true">
+            <span class="is-active">01&nbsp; La ligne</span><span>02&nbsp; La profondeur</span><span>03&nbsp; L’ouverture</span>
+          </div>
+        </div>
+        <div class="profile-motion-stage" id="profileMotionStage" tabindex="0" role="img" aria-label="Visualisation stylisée d'une baie coulissante en aluminium à trois vantaux. Faites défiler la page, déplacez le pointeur ou utilisez les flèches gauche et droite pour faire pivoter la vue.">
+          <div class="profile-motion-model" id="profileMotionModel" aria-hidden="true">
+            <span class="profile-motion-pane"><i></i></span>
+            <span class="profile-motion-pane"><i></i></span>
+            <span class="profile-motion-pane"><i></i></span>
+          </div>
+          <span class="profile-motion-progress" aria-hidden="true"><i></i></span>
+        </div>
+      </div>
     </section>
 
     <section class="home-intro"><div class="wrap"><div class="home-intro-heading"><p class="eyebrow">PROMPOLU ALUMINIUM</p><h2>Distributeur officiel STRUGAL — showroom à Sefrou, magasin à Fès</h2></div><p class="hero-sub">PROMPOLU ALUMINIUM fournit aux menuisiers et fabricants de Fès, de Sefrou et de leur région les profilés et systèmes aluminium STRUGAL — coulissants, agencement intérieur, sécurité et confort extérieur. Plus de 18 ans d'expérience au service des professionnels.</p>
@@ -455,4 +480,4 @@
     <a class="mcb-quote" href="/contact#formulaire">Devis<svg aria-hidden="true"><use href="#arrow"></use></svg></a>
   </nav>
 
-  <script src="/assets/nav.js" defer></script><script src="/app.js" defer></script><script src="/assets/analytics.js" defer></script><script src="/assets/home-video.js" defer></script></body></html>
+  <script src="/assets/nav.js" defer></script><script src="/app.js" defer></script><script src="/assets/analytics.js" defer></script><script src="/assets/home-video.js" defer></script><script src="/assets/home-motion.js" defer></script></body></html>
