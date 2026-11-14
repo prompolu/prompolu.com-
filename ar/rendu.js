@@ -19,17 +19,23 @@ const mv = document.querySelector('model-viewer');
 if (!mv) return;
 
 /* l'URL doit finir par .hdr : c'est ce qui fait choisir a <model-viewer>
-   son lecteur HDR. Le cookie d'acces suffit, pas besoin de ?p=.       */
-mv.setAttribute('environment-image', new URL('studio.hdr', document.currentScript.src).href);
+   son lecteur HDR. Le cookie d'acces suffit, pas besoin de ?p=.
+   Une page peut choisir un autre studio (data-environment, ex. le
+   studio clair du coulissant) ; les autres gardent studio.hdr.        */
+mv.setAttribute('environment-image',
+  new URL(mv.dataset.environment || 'studio.hdr', document.currentScript.src).href);
 mv.setAttribute('tone-mapping', 'neutral');
 /* 0 = ombre portee nette, comme au soleil : on voit le jeu des lames
    de la pergola au sol. Au-dessus de 0, l'ombre douce disparait sous
-   un produit haut de 2,60 m.                                          */
-mv.setAttribute('shadow-softness', '0');
+   un produit haut de 2,60 m. Reglable par page (data-shadow-softness). */
+mv.setAttribute('shadow-softness', mv.dataset.shadowSoftness || '0');
 
 /* une version de <model-viewer> sans l'une de ces fonctions garde
    simplement le rendu d'origine pour ce reglage                      */
-const call = (m, fn, v) => { if (typeof m[fn] === 'function') m[fn](v); };
+const call = (m, fn, v) => {
+  if (typeof m[fn] !== 'function') return;
+  try { m[fn](v); } catch (e) { /* matiere non chargee : on la laisse telle quelle */ }
+};
 
 /* a rappeler apres chaque changement de teinte fait sans recharger le
    modele (pergola) : le vernis depend de la finition                 */
@@ -37,7 +43,7 @@ function tune() {
   const mats = mv.model && mv.model.materials;
   if (!mats) return;
   for (const m of mats) {
-    if (m.name === 'alu') {
+    if (m.name === 'alu' || m.name === 'alu_ext') {   /* alu_ext : face exterieure (bicolore) */
       /* thermolaquage : vernis satine par-dessus la teinte. A peine
          marque sur les finitions metallisees (RAL 9006, anodise).    */
       const metal = m.pbrMetallicRoughness.metallicFactor >= 0.5;

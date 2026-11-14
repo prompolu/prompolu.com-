@@ -313,7 +313,7 @@ footer{max-width:1240px;margin:16px auto 0;display:flex;justify-content:space-be
         </div>
         <div class="stats">
           <div class="stat"><b>4</b><span>Produits</span></div>
-          <div class="stat"><b>11</b><span>Systèmes STRUGAL</span></div>
+          <div class="stat"><b>13</b><span>Systèmes STRUGAL</span></div>
           <div class="stat"><b>1:1</b><span>Taille réelle</span></div>
           <div class="stat"><b>0</b><span>Appli à installer</span></div>
         </div>

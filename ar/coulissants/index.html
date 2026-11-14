@@ -123,6 +123,26 @@ select:focus{outline:none;border-color:var(--accent)}
   background:#0b0e13;border:1px solid var(--line);border-radius:9px;padding:10px;
   word-break:break-all;text-align:center}
 .note{font-size:11px;color:var(--dim);padding:14px 16px 0;text-align:center}
+/* points de vue, en haut de la scène (défile si l'écran est étroit) */
+.views{position:absolute;top:12px;left:12px;right:66px;display:flex;gap:6px;overflow-x:auto;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px;z-index:2}
+.views::-webkit-scrollbar{display:none}
+.views button{flex:0 0 auto;background:rgba(18,17,16,.74);color:#f4f1ec;border:1px solid rgba(255,255,255,.16);
+  border-radius:100px;padding:8px 13px;font-family:inherit;font-size:12.5px;font-weight:600;line-height:1;cursor:pointer;white-space:nowrap}
+.views button[aria-pressed="true"]{background:#fff;color:#121110;border-color:#fff}
+#arnote{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;background:rgba(18,17,16,.84);color:#f4f1ec;
+  border:1px solid rgba(255,255,255,.16);border-radius:100px;padding:12px 18px;font-family:inherit;font-size:13px;font-weight:600;
+  cursor:pointer;white-space:nowrap}
+#arnote[hidden]{display:none}
+.traits{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.trait{font-size:11.5px;border:1px solid var(--line);border-radius:9px;padding:5px 8px;color:var(--txt);background:rgba(12,11,10,.4)}
+.trait b{color:var(--accent);font-weight:700}
+.opts{display:grid;gap:10px;margin-top:12px}
+.opts[hidden],.opt[hidden],.sec[hidden]{display:none}
+.opt{display:flex;gap:10px;align-items:center;font-size:13.5px;cursor:pointer}
+.opt input{width:19px;height:19px;accent-color:var(--accent);flex:0 0 auto;margin:0}
+.seg.four button{font-size:12.5px;padding:10px 2px}
+.sw + .hint{margin-top:28px}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap">
@@ -148,8 +168,10 @@ select:focus{outline:none;border-color:var(--accent)}
   <div class="stage">
     <model-viewer id="mv"
       camera-controls touch-action="pan-y"
-      shadow-intensity="1.1" exposure="1.05" environment-image="neutral"
-      camera-orbit="28deg 76deg auto" camera-target="auto auto auto"
+      shadow-intensity="1" exposure="1.0" environment-image="neutral"
+      data-environment="studio-clair.hdr" data-shadow-softness="0.45"
+      camera-orbit="28deg 78deg auto" camera-target="auto auto auto"
+      min-camera-orbit="auto auto 0.18m" max-camera-orbit="auto 100deg auto"
       interaction-prompt="none"
       ar ar-modes="webxr quick-look" ar-scale="fixed" ar-placement="floor"
       alt="Baie coulissante aluminium">
@@ -173,6 +195,10 @@ select:focus{outline:none;border-color:var(--accent)}
       </svg>
       Voir chez moi en 3D
     </button>
+    <div class="views" id="views" role="group" aria-label="Points de vue"></div>
+    <!-- La vue réelle montre la baie seule : en coupe ou dans un mur,
+         ce bouton remplace « Voir chez moi » et ramène à la baie. -->
+    <button id="arnote" hidden>Voir la baie entière pour la vue réelle</button>
     <button id="qrbtn" aria-label="Ouvrir sur un téléphone">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h3v3h-3v-3zm5 0h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3z"/>
@@ -193,8 +219,13 @@ select:focus{outline:none;border-color:var(--accent)}
 
   <div class="sec">
     <div class="lab">Système STRUGAL</div>
-    <select id="sysSel"></select>
+    <select id="sysSel" aria-label="Système STRUGAL"></select>
+    <div class="traits" id="traits"></div>
     <p class="hint" id="sysHint"></p>
+    <div class="opts" id="sysOpts">
+      <label class="opt" id="optLev"><input type="checkbox" id="cLev"> Version à levage : levier, seuil plat</label>
+      <label class="opt" id="optN20"><input type="checkbox" id="cN20"> Nœud central réduit à 20 mm</label>
+    </div>
   </div>
 
   <div class="sec">
@@ -203,7 +234,7 @@ select:focus{outline:none;border-color:var(--accent)}
   </div>
 
   <div class="sec">
-    <div class="lab">Vantail manœuvrant</div>
+    <div class="lab">Vantaux ouvrants</div>
     <div class="seg" id="opening"></div>
     <p class="hint" id="openHint"></p>
   </div>
@@ -230,9 +261,21 @@ select:focus{outline:none;border-color:var(--accent)}
     <div class="sw" id="finishes"></div>
   </div>
 
+  <div class="sec" id="extBox" hidden>
+    <div class="lab">Finition extérieure</div>
+    <div class="sw" id="finishesExt"></div>
+    <p class="hint">Profil à rupture de pont thermique : la face extérieure peut avoir une autre teinte que l’intérieur.</p>
+  </div>
+
   <div class="sec">
     <div class="lab">Vitrage</div>
-    <div class="seg" id="tints"></div>
+    <div class="seg four" id="tints"></div>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Affichage</div>
+    <div class="seg" id="scene"></div>
+    <p class="hint">« Dans un mur » pose la baie dans une ouverture. La vue réelle chez vous montre la baie seule.</p>
   </div>
 
   <p class="note">Rendu 3D à l'échelle réelle. Les masses vues non publiées par
@@ -266,7 +309,7 @@ select:focus{outline:none;border-color:var(--accent)}
 
 <script>
 const mv = document.getElementById('mv');
-const S = Coulissant.SYSTEMS;
+const C = Coulissant, S = C.SYSTEMS;
 const s2l = c => c <= .04045 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4);
 const hexLin = h => [0,2,4].map(i => s2l(parseInt(h.substr(i,2),16)/255));
 
@@ -281,13 +324,27 @@ const FINISHES = [
   {id:'ral9006-silver',     hex:'#A1A1A0', m:.88, r:.28, nm:'RAL 9006'},
   {id:'ral9005-black',      hex:'#0A0A0D', m:.05, r:.40, nm:'RAL 9005'},
 ];
+/* Verre. A l'ecran : verre physique (transmission, IOR 1,52, teinte
+   verte dans la masse). Pour la vue reelle (Quick Look, WebXR) : verre
+   transparent classique (ar), car la camera n'est pas vue par le calcul
+   de transmission et Quick Look ne le connait pas.                     */
 const TINTS = [
-  {id:'clair',  nm:'Clair',  lin:[0.74,0.88,0.83], a:0.30, r:0.03},
-  {id:'fume',   nm:'Fumé',   lin:[0.16,0.17,0.19], a:0.58, r:0.05},
-  {id:'depoli', nm:'Dépoli', lin:[0.84,0.88,0.90], a:0.66, r:0.45},
+  {id:'clair',  nm:'Clair',  lin:[0.97,0.99,0.98], r:0.02, tr:0.96, att:[0.80,0.93,0.88], dist:0.045,
+   ar:{lin:[0.74,0.88,0.83], a:0.30, r:0.03}},
+  {id:'fume',   nm:'Fumé',   lin:[0.62,0.64,0.66], r:0.03, tr:0.90, att:[0.30,0.32,0.34], dist:0.012,
+   ar:{lin:[0.16,0.17,0.19], a:0.58, r:0.05}},
+  {id:'refl',   nm:'Réfléchissant', lin:[0.62,0.55,0.45], r:0.04, tr:0.55, att:[0.60,0.50,0.38], dist:0.02, refl:0.55,
+   ar:{lin:[0.35,0.28,0.20], a:0.62, r:0.05, m:0.4}},
+  {id:'depoli', nm:'Dépoli', lin:[0.95,0.97,0.97], r:0.42, tr:0.85, att:[0.85,0.94,0.90], dist:0.05,
+   ar:{lin:[0.84,0.88,0.90], a:0.66, r:0.45}},
 ];
 const LEAVES = [2,3,4];
-const OPENINGS = [{id:0,nm:'Fermé'},{id:1,nm:'Ouvert'}];
+const OPENINGS = [{id:0,nm:'Fermés'},{id:1,nm:'Ouverts'}];
+const SCENES = [{id:0,nm:'Baie seule'},{id:1,nm:'Dans un mur'}];
+const VIEWS = [
+  {id:'ens',nm:'Ensemble'}, {id:'noeud',nm:'Nœud central'}, {id:'angle',nm:'Angle et seuil'},
+  {id:'poignee',nm:'Poignée'}, {id:'ext',nm:'Extérieur'}, {id:'coupe',nm:'Coupe d’angle'},
+];
 const W_MIN=100, W_MAX=1200, H_MIN=150, H_MAX=320;
 
 const qs = new URLSearchParams(location.search);
@@ -304,14 +361,22 @@ const st = {
   lv  : pick(parseInt(qs.get('v'),10), LEAVES, 3),
   op  : qs.get('o')==='1' ? 1 : 0,
   fin : FINISHES.find(f=>f.id===qs.get('f')) || FINISHES[0],
+  ext : FINISHES.find(f=>f.id===qs.get('fe')) || null,     /* null = comme l'interieur */
   tint: TINTS.find(t=>t.id===qs.get('t')) || TINTS[0],
+  lev : qs.get('lev')==='1',
+  n20 : qs.get('n20')==='1',
+  mur : qs.get('mur')==='1' ? 1 : 0,
 };
+let view = 'ens';
 
 function writeURL(){
-  const u=new URLSearchParams();
+  const s=S[st.sys], u=new URLSearchParams();
   const p=qs.get('p'); if(p) u.set('p',p);
   u.set('sys',st.sys); u.set('w',st.W); u.set('h',st.H); u.set('v',st.lv); u.set('o',st.op);
-  u.set('f',st.fin.id); u.set('t',st.tint.id);
+  u.set('f',st.fin.id); if(s.pf && st.ext) u.set('fe',st.ext.id); u.set('t',st.tint.id);
+  if(s.levageOpt && st.lev) u.set('lev','1');
+  if(s.c20 && st.n20) u.set('n20','1');
+  if(st.mur) u.set('mur','1');
   history.replaceState(null,'',location.pathname+'?'+u.toString());
   renderQR();
   const q = p ? '?p='+encodeURIComponent(p) : '';
@@ -340,39 +405,51 @@ function paint(){
 const sel=document.getElementById('sysSel');
 Object.keys(S).forEach(k=>{
   const o=document.createElement('option');
-  o.value=k; o.textContent=k+' — '+S[k].tag;
+  o.value=k; o.textContent=C.label(k)+' — '+S[k].tag;
   if(k===st.sys) o.selected=true;
   sel.appendChild(o);
 });
-sel.onchange=()=>{ st.sys=sel.value; refresh(); };
+sel.onchange=()=>{ st.sys=sel.value; refresh(true); };
 
 function mark(host,btn){[...host.children].forEach(c=>c.setAttribute('aria-pressed',c===btn));}
-function seg(host,items,get,set){
+/* after : ce qu'il faut refaire apres le choix (par defaut, le modele) */
+function seg(host,items,get,set,after){
   host.innerHTML='';
   items.forEach(it=>{
     const b=document.createElement('button');
     b.textContent=it.nm;
     b.setAttribute('aria-pressed',get()===it.id);
-    b.onclick=()=>{set(it.id);mark(host,b);refresh();};
+    b.onclick=()=>{set(it.id);mark(host,b);(after||refresh)();};
     host.appendChild(b);
   });
 }
 seg(document.getElementById('leaves'),
-    LEAVES.map(v=>({id:v,nm:v+' vantaux'})), ()=>st.lv, v=>st.lv=+v);
-seg(document.getElementById('opening'), OPENINGS, ()=>st.op, v=>st.op=+v);
+    LEAVES.map(v=>({id:v,nm:v+' vantaux'})), ()=>st.lv, v=>st.lv=+v, ()=>refresh(true));
+seg(document.getElementById('opening'), OPENINGS, ()=>st.op, v=>setOpen(+v), ()=>{});
 seg(document.getElementById('tints'), TINTS, ()=>st.tint.id,
     v=>st.tint=TINTS.find(t=>t.id===v));
+seg(document.getElementById('scene'), SCENES, ()=>st.mur, v=>st.mur=+v, ()=>refresh(true));
 
-const fWrap=document.getElementById('finishes');
-FINISHES.forEach(f=>{
-  const b=document.createElement('button');
-  b.style.background=f.hex;
-  b.setAttribute('aria-pressed',f.id===st.fin.id);
-  b.setAttribute('aria-label',f.nm);
-  b.innerHTML='<span>'+f.nm+'</span>';
-  b.onclick=()=>{st.fin=f;mark(fWrap,b);refresh();};
-  fWrap.appendChild(b);
-});
+function swatches(host, list, get, set){
+  host.innerHTML='';
+  list.forEach(f=>{
+    const b=document.createElement('button');
+    b.style.background=f.hex || 'conic-gradient(#383E42 0 25%,#F1F0EA 0 50%,#383E42 0 75%,#F1F0EA 0)';
+    b.setAttribute('aria-pressed',(get()||{id:'same'}).id===f.id);
+    b.setAttribute('aria-label',f.nm);
+    b.innerHTML='<span>'+f.nm+'</span>';
+    b.onclick=()=>{set(f.id==='same'?null:f);mark(host,b);refresh();};
+    host.appendChild(b);
+  });
+}
+swatches(document.getElementById('finishes'), FINISHES, ()=>st.fin, f=>st.fin=f);
+swatches(document.getElementById('finishesExt'), [{id:'same',hex:null,nm:'Identique'}].concat(FINISHES),
+         ()=>st.ext, f=>st.ext=f);
+
+const cLev=document.getElementById('cLev'), cN20=document.getElementById('cN20');
+cLev.checked=st.lev; cN20.checked=st.n20;
+cLev.onchange=()=>{ st.lev=cLev.checked; refresh(true); };
+cN20.onchange=()=>{ st.n20=cN20.checked; refresh(true); };
 
 const wIn=document.getElementById('wIn'), hIn=document.getElementById('hIn');
 wIn.value=st.W; hIn.value=st.H;
@@ -385,83 +462,177 @@ function onSize(){
   hIn.parentElement.classList.toggle('bad',!hOK);
   if(!wOK||!hOK) return;
   st.W=w; st.H=h;
-  clearTimeout(timer); timer=setTimeout(refresh,220);
+  clearTimeout(timer); timer=setTimeout(()=>refresh(true),220);
 }
 [wIn,hIn].forEach(i=>i.addEventListener('input',onSize));
 wIn.addEventListener('blur',()=>{wIn.value=clamp(parseInt(wIn.value,10),W_MIN,W_MAX,360);onSize();});
 hIn.addEventListener('blur',()=>{hIn.value=clamp(parseInt(hIn.value,10),H_MIN,H_MAX,220);onSize();});
 
-/* ---------- rendu ---------- */
-let blobURL=null;
-function refresh(){
-  if(blobURL){URL.revokeObjectURL(blobURL);blobURL=null;}
-  blobURL=Coulissant.makeURL(
-    {system:st.sys, width:st.W/100, height:st.H/100, leaves:st.lv, opening:st.op},
-    {lin:hexLin(st.fin.hex.substr(1)), m:st.fin.m, r:st.fin.r},
-    {lin:st.tint.lin, a:st.tint.a, r:st.tint.r});
-  mv.src=blobURL;
-  syncAR(); specs(); writeURL();
+/* ---------- points de vue ---------- */
+const vHost=document.getElementById('views');
+VIEWS.forEach(v=>{
+  const b=document.createElement('button');
+  b.textContent=v.nm; b.setAttribute('aria-pressed',v.id===view);
+  b.onclick=()=>{
+    const was=view; view=v.id; mark(vHost,b);
+    if((was==='coupe')!==(view==='coupe')) refresh(true); else applyView(false);
+    setupAR();
+  };
+  vHost.appendChild(b);
+});
+const m3=a=>a.map(v=>v.toFixed(3)+'m').join(' ');
+function applyView(jump){
+  const A=info&&info.anchors, H=st.H/100;
+  let orbit='28deg 78deg auto', target='auto auto auto', fov='auto';
+  if(view==='coupe'){ orbit='44deg 56deg auto'; }
+  else if(view==='noeud'&&A){ target=m3([A.meet[0],H*0.42,A.meet[2]]); orbit='36deg 68deg 1.9m'; fov='30deg'; }
+  else if(view==='angle'&&A){ target=m3([A.corner[0]+0.22,0.2,A.corner[2]]); orbit='40deg 62deg 1.35m'; fov='30deg'; }
+  else if(view==='poignee'&&A&&A.handle){ target=m3(A.handle); orbit='38deg 76deg 1.15m'; fov='30deg'; }
+  else if(view==='ext'){ orbit='208deg 78deg auto'; }
+  mv.fieldOfView=fov; mv.cameraTarget=target; mv.cameraOrbit=orbit;
+  if(jump) mv.jumpCameraToGoal();
 }
-function syncAR(){
-  mv.setAttribute('ios-src', withAccess(
-    `../models-co/co-${Coulissant.arSystem(st.sys)}-${st.lv}-${st.fin.id}`
-    + (st.op ? '-ouvert' : '') + '.usdz'));
+
+/* ---------- fond de studio ----------
+   Le verre physique refracte ce qu'il y a derriere lui : il lui faut un
+   fond dans la scene (sur un fond transparent, three.js le peint en
+   blanc). Cyclo chaud, dans les tons de la scene. Retire par
+   <model-viewer> pendant la vue reelle.                               */
+(function(){
+  try{
+    const c=document.createElement('canvas'); c.width=1024; c.height=512;
+    const g=c.getContext('2d'), gr=g.createLinearGradient(0,0,0,512);
+    gr.addColorStop(0,'#cdb9a4'); gr.addColorStop(0.36,'#eadfd2'); gr.addColorStop(0.5,'#e4d4c2');
+    gr.addColorStop(0.53,'#c9b29b'); gr.addColorStop(0.72,'#9a8068'); gr.addColorStop(1,'#5a4637');
+    g.fillStyle=gr; g.fillRect(0,0,1024,512);
+    c.toBlob(b=>{ if(b) mv.setAttribute('skybox-image', URL.createObjectURL(b)+'#cyclo.png'); },'image/png');
+  }catch(e){}
+})();
+
+/* ---------- rendu ---------- */
+let blobURL=null, info=null, pendingView=true;
+function opts(){
+  return {system:st.sys, width:st.W/100, height:st.H/100, leaves:st.lv, opening:st.op,
+          levage:st.lev, noeud20:st.n20, context:!!st.mur && view!=='coupe', coupe:view==='coupe'};
+}
+function refresh(resetView){
+  const s=S[st.sys];
+  const fin={lin:hexLin(st.fin.hex.substr(1)), m:st.fin.m, r:st.fin.r};
+  const ext=(s.pf && st.ext) ? {lin:hexLin(st.ext.hex.substr(1)), m:st.ext.m, r:st.ext.r} : null;
+  let r;
+  try{ r=C.make(opts(), fin, ext, st.tint); }
+  catch(e){ console.error(e); return; }
+  if(blobURL) URL.revokeObjectURL(blobURL);
+  blobURL=r.url; info=r.info;
+  if(resetView) pendingView=true;
+  arGlass=false;
+  mv.src=blobURL;
+  syncAR(); specs(); writeURL(); setupAR();
+}
+mv.addEventListener('load',async ()=>{
+  arGlass=false;
+  if(pendingView){
+    pendingView=false;
+    /* cadrage recalcule sur le nouveau modele avant de placer la camera
+       (sinon la coupe d'angle est vue de la distance de la baie entiere) */
+    mv.fieldOfView='auto'; mv.cameraTarget='auto auto auto';
+    try{ await mv.updateFraming(); }catch(e){}
+    applyView(true);
+  }
+  setupAR();
+});
+
+/* ouvrir / fermer : l'animation du modele (le vantail se souleve puis
+   coulisse ; le levier tourne) ; sinon on refait le modele.            */
+function setOpen(v){
+  if(v===st.op) return;
+  st.op=v;
+  const anims=mv.availableAnimations||[];
+  if(view!=='coupe' && mv.loaded && anims.includes('ouvrir')){
+    mv.animationName = v ? 'ouvrir' : 'fermer';
+    mv.currentTime = 0;
+    mv.play({repetitions:1});
+    syncAR(); specs(); writeURL();
+  } else if(view!=='coupe') refresh();
+  else { syncAR(); specs(); writeURL(); }
 }
 
 const fr=v=>v.toFixed(2).replace('.',',');
+const mmTxt=v=>Math.max(0,Math.round(v)).toLocaleString('fr-FR')+' mm';
+function figures(){
+  if(info && info.leafW && view!=='coupe')
+    return {leafW:info.leafW, opens:info.opens, D:info.D, levage:info.levage};
+  return C.stats(opts());
+}
 function specs(){
-  const sys=S[st.sys];
-  const leafW=Coulissant.leafWidth(st.sys, st.W/100, st.lv);
+  const s=S[st.sys], F=figures(), lev=F.levage;
+  const cap=C.capacity(st.sys, lev);
+  const node=(s.c20&&st.n20)?20:s.C, exact=s.exact||(s.c20&&st.n20);
+  const pass=F.opens.length?Math.min(...F.opens):0;
+
   document.getElementById('sDim').textContent=fr(st.W/100)+' × '+fr(st.H/100);
-  document.getElementById('sLeaf').textContent=fr(leafW);
-  document.getElementById('sGlass').textContent=sys.glass;
+  document.getElementById('sLeaf').textContent=fr(F.leafW/1000);
+  document.getElementById('sGlass').textContent=s.glass;
+
+  const t=[['Dormant',F.D+' mm'],['Nœud central',node+' mm'],
+    ['Assemblage',s.joint==='onglet'?'onglet 45°':'coupe droite'],
+    ['Rupture',s.pf?'polyamide '+s.pf+' mm':'sans'],
+    ['Ouvrant',s.cacheH?'traverses cachées':s.Fv+' mm vus'],
+    ['Seuil',s.seuil==='encastre'?'encastré':(lev?'plat, rail inox':'à rails')],
+    ['Poignées',lev?'levier de levage':'de tirage']];
+  if(s.rails3&&st.lv===3) t.push(['Rails','3']);
+  document.getElementById('traits').innerHTML=t.map(([a,b])=>'<span class="trait">'+a+' <b>'+b+'</b></span>').join('');
 
   document.getElementById('sysHint').innerHTML =
-    'Cadre de <b>'+sys.depth+' mm</b> de profondeur, <b>'+sys.centre+' mm</b> au croisement central'
-    + (sys.exact ? ' (cote publiée par STRUGAL).' : ' (masse vue reconstituée).')
-    + ' Maxi <b>'+sys.vmax[0]+' × '+sys.vmax[1]+' mm</b> et <b>'+sys.kg+' kg</b> par vantail, vitrage '
-    + sys.glass+' mm.';
+    'Cadre de <b>'+F.D+' mm</b> de profondeur, <b>'+node+' mm</b> au nœud central'
+    + (exact ? ' (cote publiée par STRUGAL).' : ' (masse vue reconstituée).')
+    + (cap.vmax ? ' Maxi <b>'+cap.vmax[0]+' × '+cap.vmax[1]+' mm</b> et <b>'+cap.kg+' kg</b> par vantail'
+                : ' Dimensions maxi par vantail non publiées par STRUGAL')
+    + ', vitrage jusqu’à '+s.glass+' mm.';
+  document.getElementById('optLev').hidden=!s.levageOpt;
+  document.getElementById('optN20').hidden=!s.c20;
+  document.getElementById('sysOpts').hidden=!s.levageOpt&&!s.c20;
+  document.getElementById('extBox').hidden=!s.pf;
 
-  /* ouvrir un vantail degage exactement une largeur de vantail */
   document.getElementById('openHint').innerHTML = st.op
-    ? 'Le vantail qui porte la poignée coulisse derrière son voisin et dégage un '
-      + '<b>passage libre de '+Math.round(leafW*1000)+' mm</b> — la largeur d\'un vantail.'
-    : 'Affichez la baie ouverte pour montrer au client le passage réellement dégagé.';
+    ? (st.lv===4
+        ? 'Les deux vantaux de rive s’ouvrent vers le centre : <b>deux passages libres de '+mmTxt(pass)+'</b>.'
+        : 'Le vantail ouvert dégage un <b>passage libre de '+mmTxt(pass)+'</b>.')
+    : 'Chaque vantail ouvrant a sa poignée, côté mur. Affichez la baie ouverte pour montrer au client le passage réellement dégagé.';
 
-  /* le controle qui compte : un vantail trop large pour le systeme */
+  /* le controle qui compte : un vantail trop grand pour le systeme */
   const a=document.getElementById('alert');
-  const overW = leafW*1000 > sys.vmax[0];
-  const overH = st.H*10 > sys.vmax[1];
+  const leafMM=Math.round(F.leafW);
+  const overW = cap.vmax && leafMM > cap.vmax[0];
+  const overH = cap.vmax && st.H*10 > cap.vmax[1];
   if(overW || overH){
-    const parts=[];
-    if(overW) parts.push('chaque vantail ferait '+Math.round(leafW*1000)+' mm de large, au-delà des '
-                 + sys.vmax[0]+' mm admis par le '+st.sys);
-    if(overH) parts.push('la hauteur '+(st.H*10)+' mm dépasse les '+sys.vmax[1]+' mm du '+st.sys);
+    const nm=C.label(st.sys), parts=[];
+    if(overW) parts.push('chaque vantail ferait '+leafMM+' mm de large, au-delà des '
+                 + cap.vmax[0]+' mm admis par le '+nm);
+    if(overH) parts.push('la hauteur '+(st.H*10)+' mm dépasse les '+cap.vmax[1]+' mm du '+nm);
     parts[0]=parts[0].charAt(0).toUpperCase()+parts[0].slice(1);
     a.innerHTML='<b>Attention :</b> ' + parts.join(', et ') + '. '
       + 'Passez à plus de vantaux, ou à un système de plus grande capacité.';
     a.hidden=false;
   } else a.hidden=true;
-
-  const aw=Coulissant.AR_WIDTH[st.lv];
-  const arSys=Coulissant.arSystem(st.sys);
-  document.getElementById('sizeHint').innerHTML =
-    'Cotes libres. La vue en réalité augmentée sur iPhone utilise le modèle <b>'+arSys+'</b>'
-    + (arSys===st.sys ? '' : ' (le plus proche du '+st.sys+')')
-    + ' en <b>'+fr(aw/100)+' × 2,20 m</b> — le devis reprend vos cotes exactes.';
+  sizeHint();
 }
 
 /* ---------- devis ---------- */
 function summary(){
-  const sys=S[st.sys];
-  const leafW=Coulissant.leafWidth(st.sys, st.W/100, st.lv);
-  return ['Baie coulissante — '+fr(st.W/100)+' × '+fr(st.H/100)+' m',
-    'Système : '+st.sys+' — '+sys.tag,
-    'Vantaux : '+st.lv+' — '+Math.round(leafW*1000)+' mm par vantail',
-    'Passage libre, un vantail ouvert : '+Math.round(leafW*1000)+' mm',
-    'Finition : '+st.fin.nm,
-    'Vitrage : '+sys.glass+' mm, teinte '+st.tint.nm.toLowerCase(),
-    'Cotes à confirmer par relevé sur site.'].join('\n');
+  const s=S[st.sys], F=figures(), lev=F.levage;
+  const pass=F.opens.length?Math.min(...F.opens):0;
+  const lines=['Baie coulissante — '+fr(st.W/100)+' × '+fr(st.H/100)+' m',
+    'Système : STRUGAL '+C.label(st.sys)+' — '+s.tag];
+  if(s.levageOpt && st.lev) lines.push('Version : à levage');
+  if(s.c20 && st.n20) lines.push('Nœud central : réduit à 20 mm');
+  lines.push('Vantaux : '+st.lv+' — '+mmTxt(F.leafW)+' par vantail',
+    'Passage libre, vantail ouvert : '+(st.lv===4?'2 × ':'')+mmTxt(pass),
+    'Poignées : '+(lev?'levier de levage':'de tirage')+', sur les ouvrants côté mur',
+    'Finition : '+st.fin.nm+((s.pf && st.ext && st.ext.id!==st.fin.id)?' intérieur, '+st.ext.nm+' extérieur':''),
+    'Vitrage : '+s.glass+' mm, teinte '+st.tint.nm.toLowerCase(),
+    'Cotes à confirmer par relevé sur site.');
+  return lines.join('\n');
 }
 const sheet=document.getElementById('sheet');
 document.getElementById('devis').onclick=()=>{
@@ -509,28 +680,110 @@ document.getElementById('qrcopy').onclick=async()=>{
   setTimeout(()=>b.textContent='Copier le lien',2000);
 };
 
-/* ---------- support RA ----------
-   Trois voies, decidees par la plateforme :
-   - iPhone  : AR Quick Look, via l'attribut ios-src de model-viewer.
-   - Android : Google Scene Viewer. Il ne sait pas lire une URL blob:, donc
-               on lui passe le modele GLB statique de la configuration.
-   - le reste : pas de RA, on montre le QR code.                         */
+/* ---------- vue réelle ----------
+   Le modele montre a l'ecran est celui de la vue reelle : meme systeme,
+   memes cotes, memes details.
+   - iPhone  : AR Quick Look. Sans ios-src, <model-viewer> convertit le
+               modele affiche en .usdz au moment du toucher.
+   - Android : WebXR dans Chrome, avec le modele affiche. Sans WebXR,
+               Google Scene Viewer, qui ne lit pas les blob: : modele
+               statique de la famille la plus proche (models-co/).
+   - le reste : pas de vue reelle, on montre le QR code.
+   Avant d'entrer, le verre passe en verre transparent classique : Quick
+   Look ignore la transmission, et en WebXR la camera n'est pas vue par
+   le calcul de transmission (le verre paraitrait laiteux).             */
 const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
              || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
 const IS_ANDROID = /Android/.test(navigator.userAgent);
-const btnIOS = document.getElementById('arbtn');
+const btnAR  = document.getElementById('arbtn');
 const btnAND = document.getElementById('arbtn-and');
+const arNote = document.getElementById('arnote');
+const AR_W = {2:240, 3:360, 4:480};      /* cotes des modeles statiques */
+let arGlass=false, iosStatic=false, xrFailed=false;
 
+const arAllowed = () => view!=='coupe' && !st.mur;
+function staticFile(ext){
+  return `../models-co/co-${C.arFamily(st.sys)}-${st.lv}-${st.fin.id}${st.op?'-ouvert':''}.${ext}`;
+}
+function syncAR(){
+  if(iosStatic) mv.setAttribute('ios-src', withAccess(staticFile('usdz')));
+  else mv.removeAttribute('ios-src');
+}
+function glassForAR(on){
+  if(on===arGlass) return;
+  const m = mv.model && mv.model.materials.find(x=>x.name==='verre');
+  if(!m) return;
+  const t=st.tint, pbr=m.pbrMetallicRoughness;
+  try{
+    if(on){
+      m.setAlphaMode('BLEND');
+      pbr.setBaseColorFactor([...t.ar.lin, t.ar.a]);
+      pbr.setRoughnessFactor(t.ar.r); pbr.setMetallicFactor(t.ar.m||0);
+      if(m.transmission) m.transmission.setTransmissionFactor(0);
+    }else{
+      m.setAlphaMode('OPAQUE');
+      pbr.setBaseColorFactor([...t.lin, 1]);
+      pbr.setRoughnessFactor(t.r); pbr.setMetallicFactor(t.refl||0);
+      if(m.transmission) m.transmission.setTransmissionFactor(t.tr);
+    }
+    arGlass=on;
+  }catch(e){}
+}
 function noAR(){
-  btnIOS.hidden=true; btnAND.hidden=true;
+  btnAR.hidden=true; btnAND.hidden=true; arNote.hidden=true;
   document.getElementById('qrhint').hidden=false;
   renderQR();
 }
-/* URL absolue du modele statique servi a Scene Viewer */
-function glbURL(){
-  return withAccess(new URL(`../models-co/co-${Coulissant.arSystem(st.sys)}-${st.lv}-${st.fin.id}`
-                 + (st.op ? '-ouvert' : '') + '.glb', location.href).href);
+function setupAR(){
+  if(!IS_IOS && !IS_ANDROID){ noAR(); sizeHint(); return; }
+  if(!arAllowed()){ btnAR.hidden=true; btnAND.hidden=true; arNote.hidden=false; sizeHint(); return; }
+  arNote.hidden=true;
+  if(IS_IOS){ btnAR.hidden=false; btnAND.hidden=true; }
+  else { const xr = mv.canActivateAR && !xrFailed; btnAR.hidden=!xr; btnAND.hidden=xr; }
+  sizeHint();
 }
+function sizeHint(){
+  const el=document.getElementById('sizeHint'); if(!el) return;
+  const fallback = iosStatic || (IS_ANDROID && !btnAND.hidden);
+  el.innerHTML = fallback
+    ? 'Sur ce téléphone, la vue réelle utilise un modèle standard proche (<b>'+C.label(C.arFamily(st.sys))
+      +'</b> en <b>'+fr(AR_W[st.lv]/100)+' × 2,20 m</b>). Le devis reprend vos cotes exactes.'
+    : 'Cotes libres : la 3D et la vue réelle chez vous reprennent ces cotes exactes.';
+}
+async function startAR(){
+  glassForAR(true);
+  try{ await mv.activateAR(); }
+  catch(e){
+    console.warn(e);
+    if(IS_IOS && !iosStatic){
+      /* conversion impossible sur cet iPhone : fichier statique */
+      iosStatic=true; syncAR(); sizeHint();
+      try{ await mv.activateAR(); }catch(e2){ noAR(); }
+    } else if(IS_ANDROID){ xrFailed=true; glassForAR(false); setupAR(); }
+  }
+  /* Quick Look a deja recu le fichier : le verre de l'ecran revient */
+  if(IS_IOS) setTimeout(()=>glassForAR(false), 8000);
+}
+btnAR.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); startAR(); });
+mv.addEventListener('ar-status',e=>{
+  const s=e.detail.status;
+  if(s==='not-presenting') glassForAR(false);
+  if(s==='failed'){
+    glassForAR(false);
+    if(IS_ANDROID){ xrFailed=true; setupAR(); }
+    else if(!IS_IOS) noAR();
+  }
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && arGlass && IS_IOS) setTimeout(()=>glassForAR(false),1500);
+});
+arNote.onclick=()=>{
+  st.mur=0; mark(document.getElementById('scene'), document.getElementById('scene').children[0]);
+  view='ens'; mark(vHost, vHost.children[0]);
+  refresh(true);
+};
+/* URL absolue du modele statique servi a Scene Viewer */
+function glbURL(){ return withAccess(new URL(staticFile('glb'), location.href).href); }
 function openSceneViewer(){
   const file = encodeURIComponent(glbURL());
   const back = encodeURIComponent(location.href);
@@ -542,23 +795,10 @@ function openSceneViewer(){
     + 'S.browser_fallback_url=' + back + ';end;';
 }
 btnAND.onclick = openSceneViewer;
-
-function setupAR(){
-  if(IS_ANDROID){ btnIOS.hidden=true; btnAND.hidden=false; return; }
-  /* sur iPhone, Quick Look marche depuis iOS 12 : on montre le bouton sans
-     attendre canActivateAR, qui repond parfois trop tard. Si l'ouverture
-     echoue, l'ecouteur ar-status ci-dessous bascule sur le QR code. */
-  if(IS_IOS){ btnIOS.hidden=false; btnAND.hidden=true; return; }
-  noAR();
-}
-mv.addEventListener('ar-status',e=>{if(e.detail.status==='failed' && !IS_ANDROID)noAR();});
 setTimeout(setupAR,1500);
-mv.addEventListener('load',()=>{
-  mv.cameraOrbit='28deg 76deg auto'; mv.cameraTarget='auto auto auto'; mv.jumpCameraToGoal();
-});
 
 loadPartner();
-refresh();
+refresh(true);
 </script>
 </body>
 </html>
