@@ -10,8 +10,10 @@
 <link rel="canonical" href="https://prompolu.com/ar/">
 <script type="module" src="vendor/model-viewer.min.js"></script>
 <script src="vendor/qrcode.js"></script>
-<script src="pergola.js"></script>
-<script src="rendu.js" defer></script>
+<!-- ?v= : changer la valeur a chaque modification de ces scripts. Un
+     telephone qui garde l'ancien fichier en cache casse la page. -->
+<script src="pergola.js?v=20261114c"></script>
+<script src="rendu.js?v=20261114b" defer></script>
 <style>
 :root{
   --bg:#0e1116; --panel:#161b22; --line:#242c37; --txt:#e8edf3;
@@ -45,13 +47,13 @@ body{margin:0;background:var(--bg);color:var(--txt);
 body.night .stage{background:linear-gradient(160deg,#1b2330,#0d1218)}
 model-viewer{width:100%;height:60vh;min-height:330px;max-height:460px;
   --poster-color:transparent;display:block}
-#arbtn{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;
+#arbtn,#arbtn-and{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;
   display:flex;align-items:center;gap:9px;
   background:var(--accent);color:var(--accent-txt);border:0;
   padding:13px 22px;border-radius:100px;font-size:15px;font-weight:700;
   box-shadow:0 6px 22px #0006;cursor:pointer;white-space:nowrap}
-#arbtn svg{width:19px;height:19px}
-#arbtn[hidden]{display:none}
+#arbtn svg,#arbtn-and svg{width:19px;height:19px}
+#arbtn[hidden],#arbtn-and[hidden]{display:none}
 /* bouton QR + panneau "scannez" (poste fixe / tablette d'atelier) */
 #qrbtn{position:absolute;top:12px;right:12px;width:42px;height:42px;border-radius:11px;
   border:0;background:#0e1116cc;color:#fff;display:grid;place-items:center;cursor:pointer;
@@ -180,7 +182,7 @@ model-viewer{width:100%;height:60vh;min-height:330px;max-height:460px;
       camera-orbit="35deg 74deg auto" camera-target="auto auto auto"
       min-camera-orbit="auto auto auto" max-camera-orbit="auto auto auto"
       interaction-prompt="none"
-      ar ar-modes="webxr scene-viewer quick-look"
+      ar ar-modes="webxr quick-look"
       ar-scale="fixed" ar-placement="floor"
       alt="Pergola bioclimatique en aluminium">
       <button id="arbtn" slot="ar-button">
@@ -192,6 +194,16 @@ model-viewer{width:100%;height:60vh;min-height:330px;max-height:460px;
         Voir chez moi en 3D
       </button>
     </model-viewer>
+    <!-- Voie Android sans WebXR : Scene Viewer ne lit pas les blob:, ce
+         bouton lui passe le modèle statique de la taille la plus proche. -->
+    <button id="arbtn-and" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/>
+        <path d="M12 8.5l3.5 2v3L12 15.5 8.5 13.5v-3z"/>
+      </svg>
+      Voir chez moi en 3D
+    </button>
     <button id="qrbtn" aria-label="Ouvrir sur un téléphone">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h3v3h-3v-3zm5 0h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3z"/>
@@ -390,7 +402,7 @@ FINISHES.forEach(f=>{
   b.setAttribute('aria-pressed', f.id===st.fin.id);
   b.setAttribute('aria-label', f.nm);
   b.innerHTML = `<span>${f.nm}</span>`;
-  b.onclick = ()=>{ st.fin = f; mark(fWrap, b); applyMaterial(); syncAR(); writeURL(); };
+  b.onclick = ()=>{ st.fin = f; mark(fWrap, b); load(); };
   fWrap.appendChild(b);
 });
 function seg(host, items, get, set){
@@ -403,6 +415,18 @@ function seg(host, items, get, set){
   });
 }
 seg(document.getElementById('slats'), SLATS, ()=>st.slat, v=>st.slat=v);
+/* les lames tournent (animation) au lieu de refaire le modèle */
+[...document.getElementById('slats').children].forEach((b,i)=>{
+  b.onclick = ()=>{
+    const from=st.slat, to=SLATS[i].id; if(from===to) return;
+    st.slat=to; mark(document.getElementById('slats'), b);
+    const name=from+'>'+to;
+    if(mv.loaded && (mv.availableAnimations||[]).includes(name)){
+      mv.animationName=name; mv.currentTime=0; mv.play({repetitions:1});
+      syncAR(); specs(); writeURL();
+    } else load();
+  };
+});
 
 /* ---------- cotes libres ---------- */
 const wIn = document.getElementById('wIn'), dIn = document.getElementById('dIn');
@@ -443,8 +467,7 @@ function paintLed(){
 ledBtn.onclick = ()=>{
   st.led = !st.led;
   paintLed();
-  applyMaterial();
-  writeURL();
+  load();
 };
 paintLed();   /* l'état peut venir de l'URL */
 
@@ -454,39 +477,24 @@ const ANGLE = {closed:2, mid:38, open:88};
 
 function load(){
   if (blobURL) { URL.revokeObjectURL(blobURL); blobURL = null; }
-
-  if (isStd(st.w, st.d)) {
-    /* taille standard : on sert le fichier pre-genere, toutes les
-       modalites de realite augmentee restent disponibles.            */
-    mv.src = withAccess(`models/pergola-${st.w}x${st.d}-${st.slat}.glb`);
-    mv.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
-  } else {
-    /* cotes libres : la pergola est construite ici, dans le navigateur,
-       a partir des memes sections extrudees que le generateur.        */
-    const r = Pergola.makeURL(
-      {width: st.w/100, depth: st.d/100, angleDeg: ANGLE[st.slat], led: true},
-      {lin: hexLin(st.fin.hex.substr(1)), m: st.fin.m, r: st.fin.r},
-      st.led);
-    blobURL = r.url;
-    mv.src = blobURL;
-    /* Scene Viewer telecharge une URL http : il ne sait pas lire un
-       modele genere en memoire. On ne l'annonce donc pas, sinon le
-       bouton RA echouerait sans message.                             */
-    mv.setAttribute('ar-modes', 'webxr quick-look');
-  }
+  /* la pergola est construite ici, dans le navigateur, aux cotes exactes,
+     avec ses details : la meme pour l'ecran et pour la vue reelle      */
+  const r = Pergola.make({width: st.w/100, depth: st.d/100, slat: st.slat},
+    {lin: hexLin(st.fin.hex.substr(1)), m: st.fin.m, r: st.fin.r}, null, null, st.led);
+  blobURL = r.url;
+  mv.src = blobURL;
   syncAR();
   specs();
   writeURL();
 }
-
-/* iPhone : Quick Look charge un fichier fige, donc la vue reelle utilise
-   la taille standard la plus proche. Le devis, lui, garde les cotes
-   exactes saisies par le client.                                      */
 function arSize(){ return [nearest(st.w, STD_W), nearest(st.d, STD_D)]; }
-function syncAR(){
+/* modèles statiques de la taille standard la plus proche (repli) */
+function staticFile(ext){
   const [aw, ad] = arSize();
-  mv.setAttribute('ios-src', withAccess(`models/pergola-${aw}x${ad}-${st.fin.id}.usdz`));
+  return ext==='usdz' ? `models/pergola-${aw}x${ad}-${st.fin.id}.usdz`
+                      : `models/pergola-${aw}x${ad}-${st.slat}.glb`;
 }
+function arTitle(){ return 'Pergola bioclimatique'; }
 function applyMaterial(){
   const mats = mv.model && mv.model.materials;
   if(!mats) return;
@@ -514,7 +522,8 @@ mv.addEventListener('load', ()=>{
 });
 
 /* ---------- fiche technique ---------- */
-function nSlats(dcm){ return Math.max(1, Math.round((dcm/100 - 0.16) / 0.208)); }
+/* meme calcul que le generateur : une lame tous les 190 mm entre bandeaux */
+function nSlats(dcm){ return Math.max(1, Math.round((dcm*10 - 320) / 190)); }
 const fr = v => v.toFixed(2).replace('.', ',');
 function specs(){
   const w = st.w/100, d = st.d/100;
@@ -523,14 +532,13 @@ function specs(){
   document.getElementById('sLam').textContent  = nSlats(st.d);
 
   const hint = document.getElementById('sizeHint');
-  if (isStd(st.w, st.d)) {
-    hint.innerHTML = 'Taille standard — la vue réelle est disponible à ces cotes exactes.';
+  if (!arFallback()) {
+    hint.innerHTML = 'Cotes libres, de 2,00 m à ' + fr(W_MAX/100) + ' m de large et ' +
+      fr(D_MAX/100) + ' m d\'avancée (module maximal) : la 3D et la vue réelle reprennent ces cotes exactes.';
   } else {
     const [aw, ad] = arSize();
-    hint.innerHTML = 'Cotes libres, de 2,00 m à ' + fr(W_MAX/100) + ' m de large et ' +
-      fr(D_MAX/100) + ' m d\'avancée (module maximal). La vue en réalité augmentée ' +
-      'utilisera la taille standard la plus proche, <b>' + fr(aw/100) + ' × ' + fr(ad/100) +
-      ' m</b> — le devis, lui, reprend vos cotes exactes.';
+    hint.innerHTML = 'Sur ce téléphone, la vue réelle utilise la taille standard la plus proche, <b>' +
+      fr(aw/100) + ' × ' + fr(ad/100) + ' m</b> — le devis reprend vos cotes exactes.';
   }
 }
 
@@ -602,14 +610,100 @@ document.getElementById('qrcopy').onclick = async ()=>{
   setTimeout(()=>btn.textContent = 'Copier le lien', 2000);
 };
 
-/* ---------- support RA ---------- */
+/* ---------- vue réelle ----------
+   Le modèle affiché est celui de la vue réelle : mêmes cotes, mêmes détails.
+   - iPhone  : AR Quick Look. Sans ios-src, <model-viewer> convertit le
+               modèle affiché en .usdz au toucher (repli : fichier statique).
+   - Android : WebXR dans Chrome, avec le modèle affiché. Sans WebXR,
+               Google Scene Viewer et le modèle statique le plus proche.
+   - le reste : pas de vue réelle, on montre le QR code.
+   Le verre passe en verre transparent pendant la vue réelle : Quick Look
+   et la caméra WebXR ignorent la transmission.                          */
+const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+             || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+const IS_ANDROID = /Android/.test(navigator.userAgent);
+const btnIOS = document.getElementById('arbtn');
+const btnAND = document.getElementById('arbtn-and');
+let arGlass=false, iosStatic=false, xrFailed=false;
+function syncAR(){
+  if(iosStatic) mv.setAttribute('ios-src', withAccess(staticFile('usdz')));
+  else mv.removeAttribute('ios-src');
+}
+/* vrai si ce téléphone utilise le modèle statique le plus proche */
+function arFallback(){ return iosStatic || (IS_ANDROID && btnAND && !btnAND.hidden); }
+function glassForAR(on){
+  if(on===arGlass) return;
+  const m = mv.model && mv.model.materials.find(x=>x.name==='verre');
+  if(!m || !st.tint || !st.tint.ar) return;
+  const t=st.tint, pbr=m.pbrMetallicRoughness;
+  try{
+    if(on){
+      m.setAlphaMode('BLEND');
+      pbr.setBaseColorFactor([...t.ar.lin, t.ar.a]);
+      pbr.setRoughnessFactor(t.ar.r); pbr.setMetallicFactor(0);
+      if(m.transmission) m.transmission.setTransmissionFactor(0);
+    }else{
+      m.setAlphaMode('OPAQUE');
+      pbr.setBaseColorFactor([...t.lin, 1]);
+      pbr.setRoughnessFactor(t.r); pbr.setMetallicFactor(t.refl||0);
+      if(m.transmission) m.transmission.setTransmissionFactor(t.tr);
+    }
+    arGlass=on;
+  }catch(e){}
+}
 function noAR(){
-  document.getElementById('arbtn').hidden = true;
-  document.getElementById('qrhint').hidden = false;   /* panneau "scannez" */
+  btnIOS.hidden=true; if(btnAND) btnAND.hidden=true;
+  document.getElementById('qrhint').hidden=false;
   renderQR();
 }
-mv.addEventListener('ar-status', e=>{ if(e.detail.status === 'failed') noAR(); });
-setTimeout(()=>{ if(!mv.canActivateAR) noAR(); }, 1800);
+function setupAR(){
+  if(!IS_IOS && !IS_ANDROID){ noAR(); specs(); return; }
+  if(IS_IOS){ btnIOS.hidden=false; if(btnAND) btnAND.hidden=true; }
+  else { const xr = mv.canActivateAR && !xrFailed; btnIOS.hidden=!xr; if(btnAND) btnAND.hidden=xr; }
+  specs();
+}
+async function startAR(){
+  glassForAR(true);
+  try{ await mv.activateAR(); }
+  catch(e){
+    console.warn(e);
+    if(IS_IOS && !iosStatic){
+      /* conversion impossible sur cet iPhone : fichier statique */
+      iosStatic=true; syncAR(); specs();
+      try{ await mv.activateAR(); }catch(e2){ noAR(); }
+    } else if(IS_ANDROID){ xrFailed=true; glassForAR(false); setupAR(); }
+  }
+  /* Quick Look a déjà reçu le fichier : le verre de l'écran revient */
+  if(IS_IOS) setTimeout(()=>glassForAR(false), 8000);
+}
+btnIOS.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); startAR(); });
+mv.addEventListener('ar-status',e=>{
+  const s=e.detail.status;
+  if(s==='not-presenting') glassForAR(false);
+  if(s==='failed'){
+    glassForAR(false);
+    if(IS_ANDROID){ xrFailed=true; setupAR(); }
+    else if(!IS_IOS) noAR();
+  }
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && arGlass && IS_IOS) setTimeout(()=>glassForAR(false),1500);
+});
+/* URL absolue du modèle statique servi à Scene Viewer */
+function glbURL(){ return withAccess(new URL(staticFile('glb'), location.href).href); }
+function openSceneViewer(){
+  const file = encodeURIComponent(glbURL());
+  const back = encodeURIComponent(location.href);
+  const titre = encodeURIComponent(arTitle());
+  location.href = 'intent://arvr.google.com/scene-viewer/1.0?file=' + file
+    + '&mode=ar_preferred&resizable=false&title=' + titre
+    + '#Intent;scheme=https;package=com.google.ar.core;'
+    + 'action=android.intent.action.VIEW;'
+    + 'S.browser_fallback_url=' + back + ';end;';
+}
+if(btnAND) btnAND.onclick = openSceneViewer;
+setTimeout(setupAR,1500);
+mv.addEventListener('load',()=>{ arGlass=false; setupAR(); });
 
 loadPartner();
 load();

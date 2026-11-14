@@ -10,8 +10,10 @@
 <link rel="canonical" href="https://prompolu.com/ar/battants/">
 <script type="module" src="../vendor/model-viewer.min.js"></script>
 <script src="../vendor/qrcode.js"></script>
-<script src="../battants.js"></script>
-<script src="../rendu.js" defer></script>
+<!-- ?v= : changer la valeur a chaque modification de ces scripts. Un
+     telephone qui garde l'ancien fichier en cache casse la page. -->
+<script src="../battants.js?v=20261114c"></script>
+<script src="../rendu.js?v=20261114b" defer></script>
 <style>
 :root{
   --bg:#0e1116; --panel:#161b22; --line:#242c37; --txt:#e8edf3;
@@ -146,7 +148,7 @@ select:focus{outline:none;border-color:var(--accent)}
   </nav>
 
   <div class="stage">
-    <model-viewer id="mv"
+    <model-viewer id="mv" data-environment="studio-clair.hdr" data-shadow-softness="0.45"
       camera-controls touch-action="pan-y"
       shadow-intensity="1.1" exposure="1.05" environment-image="neutral"
       camera-orbit="32deg 74deg auto" camera-target="auto auto auto"
@@ -282,9 +284,12 @@ const FINISHES = [
   {id:'ral9005-black',      hex:'#0A0A0D', m:.05, r:.40, nm:'RAL 9005'},
 ];
 const TINTS = [
-  {id:'clair',  nm:'Clair',  lin:[0.74,0.88,0.83], a:0.30, r:0.03},
-  {id:'fume',   nm:'Fumé',   lin:[0.16,0.17,0.19], a:0.58, r:0.05},
-  {id:'depoli', nm:'Dépoli', lin:[0.84,0.88,0.90], a:0.66, r:0.45},
+  {id:'clair',  nm:'Clair',  lin:[0.97,0.99,0.98], r:0.02, tr:0.96, att:[0.80,0.93,0.88], dist:0.045,
+   ar:{lin:[0.74,0.88,0.83], a:0.30, r:0.03}},
+  {id:'fume',   nm:'Fumé',   lin:[0.62,0.64,0.66], r:0.03, tr:0.90, att:[0.30,0.32,0.34], dist:0.012,
+   ar:{lin:[0.16,0.17,0.19], a:0.58, r:0.05}},
+  {id:'depoli', nm:'Dépoli', lin:[0.95,0.97,0.97], r:0.42, tr:0.85, att:[0.85,0.94,0.90], dist:0.05,
+   ar:{lin:[0.84,0.88,0.90], a:0.66, r:0.45}},
 ];
 const LEAVES = [1,2];
 const MODES = [{id:'ferme',nm:'Fermé'},{id:'ouvert',nm:'Ouvert 95°'},
@@ -292,7 +297,7 @@ const MODES = [{id:'ferme',nm:'Fermé'},{id:'ouvert',nm:'Ouvert 95°'},
 /* bornes par famille : une fenetre et une porte n'ont pas les memes */
 const BOUNDS = {
   fenetre: {wMin:50,  wMax:300, hMin:50,  hMax:240, w:120, h:140},
-  porte:   {wMin:70,  wMax:120, hMin:190, hMax:240, w:100, h:215},
+  porte:   {wMin:70,  wMax:140, hMin:190, hMax:300, w:100, h:215},
 };
 
 const qs = new URLSearchParams(location.search);
@@ -346,7 +351,7 @@ function paint(){
 
 /* ---------- contrôles ---------- */
 const sel=document.getElementById('sysSel');
-[['Fenêtres battantes','fenetre'],['Portes ALUDOORS','porte']].forEach(([lbl,kind])=>{
+[['Fenêtres battantes','fenetre'],['Portes','porte']].forEach(([lbl,kind])=>{
   const g=document.createElement('optgroup'); g.label=lbl;
   Object.keys(S).filter(k=>S[k].kind===kind).forEach(k=>{
     const o=document.createElement('option');
@@ -381,6 +386,20 @@ function seg(host,items,get,set){
 seg(document.getElementById('leaves'),
     LEAVES.map(v=>({id:v,nm:v===1?'1 vantail':'2 vantaux'})), ()=>st.lv, v=>st.lv=+v);
 seg(document.getElementById('modes'), MODES, ()=>st.mode, v=>st.mode=v);
+/* l'ouverture s'anime (poignée, puis vantail) sans refaire le modèle */
+[...document.getElementById('modes').children].forEach(b=>{
+  b.onclick=()=>{
+    const from=st.mode, to=b.dataset.id; if(from===to) return;
+    st.mode=to; mark(document.getElementById('modes'),b);
+    const name={'ferme>ouvert':'ouvrir','ouvert>ferme':'fermer',
+                'ferme>oscillo':'basculer','oscillo>ferme':'redresser'}[from+'>'+to];
+    if(name && mv.loaded && (mv.availableAnimations||[]).includes(name)){
+      mv.animationName=name; mv.currentTime=0; mv.play({repetitions:1});
+      if(swings[to]!==undefined) lastSwing=swings[to];
+      syncAR(); specs(); writeURL();
+    } else refresh();
+  };
+});
 seg(document.getElementById('tints'), TINTS, ()=>st.tint.id,
     v=>st.tint=TINTS.find(t=>t.id===v));
 
@@ -400,9 +419,9 @@ wIn.value=st.W; hIn.value=st.H;
 
 /* une porte n'a ni deuxieme vantail, ni oscillo-battant, ni vitrage */
 function applyKind(){
-  const door = S[st.sys].panel;
+  const door = S[st.sys].kind==='porte';
   document.getElementById('secLeaves').hidden = door;
-  document.getElementById('secTints').hidden  = door;
+  document.getElementById('secTints').hidden  = !!S[st.sys].panel;
   const osc = document.querySelector('#modes button[data-id="oscillo"]');
   if(osc) osc.hidden = door;
   if(door){
@@ -435,35 +454,51 @@ wIn.addEventListener('blur',()=>{const b=B();wIn.value=clamp(parseInt(wIn.value,
 hIn.addEventListener('blur',()=>{const b=B();hIn.value=clamp(parseInt(hIn.value,10),b.hMin,b.hMax,b.h);onSize();});
 
 /* ---------- rendu ---------- */
-let blobURL=null, lastSwing=0, lastLeafW=0;
+let blobURL=null, lastSwing=0, lastLeafW=0, swings={};
 function refresh(){
   if(blobURL){URL.revokeObjectURL(blobURL);blobURL=null;}
-  const out=Battant.makeURL(
+  const out=Battant.make(
     {system:st.sys, width:st.W/100, height:st.H/100, leaves:st.lv, mode:st.mode},
-    {lin:hexLin(st.fin.hex.substr(1)), m:st.fin.m, r:st.fin.r},
-    {lin:st.tint.lin, a:st.tint.a, r:st.tint.r});
-  blobURL=out.url; lastSwing=out.swing; lastLeafW=out.leafW;
+    {lin:hexLin(st.fin.hex.substr(1)), m:st.fin.m, r:st.fin.r}, null, st.tint);
+  blobURL=out.url; swings=out.info.swings; lastSwing=out.info.swing; lastLeafW=out.info.out.leafW/1000;
   mv.src=blobURL;
   syncAR(); specs(); writeURL();
 }
-function syncAR(){
-  mv.setAttribute('ios-src',
-    withAccess(`../models-bt/bt-${st.sys}-${st.lv}-${st.mode}-${st.fin.id}.usdz`));
+/* modèles statiques (repli de la vue réelle) : quatre systèmes seulement */
+const STATIC_SYS={S40:'S46',S45C:'A400K'};
+const AR_SIZE={S53RP:{1:[120,140],2:[240,160]}, S46:{1:[120,140],2:[240,160]},
+               A400K:{1:[100,215]}, A200:{1:[90,205]}};
+const staticSys=()=>STATIC_SYS[st.sys]||st.sys;
+function staticFile(ext){
+  const s=staticSys(), door=S[s].kind==='porte';
+  return `../models-bt/bt-${s}-${door?1:st.lv}-${st.mode==='oscillo'&&door?'ferme':st.mode}-${st.fin.id}.${ext}`;
 }
+function arTitle(){ return S[st.sys].kind==='porte' ? 'Porte battante' : 'Fenêtre battante'; }
+/* fond de studio : le verre physique réfracte ce qu'il y a derrière lui
+   (sur un fond transparent, three.js le peindrait en blanc) ; retiré par
+   <model-viewer> pendant la vue réelle                               */
+(function(){
+  try{
+    const c=document.createElement('canvas'); c.width=1024; c.height=512;
+    const g=c.getContext('2d'), gr=g.createLinearGradient(0,0,0,512);
+    gr.addColorStop(0,'#cdb9a4'); gr.addColorStop(0.36,'#eadfd2'); gr.addColorStop(0.5,'#e4d4c2');
+    gr.addColorStop(0.53,'#c9b29b'); gr.addColorStop(0.72,'#9a8068'); gr.addColorStop(1,'#5a4637');
+    g.fillStyle=gr; g.fillRect(0,0,1024,512);
+    c.toBlob(b=>{ if(b) mv.setAttribute('skybox-image', URL.createObjectURL(b)+'#cyclo.png'); },'image/png');
+  }catch(e){}
+})();
+
 
 const fr=v=>v.toFixed(2).replace('.',',');
 function specs(){
-  const sys=S[st.sys], door=sys.panel;
+  const sys=S[st.sys], door=sys.kind==='porte';
   document.getElementById('sDim').textContent=fr(st.W/100)+' × '+fr(st.H/100);
   document.getElementById('sSwing').textContent=Math.round(lastSwing*100);
-  document.getElementById('sGlass').textContent = door ? '—' : sys.glass;
+  document.getElementById('sGlass').textContent = sys.panel ? '—' : sys.glass;
 
   document.getElementById('sysHint').innerHTML =
-    'Dormant de <b>'+sys.depth+' mm</b> de profondeur, masse vue reconstituée '
-    + '<b>'+sys.frame+' mm</b>. Maxi <b>'+sys.wmax+' × '+sys.hmax+' mm</b> et '
-    + '<b>'+sys.kg+' kg</b> par vantail. ' + sys.note + '.'
-    + (door ? '' : ' Vitrage ' + sys.glass + ' mm'
-        + (sys.exactGlass ? ' (cote publiée).' : ' (reconstituée).'));
+    sys.src + ' Maxi <b>'+sys.wmax+' × '+sys.hmax+' mm</b> et <b>'+sys.kg+' kg</b> par vantail. '
+    + sys.note + '. Masses vues non publiées reconstituées.';
 
   /* la saillie : le chiffre qui decide sur un battant */
   const sw=Math.round(lastSwing*1000);
@@ -494,16 +529,17 @@ function specs(){
     a.hidden=false;
   } else a.hidden=true;
 
-  const ar=Battant.arSize(st.sys, st.lv);
-  document.getElementById('sizeHint').innerHTML =
-    'Cotes libres. La vue en réalité augmentée sur iPhone utilise un modèle <b>'+sys.label+'</b> '
-    + 'en <b>'+fr(ar[0]/100)+' × '+fr(ar[1]/100)+' m</b> — le devis reprend vos cotes exactes. '
+  const ss=staticSys(), ar=(AR_SIZE[ss]||AR_SIZE.S53RP)[door?1:st.lv]||[120,140];
+  document.getElementById('sizeHint').innerHTML = (arFallback()
+    ? 'Sur ce téléphone, la vue réelle utilise un modèle standard <b>'+S[ss].label+'</b> en <b>'
+      +fr(ar[0]/100)+' × '+fr(ar[1]/100)+' m</b> — le devis reprend vos cotes exactes. '
+    : 'Cotes libres : la 3D et la vue réelle reprennent ces cotes exactes. ')
     + (door ? 'La porte se pose au sol.' : 'La fenêtre s\'applique contre un mur.');
 }
 
 /* ---------- devis ---------- */
 function summary(){
-  const sys=S[st.sys], door=sys.panel;
+  const sys=S[st.sys], door=sys.kind==='porte';
   const modeNm=(MODES.find(m=>m.id===st.mode)||MODES[0]).nm;
   const rows=[(door?'Porte battante':'Fenêtre battante')+' — '+fr(st.W/100)+' × '+fr(st.H/100)+' m',
     'Système : '+sys.label+' — '+sys.tag];
@@ -511,8 +547,8 @@ function summary(){
   rows.push('Ouverture : '+modeNm);
   rows.push('Saillie du vantail dans la pièce : '+Math.round(lastSwing*1000)+' mm');
   rows.push('Finition : '+st.fin.nm);
-  if(!door) rows.push('Vitrage : '+sys.glass+' mm, teinte '+st.tint.nm.toLowerCase());
-  else rows.push('Vantail : panneau plein (motifs ALUDOORS non représentés)');
+  if(!sys.panel) rows.push('Vitrage : '+sys.glass+' mm, teinte '+st.tint.nm.toLowerCase());
+  else rows.push('Vantail : panneau plein, décor fraisé ALUDOORS (motif indicatif)');
   rows.push('Cotes à confirmer par relevé sur site.');
   return rows.join('\n');
 }
@@ -562,50 +598,100 @@ document.getElementById('qrcopy').onclick=async()=>{
   setTimeout(()=>b.textContent='Copier le lien',2000);
 };
 
-/* ---------- support RA ----------
-   Trois voies, decidees par la plateforme :
-   - iPhone  : AR Quick Look, via l'attribut ios-src de model-viewer.
-   - Android : Google Scene Viewer. Il ne sait pas lire une URL blob:, donc
-               on lui passe le modele GLB statique de la configuration.
-   - le reste : pas de RA, on montre le QR code.                         */
+/* ---------- vue réelle ----------
+   Le modèle affiché est celui de la vue réelle : mêmes cotes, mêmes détails.
+   - iPhone  : AR Quick Look. Sans ios-src, <model-viewer> convertit le
+               modèle affiché en .usdz au toucher (repli : fichier statique).
+   - Android : WebXR dans Chrome, avec le modèle affiché. Sans WebXR,
+               Google Scene Viewer et le modèle statique le plus proche.
+   - le reste : pas de vue réelle, on montre le QR code.
+   Le verre passe en verre transparent pendant la vue réelle : Quick Look
+   et la caméra WebXR ignorent la transmission.                          */
 const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
              || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
 const IS_ANDROID = /Android/.test(navigator.userAgent);
 const btnIOS = document.getElementById('arbtn');
 const btnAND = document.getElementById('arbtn-and');
-
+let arGlass=false, iosStatic=false, xrFailed=false;
+function syncAR(){
+  if(iosStatic) mv.setAttribute('ios-src', withAccess(staticFile('usdz')));
+  else mv.removeAttribute('ios-src');
+}
+/* vrai si ce téléphone utilise le modèle statique le plus proche */
+function arFallback(){ return iosStatic || (IS_ANDROID && btnAND && !btnAND.hidden); }
+function glassForAR(on){
+  if(on===arGlass) return;
+  const m = mv.model && mv.model.materials.find(x=>x.name==='verre');
+  if(!m || !st.tint || !st.tint.ar) return;
+  const t=st.tint, pbr=m.pbrMetallicRoughness;
+  try{
+    if(on){
+      m.setAlphaMode('BLEND');
+      pbr.setBaseColorFactor([...t.ar.lin, t.ar.a]);
+      pbr.setRoughnessFactor(t.ar.r); pbr.setMetallicFactor(0);
+      if(m.transmission) m.transmission.setTransmissionFactor(0);
+    }else{
+      m.setAlphaMode('OPAQUE');
+      pbr.setBaseColorFactor([...t.lin, 1]);
+      pbr.setRoughnessFactor(t.r); pbr.setMetallicFactor(t.refl||0);
+      if(m.transmission) m.transmission.setTransmissionFactor(t.tr);
+    }
+    arGlass=on;
+  }catch(e){}
+}
 function noAR(){
-  btnIOS.hidden=true; btnAND.hidden=true;
+  btnIOS.hidden=true; if(btnAND) btnAND.hidden=true;
   document.getElementById('qrhint').hidden=false;
   renderQR();
 }
-/* URL absolue du modele statique servi a Scene Viewer */
-function glbURL(){
-  return withAccess(new URL(`../models-bt/bt-${st.sys}-${st.lv}-${st.mode}-${st.fin.id}.glb`,
-                 location.href).href);
+function setupAR(){
+  if(!IS_IOS && !IS_ANDROID){ noAR(); specs(); return; }
+  if(IS_IOS){ btnIOS.hidden=false; if(btnAND) btnAND.hidden=true; }
+  else { const xr = mv.canActivateAR && !xrFailed; btnIOS.hidden=!xr; if(btnAND) btnAND.hidden=xr; }
+  specs();
 }
+async function startAR(){
+  glassForAR(true);
+  try{ await mv.activateAR(); }
+  catch(e){
+    console.warn(e);
+    if(IS_IOS && !iosStatic){
+      /* conversion impossible sur cet iPhone : fichier statique */
+      iosStatic=true; syncAR(); specs();
+      try{ await mv.activateAR(); }catch(e2){ noAR(); }
+    } else if(IS_ANDROID){ xrFailed=true; glassForAR(false); setupAR(); }
+  }
+  /* Quick Look a déjà reçu le fichier : le verre de l'écran revient */
+  if(IS_IOS) setTimeout(()=>glassForAR(false), 8000);
+}
+btnIOS.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); startAR(); });
+mv.addEventListener('ar-status',e=>{
+  const s=e.detail.status;
+  if(s==='not-presenting') glassForAR(false);
+  if(s==='failed'){
+    glassForAR(false);
+    if(IS_ANDROID){ xrFailed=true; setupAR(); }
+    else if(!IS_IOS) noAR();
+  }
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && arGlass && IS_IOS) setTimeout(()=>glassForAR(false),1500);
+});
+/* URL absolue du modèle statique servi à Scene Viewer */
+function glbURL(){ return withAccess(new URL(staticFile('glb'), location.href).href); }
 function openSceneViewer(){
   const file = encodeURIComponent(glbURL());
   const back = encodeURIComponent(location.href);
-  const titre = encodeURIComponent(S[st.sys].panel ? 'Porte battante' : 'Fenêtre battante');
+  const titre = encodeURIComponent(arTitle());
   location.href = 'intent://arvr.google.com/scene-viewer/1.0?file=' + file
     + '&mode=ar_preferred&resizable=false&title=' + titre
     + '#Intent;scheme=https;package=com.google.ar.core;'
     + 'action=android.intent.action.VIEW;'
     + 'S.browser_fallback_url=' + back + ';end;';
 }
-btnAND.onclick = openSceneViewer;
-
-function setupAR(){
-  if(IS_ANDROID){ btnIOS.hidden=true; btnAND.hidden=false; return; }
-  /* sur iPhone, Quick Look marche depuis iOS 12 : on montre le bouton sans
-     attendre canActivateAR, qui repond parfois trop tard. Si l'ouverture
-     echoue, l'ecouteur ar-status ci-dessous bascule sur le QR code. */
-  if(IS_IOS){ btnIOS.hidden=false; btnAND.hidden=true; return; }
-  noAR();
-}
-mv.addEventListener('ar-status',e=>{if(e.detail.status==='failed' && !IS_ANDROID)noAR();});
+if(btnAND) btnAND.onclick = openSceneViewer;
 setTimeout(setupAR,1500);
+mv.addEventListener('load',()=>{ arGlass=false; setupAR(); });
 mv.addEventListener('load',()=>{
   mv.cameraOrbit='32deg 74deg auto'; mv.cameraTarget='auto auto auto'; mv.jumpCameraToGoal();
 });

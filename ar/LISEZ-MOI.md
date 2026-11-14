@@ -121,6 +121,18 @@ téléphone, prête à être posée sur sa terrasse.
   (`models-co/`, quatre familles en 2,40 / 3,60 / 4,80 × 2,20 m). Le verre
   passe en verre transparent pendant la vue réelle (Quick Look et la caméra
   WebXR ignorent la transmission).
+- **Pergola, garde-corps, battant** (`ar/pergola.js`, `ar/gardecorps.js`,
+  `ar/battants.js`, chacun autonome avec sa boîte à outils `kit3d` incluse) :
+  pergola à poteaux rainurés, cache-platine, sortie d'eau, bandeaux à
+  gouttière et canal LED, lames profilées à joint, embouts, axes et bielle,
+  lames animées ; Glass Line (profil en U, joints, embouts, verre feuilleté en
+  panneaux, main courante en U) et S80B (platines, cache-platines, main
+  courante galbée, pinces à verre) ; battants S40, S46, S53RP+ (parcloses
+  propres à chaque système, polyamide, fiches oscillo-battantes, compas,
+  battement, ouverture animée) et portes S45C, ALUDOORS A400K et A200 4FH2
+  (rainures et motifs indicatifs). Vue réelle : modèle affiché aux cotes
+  exactes, comme pour le coulissant ; fichiers `models/`, `models-gc/`,
+  `models-bt/` gardés en repli.
 - Poids : `.glb` ≈ 150 Ko, chargé en environ une seconde en 4G. La plupart des
   configurateurs 3D pèsent 5 à 20 Mo et le visiteur part avant la fin.
 
