@@ -10,8 +10,10 @@
 <link rel="canonical" href="https://prompolu.com/ar/garde-corps/">
 <script type="module" src="../vendor/model-viewer.min.js"></script>
 <script src="../vendor/qrcode.js"></script>
-<script src="../gardecorps.js"></script>
-<script src="../rendu.js" defer></script>
+<!-- ?v= : changer la valeur a chaque modification de ces scripts. Un
+     telephone qui garde l'ancien fichier en cache casse la page. -->
+<script src="../gardecorps.js?v=20261114c"></script>
+<script src="../rendu.js?v=20261114b" defer></script>
 <style>
 :root{
   --bg:#0e1116; --panel:#161b22; --line:#242c37; --txt:#e8edf3;
@@ -166,7 +168,7 @@ model-viewer{width:100%;height:56vh;min-height:300px;max-height:430px;
   </nav>
 
   <div class="stage">
-    <model-viewer id="mv"
+    <model-viewer id="mv" data-environment="studio-clair.hdr" data-shadow-softness="0.45"
       camera-controls touch-action="pan-y"
       shadow-intensity="1.1" exposure="1.05" environment-image="neutral"
       camera-orbit="38deg 74deg auto" camera-target="auto auto auto"
@@ -320,9 +322,12 @@ const FINISHES = [
   {id:'ral9005-black',      hex:'#0A0A0D', m:.05, r:.40, nm:'RAL 9005'},
 ];
 const TINTS = [
-  {id:'clair',  nm:'Clair',  lin:[0.78,0.90,0.85], a:0.26, r:0.03},
-  {id:'fume',   nm:'Fumé',   lin:[0.17,0.18,0.20], a:0.52, r:0.05},
-  {id:'depoli', nm:'Dépoli', lin:[0.85,0.89,0.91], a:0.62, r:0.45},
+  {id:'clair',  nm:'Clair',  lin:[0.97,0.99,0.98], r:0.02, tr:0.96, att:[0.80,0.93,0.88], dist:0.045,
+   ar:{lin:[0.74,0.88,0.83], a:0.30, r:0.03}},
+  {id:'fume',   nm:'Fumé',   lin:[0.62,0.64,0.66], r:0.03, tr:0.90, att:[0.30,0.32,0.34], dist:0.012,
+   ar:{lin:[0.16,0.17,0.19], a:0.58, r:0.05}},
+  {id:'depoli', nm:'Dépoli', lin:[0.95,0.97,0.97], r:0.42, tr:0.85, att:[0.85,0.94,0.90], dist:0.05,
+   ar:{lin:[0.84,0.88,0.90], a:0.66, r:0.45}},
 ];
 const SYSTEMS = [
   {id:'glassline', nm:'Glass Line'},
@@ -452,7 +457,7 @@ toggle('led','led', ()=>{
 if(st.led){ document.body.classList.add('night'); mv.exposure=0.42; mv.shadowIntensity=0.4; }
 
 /* ---------- rendu ---------- */
-let blobURL = null;
+let blobURL = null, gcInfo = {};
 function opts(){
   return {system:st.sys, length:st.L/100, height:st.H/100, glass:'88.4',
           infill:st.inf, handrail:st.mc, recessed:st.enc, led:st.led};
@@ -467,9 +472,9 @@ function refresh(){
   document.getElementById('secTint').hidden = !hasGlass();
 
   if(blobURL){ URL.revokeObjectURL(blobURL); blobURL=null; }
-  blobURL = GardeCorps.makeURL(opts(),
-              {lin:hexLin(st.fin.hex.substr(1)), m:st.fin.m, r:st.fin.r},
-              {lin:st.tint.lin, a:st.tint.a, r:st.tint.r}, st.led);
+  const r = GardeCorps.make(opts(),
+              {lin:hexLin(st.fin.hex.substr(1)), m:st.fin.m, r:st.fin.r}, null, st.tint, st.led);
+  blobURL = r.url; gcInfo = r.info.info || {};
   mv.src = blobURL;
   syncAR(); specs(); writeURL();
 }
@@ -477,11 +482,26 @@ function refresh(){
 function arVariant(){
   return st.sys==='glassline' ? 'glassline' : ('s80b-'+st.inf);
 }
-function syncAR(){
+/* modèle statique le plus proche (repli de la vue réelle) */
+function staticFile(ext){
   const L = nearest(st.L, AR_LEN);
-  mv.setAttribute('ios-src',
-    withAccess(`../models-gc/gc-${arVariant()}-${L}-${st.fin.id}.usdz`));
+  return `../models-gc/gc-${arVariant()}-${L}-${st.fin.id}.${ext}`;
 }
+function arTitle(){ return 'Garde-corps aluminium'; }
+/* fond de studio : le verre physique réfracte ce qu'il y a derrière lui
+   (sur un fond transparent, three.js le peindrait en blanc) ; retiré par
+   <model-viewer> pendant la vue réelle                               */
+(function(){
+  try{
+    const c=document.createElement('canvas'); c.width=1024; c.height=512;
+    const g=c.getContext('2d'), gr=g.createLinearGradient(0,0,0,512);
+    gr.addColorStop(0,'#cdb9a4'); gr.addColorStop(0.36,'#eadfd2'); gr.addColorStop(0.5,'#e4d4c2');
+    gr.addColorStop(0.53,'#c9b29b'); gr.addColorStop(0.72,'#9a8068'); gr.addColorStop(1,'#5a4637');
+    g.fillStyle=gr; g.fillRect(0,0,1024,512);
+    c.toBlob(b=>{ if(b) mv.setAttribute('skybox-image', URL.createObjectURL(b)+'#cyclo.png'); },'image/png');
+  }catch(e){}
+})();
+
 
 const fr = v => v.toFixed(2).replace('.', ',');
 function specs(){
@@ -492,19 +512,19 @@ function specs(){
     document.getElementById('sB').textContent   = '88.4';
     document.getElementById('sBlab').textContent= 'VERRE FEUILLETÉ';
   } else {
-    document.getElementById('sA').textContent   = GardeCorps.postCount(st.L/100);
+    document.getElementById('sA').textContent   = gcInfo.posts || '—';
     document.getElementById('sAlab').textContent= 'MONTANTS';
-    document.getElementById('sB').textContent   = GardeCorps.barCount(st.L/100);
+    document.getElementById('sB').textContent   = gcInfo.bars || 0;
     document.getElementById('sBlab').textContent= 'BARREAUX';
   }
   document.getElementById('sysHint').innerHTML = st.sys==='glassline'
     ? 'Glass Line — profil de base en U 125 × 90 mm, verre feuilleté, sans montant. Hauteur maxi <b>1,10 m</b>.'
     : 'S80B — montants tous les 1,20 m maxi. Le nombre de barreaux est calculé pour garder un jour inférieur à <b>110 mm</b>.';
   const L = nearest(st.L, AR_LEN);
-  document.getElementById('sizeHint').innerHTML =
-    'Longueur libre de 1,00 m à 10,00 m. La vue en réalité augmentée sur iPhone ' +
-    'utilise la longueur standard la plus proche, <b>' + fr(L/100) + ' m</b>, à ' +
-    '<b>1,10 m</b> de hauteur — le devis reprend vos cotes exactes.';
+  document.getElementById('sizeHint').innerHTML = arFallback()
+    ? 'Sur ce téléphone, la vue réelle utilise la longueur standard la plus proche, <b>'
+      + fr(L/100) + ' m</b>, à <b>1,10 m</b> de hauteur — le devis reprend vos cotes exactes.'
+    : 'Longueur libre de 1,00 m à 10,00 m : la 3D et la vue réelle reprennent ces cotes exactes.';
 }
 
 /* ---------- devis ---------- */
@@ -520,8 +540,8 @@ function summary(){
     l.push('Main courante : ' + (st.mc ? 'oui' : 'non'));
     l.push('Pose : ' + (st.enc ? 'encastrée' : 'sur dalle'));
   } else {
-    l.push('Montants : ' + GardeCorps.postCount(st.L/100) +
-           ' — barreaux : ' + GardeCorps.barCount(st.L/100));
+    l.push('Montants : ' + (gcInfo.posts||'—') + ' — barreaux : ' + (gcInfo.bars||0)
+           + (gcInfo.panels ? ' — verres : ' + gcInfo.panels : ''));
   }
   l.push('Éclairage LED : ' + (st.led ? 'oui' : 'non'));
   l.push('Hauteur à valider selon usage et réglementation.');
@@ -575,51 +595,100 @@ document.getElementById('qrcopy').onclick=async()=>{
   setTimeout(()=>b.textContent='Copier le lien',2000);
 };
 
-/* ---------- support RA ----------
-   Trois voies, decidees par la plateforme :
-   - iPhone  : AR Quick Look, via l'attribut ios-src de model-viewer.
-   - Android : Google Scene Viewer. Il ne sait pas lire une URL blob:, donc
-               on lui passe le modele GLB statique de la configuration.
-   - le reste : pas de RA, on montre le QR code.                         */
+/* ---------- vue réelle ----------
+   Le modèle affiché est celui de la vue réelle : mêmes cotes, mêmes détails.
+   - iPhone  : AR Quick Look. Sans ios-src, <model-viewer> convertit le
+               modèle affiché en .usdz au toucher (repli : fichier statique).
+   - Android : WebXR dans Chrome, avec le modèle affiché. Sans WebXR,
+               Google Scene Viewer et le modèle statique le plus proche.
+   - le reste : pas de vue réelle, on montre le QR code.
+   Le verre passe en verre transparent pendant la vue réelle : Quick Look
+   et la caméra WebXR ignorent la transmission.                          */
 const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
              || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
 const IS_ANDROID = /Android/.test(navigator.userAgent);
 const btnIOS = document.getElementById('arbtn');
 const btnAND = document.getElementById('arbtn-and');
-
+let arGlass=false, iosStatic=false, xrFailed=false;
+function syncAR(){
+  if(iosStatic) mv.setAttribute('ios-src', withAccess(staticFile('usdz')));
+  else mv.removeAttribute('ios-src');
+}
+/* vrai si ce téléphone utilise le modèle statique le plus proche */
+function arFallback(){ return iosStatic || (IS_ANDROID && btnAND && !btnAND.hidden); }
+function glassForAR(on){
+  if(on===arGlass) return;
+  const m = mv.model && mv.model.materials.find(x=>x.name==='verre');
+  if(!m || !st.tint || !st.tint.ar) return;
+  const t=st.tint, pbr=m.pbrMetallicRoughness;
+  try{
+    if(on){
+      m.setAlphaMode('BLEND');
+      pbr.setBaseColorFactor([...t.ar.lin, t.ar.a]);
+      pbr.setRoughnessFactor(t.ar.r); pbr.setMetallicFactor(0);
+      if(m.transmission) m.transmission.setTransmissionFactor(0);
+    }else{
+      m.setAlphaMode('OPAQUE');
+      pbr.setBaseColorFactor([...t.lin, 1]);
+      pbr.setRoughnessFactor(t.r); pbr.setMetallicFactor(t.refl||0);
+      if(m.transmission) m.transmission.setTransmissionFactor(t.tr);
+    }
+    arGlass=on;
+  }catch(e){}
+}
 function noAR(){
-  btnIOS.hidden = true; btnAND.hidden = true;
-  document.getElementById('qrhint').hidden = false;
+  btnIOS.hidden=true; if(btnAND) btnAND.hidden=true;
+  document.getElementById('qrhint').hidden=false;
   renderQR();
 }
-/* URL absolue du modele statique servi a Scene Viewer */
-function glbURL(){
-  const L = nearest(st.L, AR_LEN);
-  return withAccess(new URL(`../models-gc/gc-${arVariant()}-${L}-${st.fin.id}.glb`,
-                 location.href).href);
+function setupAR(){
+  if(!IS_IOS && !IS_ANDROID){ noAR(); specs(); return; }
+  if(IS_IOS){ btnIOS.hidden=false; if(btnAND) btnAND.hidden=true; }
+  else { const xr = mv.canActivateAR && !xrFailed; btnIOS.hidden=!xr; if(btnAND) btnAND.hidden=xr; }
+  specs();
 }
+async function startAR(){
+  glassForAR(true);
+  try{ await mv.activateAR(); }
+  catch(e){
+    console.warn(e);
+    if(IS_IOS && !iosStatic){
+      /* conversion impossible sur cet iPhone : fichier statique */
+      iosStatic=true; syncAR(); specs();
+      try{ await mv.activateAR(); }catch(e2){ noAR(); }
+    } else if(IS_ANDROID){ xrFailed=true; glassForAR(false); setupAR(); }
+  }
+  /* Quick Look a déjà reçu le fichier : le verre de l'écran revient */
+  if(IS_IOS) setTimeout(()=>glassForAR(false), 8000);
+}
+btnIOS.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); startAR(); });
+mv.addEventListener('ar-status',e=>{
+  const s=e.detail.status;
+  if(s==='not-presenting') glassForAR(false);
+  if(s==='failed'){
+    glassForAR(false);
+    if(IS_ANDROID){ xrFailed=true; setupAR(); }
+    else if(!IS_IOS) noAR();
+  }
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && arGlass && IS_IOS) setTimeout(()=>glassForAR(false),1500);
+});
+/* URL absolue du modèle statique servi à Scene Viewer */
+function glbURL(){ return withAccess(new URL(staticFile('glb'), location.href).href); }
 function openSceneViewer(){
   const file = encodeURIComponent(glbURL());
   const back = encodeURIComponent(location.href);
-  const titre = encodeURIComponent('Garde-corps aluminium');
+  const titre = encodeURIComponent(arTitle());
   location.href = 'intent://arvr.google.com/scene-viewer/1.0?file=' + file
     + '&mode=ar_preferred&resizable=false&title=' + titre
     + '#Intent;scheme=https;package=com.google.ar.core;'
     + 'action=android.intent.action.VIEW;'
     + 'S.browser_fallback_url=' + back + ';end;';
 }
-btnAND.onclick = openSceneViewer;
-
-function setupAR(){
-  if(IS_ANDROID){ btnIOS.hidden = true; btnAND.hidden = false; return; }
-  /* sur iPhone, Quick Look marche depuis iOS 12 : on montre le bouton sans
-     attendre canActivateAR, qui repond parfois trop tard. Si l'ouverture
-     echoue, l'ecouteur ar-status ci-dessous bascule sur le QR code. */
-  if(IS_IOS){ btnIOS.hidden = false; btnAND.hidden = true; return; }
-  noAR();
-}
-mv.addEventListener('ar-status', e=>{ if(e.detail.status==='failed' && !IS_ANDROID) noAR(); });
-setTimeout(setupAR, 1500);
+if(btnAND) btnAND.onclick = openSceneViewer;
+setTimeout(setupAR,1500);
+mv.addEventListener('load',()=>{ arGlass=false; setupAR(); });
 
 mv.addEventListener('load', ()=>{
   mv.cameraOrbit='38deg 74deg auto'; mv.cameraTarget='auto auto auto';
