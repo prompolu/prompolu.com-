@@ -40,11 +40,38 @@ test('titles and descriptions stay within search-result limits and unique', () =
 });
 
 test('every page has lang, viewport and its own existing preview image', () => {
-  for (const { file, html } of pages) {
-    assert.match(html, /<html lang="fr">/, file);
+  for (const { file, path, html } of pages) {
+    // Arabic pages live under /ar-ma/ (never /ar/, the private 3D space) and read right to left.
+    assert.match(html, path.startsWith('/ar-ma/') ? /<html lang="ar" dir="rtl">/ : /<html lang="fr">/, file);
     assert.match(html, /<meta name="viewport"/, file);
     const og = html.match(/<meta property="og:image" content="https:\/\/prompolu\.com(\/[^"]+)"/);
     assert.ok(og && exists(og[1].slice(1)), `${file}: og:image missing or not on disk`);
+  }
+});
+
+test('French and Arabic versions point to each other with hreflang, and both are listed', () => {
+  const listed = new Set(urls);
+  const alternates = new Map();
+  for (const { url, file, html } of pages) {
+    const links = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)">/g)].map(([, lang, href]) => [lang, href]);
+    if (!links.length) continue;
+    const langs = links.map(([l]) => l).sort();
+    assert.deepEqual(langs, ['ar-MA', 'fr-MA', 'x-default'], `${file}: hreflang set`);
+    const self = links.find(([l]) => l === (html.startsWith('<!DOCTYPE html>\n<html lang="ar"') ? 'ar-MA' : 'fr-MA'))[1];
+    assert.equal(self, url, `${file}: hreflang must include the page itself`);
+    for (const [, href] of links) assert.ok(listed.has(href), `${file}: hreflang target ${href} is not in the sitemap`);
+    alternates.set(url, new Map(links));
+  }
+  for (const [url, links] of alternates) {
+    for (const [lang, href] of links) {
+      if (lang === 'x-default' || href === url) continue;
+      assert.equal(alternates.get(href)?.get(lang), href, `${href} must declare the same hreflang set as ${url}`);
+      assert.ok([...alternates.get(href).values()].includes(url), `${href} must point back to ${url}`);
+    }
+  }
+  for (const { file, path, html } of pages.filter((p) => p.path.startsWith('/ar-ma/'))) {
+    assert.ok(alternates.has(new URL(path, 'https://prompolu.com').href), `${file}: Arabic page without hreflang`);
+    assert.match(html, /<link rel="stylesheet" href="\/assets\/rtl\.css">/, `${file}: Arabic page must load rtl.css`);
   }
 });
 

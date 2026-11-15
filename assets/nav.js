@@ -8,7 +8,8 @@
       nav.classList.toggle('open', open);
       nav.hidden = !open;
       toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+      var ar = (document.documentElement || {}).lang === 'ar';
+      toggle.setAttribute('aria-label', open ? (ar ? 'إغلاق القائمة' : 'Fermer le menu') : (ar ? 'فتح القائمة' : 'Ouvrir le menu'));
     }
 
     toggle.setAttribute('aria-controls', nav.id);

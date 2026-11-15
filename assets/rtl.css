@@ -1,0 +1,97 @@
+/* Arabic pages (/ar-ma/): loaded after bundle-core.css, only on pages with <html lang="ar" dir="rtl">.
+   The brand fonts (Anton, DM Sans, IBM Plex Mono) have no Arabic letters, so Arabic text uses the
+   system's Arabic font while Latin words (STRUGAL, S90RP, addresses) keep the brand font. */
+html[dir="rtl"] {
+  --arabic: "Noto Sans Arabic", "Geeza Pro", "Segoe UI", Tahoma, "Arial", sans-serif;
+  --arabic-display: "Noto Kufi Arabic", "Noto Sans Arabic", "Geeza Pro", "Segoe UI", Tahoma, "Arial", sans-serif;
+}
+html[dir="rtl"] body,
+html[dir="rtl"] .eyebrow,
+html[dir="rtl"] .breadcrumbs,
+html[dir="rtl"] .directory-title,
+html[dir="rtl"] .button,
+html[dir="rtl"] .desktop-nav,
+html[dir="rtl"] .mobile-nav,
+html[dir="rtl"] summary,
+html[dir="rtl"] .back-top {
+  font-family: 'DM Sans', var(--arabic);
+}
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3 {
+  font-family: var(--arabic-display);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* Arabic letters join up: letter-spacing and capitals would break words apart. */
+html[dir="rtl"] body * {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+html[dir="rtl"] .post p,
+html[dir="rtl"] .post li,
+html[dir="rtl"] .faq-a,
+html[dir="rtl"] .lead,
+html[dir="rtl"] .answer-first {
+  line-height: 1.9;
+}
+
+/* Latin snippets (French address, e-mail, phone numbers) keep their own direction. */
+html[dir="rtl"] [dir="ltr"] {
+  unicode-bidi: isolate;
+}
+html[dir="rtl"] .latin {
+  display: inline-block;
+  font-size: .92em;
+  opacity: .8;
+}
+
+/* Lists and arrows follow the reading direction. */
+html[dir="rtl"] .post ul,
+html[dir="rtl"] .post ol {
+  padding-right: 1.3em;
+  padding-left: 0;
+}
+html[dir="rtl"] .button svg,
+html[dir="rtl"] .menu-quote svg {
+  transform: scaleX(-1);
+}
+
+/* The article column sits on the reading side (right), like it sits on the left in French. */
+html[dir="rtl"] .post,
+html[dir="rtl"] .inner-page article.post {
+  margin-right: 0;
+  margin-left: auto;
+}
+/* Arabic glyphs read smaller than Latin ones at the same size. */
+html[dir="rtl"] .post p,
+html[dir="rtl"] .faq-a {
+  font-size: 18px;
+}
+html[dir="rtl"] .post li {
+  font-size: 17px;
+}
+
+/* The hidden "skip to content" link is parked off-screen on the left in French; in a right-to-left
+   page that would add a sideways scroll, so it hides in place and appears top-right on focus. */
+html[dir="rtl"] .skip-link:not(:focus) {
+  left: auto;
+  right: 0;
+}
+html[dir="rtl"] .skip-link:focus {
+  left: auto;
+  right: 12px;
+}
+
+/* Every element that sets its own brand font (lead, labels, mono eyebrows) falls back to Arabic too. */
+html[dir="rtl"] body *:not(h1):not(h2):not(h3) {
+  font-family: 'DM Sans', var(--arabic);
+}
+html[dir="rtl"] .lead { font-size: 18px; }
+html[dir="rtl"] .eyebrow { font-size: 13px; }
+html[dir="rtl"] .breadcrumbs { font-size: 14px; }
+html[dir="rtl"] .page-directory a { font-size: 15px; }
+html[dir="rtl"] .post p,
+html[dir="rtl"] .faq-a { font-size: 19px; }
+html[dir="rtl"] .post li { font-size: 18px; }
