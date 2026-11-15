@@ -12,9 +12,9 @@ const fileFor = (url) => {
   return path.endsWith('/') ? path.slice(1) + 'index.html' : path.slice(1) + '.html';
 };
 
-test('all 46 public sitemap destinations match existing pages and self canonicals', () => {
-  assert.equal(locations.length, 46);
-  assert.equal(new Set(locations).size, 46);
+test('all 48 public sitemap destinations match existing pages and self canonicals', () => {
+  assert.equal(locations.length, 48);
+  assert.equal(new Set(locations).size, 48);
   const titles = new Set();
   const organizationDescriptions = new Set();
   for (const location of locations) {
@@ -51,7 +51,7 @@ test('all 46 public sitemap destinations match existing pages and self canonical
       }
     }
   }
-  assert.equal(titles.size, 46);
+  assert.equal(titles.size, 48);
   assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });
@@ -281,4 +281,31 @@ test('expired or modified AR tokens remain denied and signed model requests stay
     assert.equal(script.status, 200, path);
     assert.equal(script.headers.get('cache-control'), 'private, no-cache', path);
   }
+});
+
+test('Debromp software page: SoftwareApplication data, FAQ mirror and links from every page', () => {
+  const page = read('debromp.html');
+  const nodes = jsonLdNodes(page);
+  const app = nodes.find((n) => n['@type'] === 'SoftwareApplication');
+  assert.equal(app.url, 'https://prompolu.com/debromp');
+  assert.equal(app.publisher['@id'], 'https://prompolu.com/#organization');
+  assert.match(app.operatingSystem, /Windows/);
+  assert.match(app.operatingSystem, /macOS/);
+  assert.ok(app.featureList.length >= 5);
+  for (const image of app.screenshot) assert.ok(existsSync(root + new URL(image).pathname.slice(1)), image);
+  const crumbs = nodes.find((n) => n['@type'] === 'BreadcrumbList').itemListElement;
+  assert.deepEqual(crumbs.map((c) => c.item), ['https://prompolu.com/', 'https://prompolu.com/debromp']);
+  const visibleFaq = [...page.matchAll(/<details class="faq-item">\s*<summary>([\s\S]*?)<\/summary>\s*<p class="faq-a">([\s\S]*?)<\/p>/g)]
+    .map(([, q, a]) => [visibleText(q), visibleText(a)]);
+  const faq = nodes.find((n) => n['@type'] === 'FAQPage');
+  assert.ok(visibleFaq.length >= 5);
+  assert.deepEqual(faq.mainEntity.map((q) => [q.name, q.acceptedAnswer.text]), visibleFaq);
+  for (const location of locations) assert.ok(read(fileFor(location)).includes('href="/debromp"'), fileFor(location));
+  // Arabic version: its FAQ mirrors the page, and it points to the software described on the French page.
+  const ar = read('ar-ma/debromp.html');
+  const arNodes = jsonLdNodes(ar);
+  assert.equal(arNodes.find((n) => n['@type'] === 'WebPage').about['@id'], app['@id']);
+  const arFaq = [...ar.matchAll(/<details class="faq-item">\s*<summary>([\s\S]*?)<\/summary>\s*<p class="faq-a">([\s\S]*?)<\/p>/g)]
+    .map(([, q, a]) => [visibleText(q), visibleText(a)]);
+  assert.deepEqual(arNodes.find((n) => n['@type'] === 'FAQPage').mainEntity.map((q) => [q.name, q.acceptedAnswer.text]), arFaq);
 });

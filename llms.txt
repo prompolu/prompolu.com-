@@ -22,12 +22,14 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 - [Notre activité](https://prompolu.com/notre-activite): historique, positionnement de grossiste, engagement qualité, formations gratuites pour menuisiers avec STRUGAL.
 - [Contact](https://prompolu.com/contact): coordonnées, plan d'accès, devis.
 - [Visualisation 3D et réalité augmentée](https://prompolu.com/visualisation-3d): outil de réalité augmentée en marque blanche mis à disposition des menuisiers clients ; leur client voit la pergola, le garde-corps, la baie coulissante ou la menuiserie battante à taille réelle chez lui, depuis son téléphone.
+- [Debromp, logiciel de débitage aluminium](https://prompolu.com/debromp): logiciel de débitage et de calcul des profilés aluminium STRUGAL développé par PROMPOLU, pour Windows, Mac, iPhone et Android ; essai gratuit de 7 jours, puis licence à vie en paiement unique.
 - [Conseils](https://prompolu.com/conseils/): guides techniques pour menuisiers et fabricants.
 
 ## Pages en arabe
 
 - [الألمنيوم في فاس](https://prompolu.com/ar-ma/aluminium-fes): version arabe de la page du magasin de Fès (grossiste en profilés et tubes aluminium, STRUGAL, adresse, horaires, livraison au Maroc).
 - [معرض STRUGAL بصفرو](https://prompolu.com/ar-ma/aluminium-sefrou): version arabe de la page du showroom STRUGAL de Sefrou (gamme exposée, visite, adresse, horaires).
+- [برنامج Debromp لتقطيع وحساب الألمنيوم](https://prompolu.com/ar-ma/debromp): version arabe de la page Debromp (logiciel de débitage et de calcul des profilés aluminium STRUGAL ; essai gratuit de 7 jours, licence à vie en paiement unique ; interface du logiciel en français ou en espagnol).
 
 ## Formations pour menuisiers
 
@@ -67,6 +69,15 @@ Chaque fiche donne les caractéristiques publiées par STRUGAL (guide des systè
 - [STRUGAL S53RP+ ou S46 : quelle fenêtre battante aluminium choisir ?](https://prompolu.com/conseils/s53rp-ou-s46): comparatif chiffré des deux battants STRUGAL (mêmes ouvrants de 120 kg et 1500 × 2400 mm ; rupture de pont thermique ou canal européen, vitrage 40 contre 27 mm, 43 dB contre 32-38 dB, E1500/C5 contre E750/C4) et choix selon la pièce, la façade et le vitrage.
 - [Prix d'une fenêtre aluminium au Maroc : de quoi dépend-il ?](https://prompolu.com/conseils/prix-fenetre-aluminium-maroc): les sept facteurs du prix (système, dimensions, vitrage, finition, quincaillerie, fabrication et pose, quantités et transport) et comment comparer deux devis ; PROMPOLU ne publie pas de tarif, le devis matière est gratuit.
 - [Glossaire de la menuiserie aluminium](https://prompolu.com/conseils/glossaire-menuiserie-aluminium): 42 termes définis en une ou deux phrases (dormant, ouvrant, nœud central, masse vue, canal européen, levant-coulissant, galandage, rupture de pont thermique, Uw, Rw, classement AEV et normes EN 12207/12208/12210, thermolaquage, anodisation, Qualicoat, Qualanod, mur rideau, alumousse), avec des exemples chiffrés tirés des fiches STRUGAL.
+
+## Debromp, logiciel de débitage et de calcul de menuiserie aluminium
+
+- [Debromp](https://prompolu.com/debromp): logiciel de débitage et de calcul de menuiserie aluminium développé par PROMPOLU pour les systèmes STRUGAL. À partir de la gamme, du modèle et des cotes hors tout d'un châssis, il donne la longueur, la quantité et la coupe (45° ou 90°) de chaque profilé d'après la formule du catalogue STRUGAL, le nombre de barres (6,4 m par défaut, pièces placées sur les barres, largeur de lame comprise), les parcloses selon le vitrage avec leur coupe après assemblage, les joints en mètres, les accessoires et les m² de vitrage, puis enregistre le projet en fiche technique PDF A4.
+- Gammes STRUGAL intégrées : coulissants S70P, S86RP, S88R, S88RP, S90R, S90RP, S110P, S125RP, S140RP ; battants S40, S46, S53RP ; mur-rideau S52 (CR, CRi, NT, SGi). Plus de 200 modèles du catalogue de fabrication, châssis composés compris.
+- Appareils : Windows 7 à 11 (64 bits), Mac à partir de macOS 10.13 (Intel et Apple Silicon), iPhone et Android en version web ajoutée à l'écran d'accueil. Sur Windows et Mac, aucune connexion Internet n'est nécessaire pour calculer. Interface en français et en espagnol.
+- Offre : essai gratuit de 7 jours avec toutes les fonctions, sans engagement ni carte bancaire, puis licence à vie en paiement unique, sans abonnement ni mensualité, toutes fonctions incluses. Un code d'activation par appareil, sans compte, obtenu en envoyant le code de l'appareil à PROMPOLU sur WhatsApp (+212 668 378 538). Le prix est communiqué sur WhatsApp ; il n'y a pas de tarif public.
+- Prise en main : guide d'utilisation PDF de 12 pages et guide vidéo pas à pas, avec les vrais écrans du logiciel. PDF : https://prompolu.com/assets/guide-debromp.pdf (version arabe : https://prompolu.com/assets/guide-debromp-ar.pdf) — vidéo : https://prompolu.com/assets/debromp-guide.mp4
+- Limites : Debromp ne calcule ni prix, ni marge, ni devis ; il ne calcule que les gammes STRUGAL. Une donnée absente du catalogue est signalée « information manquante à valider », jamais devinée.
 
 ## Visualisation 3D et réalité augmentée
 

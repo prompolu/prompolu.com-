@@ -47,3 +47,20 @@
 .lang-switch{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:18px 0 0;font-size:.95rem}
 .lang-switch a{font-weight:600;color:var(--bronze-dark);text-decoration:underline;text-underline-offset:3px}
 .lang-switch span{opacity:.72}
+
+/* Debromp page: its hero reuses .hero-copy, which on the home page carries an indent and a 48% width */
+.debromp-hero .page-hero-grid{align-items:start}
+.debromp-hero .hero-copy{margin:0;width:auto;padding:0;pointer-events:auto}
+.debromp-hero .hero-title{font-size:clamp(42px,4.3vw,76px);max-width:none}
+.debromp-hero .hero-actions,.debromp-page .steps-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.debromp-page .steps-actions{margin-top:34px}
+.debromp-hero .hero-note{font-size:14px;line-height:1.7;color:#4c4943;margin-top:18px;max-width:52ch}
+.debromp-hero .page-visual{margin-top:8px}
+.debromp-page .eyebrow,.debromp-page .adv-mark,.debromp-page .step-num,.debromp-page .kicker{color:var(--bronze-dark)}
+.debromp-page table a{display:inline-block;min-height:24px;padding:2px 0}
+.debromp-page .page-directory a,.debromp-page .social-links a{min-height:24px;display:inline-flex;align-items:center}
+@media (max-width:640px){
+  .debromp-hero .hero-title{font-size:11vw}
+  .debromp-hero .hero-actions .btn,.debromp-page .steps-actions .btn{flex:1 1 100%}
+  .debromp-page a.btn[href^="https://cutter-hard"]{order:-1}
+}
