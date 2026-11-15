@@ -76,7 +76,7 @@ Chaque fiche donne les caractéristiques publiées par STRUGAL (guide des systè
 - Gammes STRUGAL intégrées : coulissants S70P, S86RP, S88R, S88RP, S90R, S90RP, S110P, S125RP, S140RP ; battants S40, S46, S53RP ; mur-rideau S52 (CR, CRi, NT, SGi). Plus de 200 modèles du catalogue de fabrication, châssis composés compris.
 - Appareils : Windows 7 à 11 (64 bits), Mac à partir de macOS 10.13 (Intel et Apple Silicon), iPhone et Android en version web ajoutée à l'écran d'accueil. Sur Windows et Mac, aucune connexion Internet n'est nécessaire pour calculer. Interface en français et en espagnol.
 - Offre : essai gratuit de 7 jours avec toutes les fonctions, sans engagement ni carte bancaire, puis licence à vie en paiement unique, sans abonnement ni mensualité, toutes fonctions incluses. Un code d'activation par appareil, sans compte, obtenu en envoyant le code de l'appareil à PROMPOLU sur WhatsApp (+212 668 378 538). Le prix est communiqué sur WhatsApp ; il n'y a pas de tarif public.
-- Prise en main : guide d'utilisation PDF de 12 pages et guide vidéo pas à pas, avec les vrais écrans du logiciel. PDF : https://prompolu.com/assets/guide-debromp.pdf — vidéo : https://prompolu.com/assets/debromp-guide.mp4
+- Prise en main : guide d'utilisation PDF de 12 pages et guide vidéo pas à pas, avec les vrais écrans du logiciel. PDF : https://prompolu.com/assets/guide-debromp.pdf (version arabe : https://prompolu.com/assets/guide-debromp-ar.pdf) — vidéo : https://prompolu.com/assets/debromp-guide.mp4
 - Limites : Debromp ne calcule ni prix, ni marge, ni devis ; il ne calcule que les gammes STRUGAL. Une donnée absente du catalogue est signalée « information manquante à valider », jamais devinée.
 
 ## Visualisation 3D et réalité augmentée
