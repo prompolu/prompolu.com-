@@ -42,3 +42,8 @@
   .home-page .range-grid::-webkit-scrollbar{display:none}
   .home-page .range-card{flex:0 0 82%;scroll-snap-align:start}
 }
+
+/* Language switch between the French and Arabic versions of the Fès and Sefrou pages */
+.lang-switch{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:18px 0 0;font-size:.95rem}
+.lang-switch a{font-weight:600;color:var(--bronze-dark);text-decoration:underline;text-underline-offset:3px}
+.lang-switch span{opacity:.72}

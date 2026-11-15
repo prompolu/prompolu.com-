@@ -61,6 +61,9 @@ const PUBLIC_PAGES = new Set([
   '/exterieur/garde-corps',
   '/exterieur/pergolas',
   '/exterieur/bardage-aluminium',
+  // Arabic versions of the Fès and Sefrou pages. Not under /ar/, which is the private 3D space.
+  '/ar-ma/aluminium-fes',
+  '/ar-ma/aluminium-sefrou',
 ]);
 // Pages taken off the site: their old URLs send visitors to the closest live page.
 const REMOVED_PAGES = new Map([

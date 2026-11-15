@@ -24,6 +24,11 @@ PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de m
 - [Visualisation 3D et réalité augmentée](https://prompolu.com/visualisation-3d): outil de réalité augmentée en marque blanche mis à disposition des menuisiers clients ; leur client voit la pergola, le garde-corps, la baie coulissante ou la menuiserie battante à taille réelle chez lui, depuis son téléphone.
 - [Conseils](https://prompolu.com/conseils/): guides techniques pour menuisiers et fabricants.
 
+## Pages en arabe
+
+- [الألمنيوم في فاس](https://prompolu.com/ar-ma/aluminium-fes): version arabe de la page du magasin de Fès (grossiste en profilés et tubes aluminium, STRUGAL, adresse, horaires, livraison au Maroc).
+- [معرض STRUGAL بصفرو](https://prompolu.com/ar-ma/aluminium-sefrou): version arabe de la page du showroom STRUGAL de Sefrou (gamme exposée, visite, adresse, horaires).
+
 ## Formations pour menuisiers
 
 - PROMPOLU organise, en collaboration avec STRUGAL, des formations gratuites pour les menuisiers aluminium qu'il sélectionne. Pour proposer un atelier : WhatsApp +212 668 378 538 ou https://prompolu.com/contact
