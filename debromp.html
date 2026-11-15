@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logiciel de débitage aluminium au Maroc | Debromp</title>
+<meta name="description" content="Debromp calcule le débit des profilés aluminium STRUGAL : coupes, barres, parcloses, joints et vitrage. Windows, Mac, iPhone et Android. Par PROMPOLU, Fès.">
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="canonical" href="https://prompolu.com/debromp">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PROMPOLU ALUMINIUM">
+<meta property="og:title" content="Debromp — logiciel de débitage et de calcul des profilés aluminium STRUGAL">
+<meta property="og:description" content="Coupes, barres, parcloses, joints, accessoires et vitrage de chaque châssis STRUGAL, calculés d'après le catalogue. Windows, Mac, iPhone et Android.">
+<meta property="og:url" content="https://prompolu.com/debromp">
+<meta property="og:image" content="https://prompolu.com/assets/debromp-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="fr_MA">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Accueil",
+      "item": "https://prompolu.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Logiciel Debromp",
+      "item": "https://prompolu.com/debromp"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Qu'est-ce que Debromp ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Debromp est un logiciel de débitage et de calcul de menuiserie aluminium développé par PROMPOLU, distributeur officiel STRUGAL à Fès et Sefrou. À partir de la gamme, du modèle et des cotes hors tout d'un châssis STRUGAL, il calcule la longueur, la quantité et la coupe de chaque profilé d'après la formule du catalogue, le nombre de barres à commander, les parcloses, les joints, les accessoires et la surface de vitrage, puis enregistre le projet en PDF."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelles gammes STRUGAL Debromp calcule-t-il ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Les coulissants S70P, S86RP, S88R, S88RP, S90R, S90RP, S110P, S125RP et S140RP, les fenêtres et portes battantes S40, S46 et S53RP, et le mur-rideau S52 en versions CR, CRi, NT et SGi : plus de 200 modèles du catalogue de fabrication STRUGAL, avec leurs profilés, parcloses, joints et accessoires."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Debromp fonctionne-t-il sur Mac, iPhone et Android ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Debromp s'installe sur Windows 7, 8, 8.1, 10 et 11 en 64 bits et sur Mac à partir de macOS 10.13, Intel comme Apple Silicon. Sur iPhone et Android, c'est la même application en version web : on l'ouvre dans Safari ou Chrome, puis on l'ajoute à l'écran d'accueil, sans passer par une boutique d'applications."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Faut-il une connexion Internet pour utiliser Debromp ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non, sur Windows et Mac : le catalogue STRUGAL est intégré au logiciel et tous les calculs se font sur l'ordinateur. Les projets restent sur l'appareil, pas sur un serveur. Sur téléphone, la version web se charge depuis Internet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment Debromp calcule-t-il le nombre de barres ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Il place les pièces de chaque profilé sur les barres de l'atelier, de 6,4 m par défaut, en tenant compte de la largeur de lame (6 mm par défaut) et des pertes en début et en fin de barre réglées dans les paramètres. Le résultat est le nombre de barres réellement coupées, plus juste que les mètres divisés par 6,4."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment sont calculées les parcloses ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La parclose est celle que le tableau de vitrage du catalogue STRUGAL donne pour l'épaisseur de verre choisie, et la quantité affichée est une estimation pour la commande. La coupe se fait sur le châssis assemblé : on mesure le clair de vitrage X et Y de chaque verre dans l'écran Parcloses, et Debromp applique la formule de la parclose utilisée."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Debromp fait-il les devis et les prix ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Debromp est un logiciel technique et de production : il calcule les coupes, les barres et les quantités, pas les prix, les marges ni la TVA. Pour chiffrer la matière première, envoyez la liste des produits à PROMPOLU : le devis est gratuit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment obtenir une licence Debromp ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Installez Debromp : à la première ouverture, il affiche le code de votre appareil. Envoyez-le à PROMPOLU sur WhatsApp au +212 668 378 538 ; vous recevez un code d'activation, annuel ou permanent, valable sur cet appareil. Il n'y a pas de compte à créer. Quand une nouvelle version sort, Debromp le signale ; elle s'installe par-dessus en gardant les projets et la licence."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Les calculs de Debromp sont-ils fiables ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chaque cote vient d'une formule du catalogue STRUGAL, affichée à côté du résultat, et la page du catalogue est indiquée pour chaque modèle. Quand le catalogue ne donne pas une information, Debromp la signale comme information manquante à valider au lieu de la deviner. Le relevé sur site et le contrôle avant la coupe restent l'affaire du menuisier."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://prompolu.com/debromp#logiciel",
+      "name": "Debromp",
+      "alternateName": ["Debromp, logiciel de débitage aluminium", "Logiciel de calcul des profilés aluminium STRUGAL"],
+      "description": "Logiciel de débitage et de calcul de menuiserie aluminium pour les systèmes STRUGAL : à partir des cotes hors tout, il donne la longueur et la coupe de chaque profilé d'après la formule du catalogue, le nombre de barres, les parcloses, les joints, les accessoires et la surface de vitrage, puis enregistre le projet en PDF. Windows, Mac, iPhone et Android.",
+      "url": "https://prompolu.com/debromp",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Logiciel de débitage et de calcul de menuiserie aluminium",
+      "operatingSystem": "Windows 7, 8, 8.1, 10, 11 (64 bits); macOS 10.13 ou plus récent (Intel et Apple Silicon); iPhone (Safari); Android (Chrome)",
+      "softwareRequirements": "Sur Windows et Mac, aucune connexion Internet n'est nécessaire pour calculer. Un code d'activation par appareil.",
+      "inLanguage": ["fr", "es"],
+      "downloadUrl": [
+        "https://pub-cec7c38ca6f5436a9bf365c022663cf2.r2.dev/Debromp-Windows.exe",
+        "https://pub-cec7c38ca6f5436a9bf365c022663cf2.r2.dev/Debromp-Mac.dmg"
+      ],
+      "installUrl": "https://cutter-hard.pages.dev/telecharger.html",
+      "screenshot": [
+        "https://prompolu.com/assets/debromp-calculateur.webp",
+        "https://prompolu.com/assets/debromp-debit-profils.webp"
+      ],
+      "image": "https://prompolu.com/assets/debromp-og.jpg",
+      "publisher": {"@id": "https://prompolu.com/#organization"},
+      "author": {"@id": "https://prompolu.com/#organization"},
+      "audience": {
+        "@type": "BusinessAudience",
+        "name": "Menuisiers, fabricants et installateurs de menuiserie aluminium"
+      },
+      "areaServed": [{"@type": "Country", "name": "Maroc"}, "Fès, Maroc", "Sefrou, Maroc"],
+      "featureList": [
+        "Débit de chaque profilé : longueur, quantité et coupe (45° ou 90°), d'après la formule du catalogue STRUGAL, avec la page du modèle",
+        "Nombre de barres calculé en plaçant les pièces sur les barres de l'atelier (6,4 m par défaut), largeur de lame comprise",
+        "Parcloses selon le vitrage, et coupe des parcloses après assemblage (mesure X / Y)",
+        "Joints en mètres, accessoires en unités et vitrage en m², avec les dimensions des verres",
+        "Couvre-joints, équerres et pinces selon les règles du catalogue",
+        "Châssis composés de plusieurs modèles et mur-rideau STRUGAL S52 calculé par trame",
+        "Gammes STRUGAL S40, S46, S53RP, S70P, S86RP, S88R, S88RP, S90R, S90RP, S110P, S125RP et S140RP",
+        "Projets par client, fiche technique PDF au format A4 et fichier projet",
+        "Interface en français et en espagnol",
+        "Fonctionne sans Internet sur Windows et Mac"
+      ]
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://prompolu.com/#organization",
+      "name": "PROMPOLU ALUMINIUM",
+      "legalName": "Ste PROMPOLU SARL",
+      "alternateName": "PROMPOLU",
+      "slogan": "La qualité, notre meilleur profil.",
+      "knowsAbout": ["Profilés aluminium", "Systèmes coulissants aluminium", "Fenêtres et portes battantes aluminium", "Rupture de pont thermique", "Menuiserie aluminium", "Garde-corps aluminium", "Pergolas aluminium", "Volets roulants aluminium", "Bardage aluminium", "STRUGAL"],
+      "description": "Entreprise fassie, distributeur officiel STRUGAL : profilés et systèmes aluminium pour coulissants, fenêtres et portes battantes, agencement intérieur, garde-corps, volets roulants, pergolas et bardage aluminium, destinés aux menuisiers et fabricants. Showroom et point de distribution sous convention STRUGAL à Sefrou, magasin historique à Fès.",
+      "url": "https://prompolu.com/",
+      "logo": "https://prompolu.com/assets/logo-prompolu.png",
+      "image": "https://prompolu.com/assets/logo-prompolu.png",
+      "telephone": ["+212668378538", "+212669594774"],
+      "email": "PROMPOLU@LIVE.FR",
+      "areaServed": [{"@type": "Country", "name": "Maroc"}, "Fès, Maroc", "Sefrou, Maroc"],
+      "sameAs": [
+        "https://maps.google.com/?cid=10734799803496495182",
+        "https://www.facebook.com/PROMPOLU/",
+        "https://www.instagram.com/prompolu/",
+        "https://www.tiktok.com/@prompolu",
+        "https://www.telecontact.ma/annonceur/prompolu/3250436/fes.php"
+      ],
+      "subOrganization": [
+        {"@id": "https://prompolu.com/#magasin-fes"},
+        {"@id": "https://prompolu.com/#magasin-sefrou"}
+      ]
+    },
+    {
+      "@type": "HomeAndConstructionBusiness",
+      "@id": "https://prompolu.com/#magasin-fes",
+      "name": "PROMPOLU ALUMINIUM — Fès",
+      "hasMap": "https://maps.google.com/?cid=10734799803496495182",
+      "sameAs": "https://maps.google.com/?cid=10734799803496495182",
+      "description": "Magasin historique de PROMPOLU ALUMINIUM, Av. El Wafaa à Fès. Profilés et systèmes aluminium STRUGAL en matière première pour menuisiers et fabricants.",
+      "parentOrganization": {"@id": "https://prompolu.com/#organization"},
+      "url": "https://prompolu.com/grossiste-aluminium-fes",
+      "image": "https://prompolu.com/assets/logo-prompolu.png",
+      "telephone": ["+212668378538", "+212669594774"],
+      "email": "PROMPOLU@LIVE.FR",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "N° 21, Rue Pékin, Av. El Wafaa 2, Rte de Sefrou",
+        "addressLocality": "Fès",
+        "postalCode": "30050",
+        "addressCountry": "MA"
+      }, "geo": {"@type": "GeoCoordinates", "latitude": 34.009418, "longitude": -4.977893},
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      }
+    },
+    {
+      "@type": "HomeAndConstructionBusiness",
+      "@id": "https://prompolu.com/#magasin-sefrou",
+      "name": "PROMPOLU ALUMINIUM — Sefrou",
+      "alternateName": "STRUGAL SHOWROOM",
+      "hasMap": "https://maps.google.com/?cid=12820306876096417573",
+      "sameAs": "https://maps.google.com/?cid=12820306876096417573",
+      "description": "Showroom et point de distribution de PROMPOLU ALUMINIUM en convention avec STRUGAL, Route d'El Menzel à Sefrou. La gamme STRUGAL y est exposée sur place ; le magasin historique de Fès porte d'autres familles de produits.",
+      "parentOrganization": {"@id": "https://prompolu.com/#organization"},
+      "url": "https://prompolu.com/showroom-sefrou",
+      "image": "https://prompolu.com/assets/logo-prompolu.png",
+      "telephone": ["+212668378538", "+212669594774"],
+      "email": "PROMPOLU@LIVE.FR",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Route d'El Menzel",
+        "addressLocality": "Sefrou",
+        "postalCode": "31000",
+        "addressCountry": "MA"
+      }, "geo": {"@type": "GeoCoordinates", "latitude": 33.826727, "longitude": -4.822935},
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      }
+    }
+  ]
+}
+</script>
+
+<meta name="theme-color" content="#F1F0EC">
+<link rel="preload" href="/assets/font-0.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/font-1.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/assets/bundle-core.css">
+</head>
+<body class="inner-page" id="top">
+
+<a class="skip-link" href="#main">Aller au contenu</a><svg class="svg-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <clipPath id="window-curve" clipPathUnits="objectBoundingBox"><path d="M.29 .105 L.94 .005 Q1 -.01 1 .07 L1 .86 Q1 .94 .90 .955 L.08 1 Q-.055 1 .025 .82 L.235 .285 Q.25 .14 .29 .105Z"></path></clipPath>
+    <symbol id="arrow" viewBox="0 0 32 32"><path d="M4 16h23M18 7l9 9-9 9"></path></symbol>
+  </defs></svg>
+
+  <header class="site-header">
+    <div class="brand-group"><a class="brand" href="/" aria-label="PROMPOLU ALUMINIUM, accueil"><img src="/assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="602" height="83"></a><div class="distributor-mark"><span class="sr-only">Distributeur officiel</span><img src="/assets/logo-strugal.png" alt="STRUGAL" width="149" height="38"></div></div>
+    <nav class="desktop-nav" aria-label="Navigation principale">
+      <details class="nav-disclosure"><summary>Nos gammes <svg class="chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3"></path></svg></summary><div class="nav-panel">
+        <a href="/coulissants">Coulissants <span aria-hidden="true">→</span></a>
+        <a href="/battants">Fenêtres &amp; portes battantes <span aria-hidden="true">→</span></a>
+        <a href="/agencement">Agencement intérieur <span aria-hidden="true">→</span></a>
+        <a href="/exterieur">Solutions extérieures <span aria-hidden="true">→</span></a>
+        <a class="nav-panel-separator" href="/visualisation-3d">Visualisation 3D <span aria-hidden="true">→</span></a>
+        <a href="/debromp">Logiciel de débitage Debromp <span aria-hidden="true">→</span></a>
+        <a href="/conseils/">Conseils &amp; guides <span aria-hidden="true">→</span></a>
+        <a href="/showroom-sefrou">Showroom de Sefrou <span aria-hidden="true">→</span></a>
+      </div></details>
+      <a href="/notre-activite">Notre activité</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <a class="button header-quote" href="/contact#formulaire">Demander un devis <svg aria-hidden="true"><use href="#arrow"></use></svg></a>
+    <button class="menu-toggle" id="navToggle" type="button" aria-controls="mainNav" aria-expanded="false" aria-label="Ouvrir le menu"><span></span><span></span></button>
+  </header>
+  <nav class="mobile-nav" id="mainNav" aria-label="Navigation mobile" hidden>
+    <a href="/coulissants">Coulissants <span>→</span></a>
+    <a href="/battants">Battants <span>→</span></a>
+    <a href="/agencement">Agencement <span>→</span></a>
+    <a href="/exterieur">Extérieur <span>→</span></a>
+    <a href="/visualisation-3d">Visualisation 3D <span>→</span></a>
+    <a href="/debromp">Logiciel Debromp <span>→</span></a>
+    <a href="/conseils/">Conseils &amp; guides <span>→</span></a>
+    <a href="/notre-activite">Notre activité <span>→</span></a>
+    <a href="/showroom-sefrou">Showroom de Sefrou <span>→</span></a>
+    <a href="/contact">Contact <span>→</span></a>
+    <a class="button menu-quote" href="/contact#formulaire"><span class="menu-quote-label">Demander un devis</span><svg aria-hidden="true"><use href="#arrow"></use></svg></a>
+  </nav>
+
+  <main id="main"><section class="page-hero">
+  <div class="wrap page-hero-grid">
+    <div class="page-hero-copy"><p class="eyebrow">Logiciel de menuiserie aluminium</p><div class="hero-copy">
+      <span class="kicker"><span class="dash"></span>Windows · Mac · iPhone · Android</span>
+      <h1 class="hero-title">Debromp, logiciel de débitage <br>aluminium STRUGAL</h1>
+      <p class="hero-sub">Le calcul des profilés aluminium, sans formule recopiée à la main. Saisissez la gamme, le modèle
+        et les cotes du châssis&nbsp;: Debromp donne chaque coupe d'après le catalogue STRUGAL, le nombre de barres,
+        les parcloses, les joints, les accessoires et le vitrage.</p>
+      <div class="hero-actions">
+        <a href="https://pub-cec7c38ca6f5436a9bf365c022663cf2.r2.dev/Debromp-Windows.exe" class="btn btn-solid">Télécharger pour Windows</a>
+        <a href="https://pub-cec7c38ca6f5436a9bf365c022663cf2.r2.dev/Debromp-Mac.dmg" class="btn btn-outline">Télécharger pour Mac</a>
+      </div>
+      <p class="hero-sub">Sur iPhone ou Android&nbsp;: ouvrez <a href="https://cutter-hard.pages.dev/" target="_blank" rel="noopener">la version téléphone</a>, puis <b>Partager → Sur l'écran d'accueil</b>. Une licence par appareil, à demander sur <a href="#licence">WhatsApp</a>.</p>
+    </div>
+  </div><figure class="page-visual page-visual-photo"><img src="/assets/debromp-calculateur.webp" alt="Écran du calculateur Debromp : coulissant STRUGAL S70P 2 vantaux de 2400 × 2150 mm, saisie des cotes et aperçu du châssis" fetchpriority="high" width="1200" height="1033"></figure></div>
+</section>
+
+  <section class="hub-answer">
+    <div class="wrap"><p class="answer-first"><strong>En bref :</strong> Debromp est le logiciel de débitage et de calcul de menuiserie aluminium de PROMPOLU, distributeur officiel STRUGAL à Fès et Sefrou. Pour chaque châssis STRUGAL — coulissants S70P à S140RP, battants S40, S46 et S53RP, mur-rideau S52 — il calcule à partir des cotes hors tout la longueur et la coupe de chaque profilé selon la formule du catalogue, le nombre de barres de 6,4 m, les parcloses, les joints, les accessoires et les m² de vitrage, puis enregistre le projet en PDF. Il fonctionne sur Windows, Mac, iPhone et Android ; sur ordinateur, sans connexion Internet.</p></div>
+  </section>
+
+<section id="fonctions">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Ce que Debromp calcule pour chaque châssis</h2>
+      <p>Un châssis saisi, une liste complète pour l'atelier et pour la commande de matière première.</p>
+    </div>
+    <div class="adv-grid">
+      <div class="adv">
+        <span class="adv-mark mono">DÉBIT</span>
+        <h3>Chaque coupe, avec sa formule</h3>
+        <p>Profilé, pièce, quantité, longueur et coupe à 45° ou à 90°. À côté de chaque cote, la formule
+           du catalogue appliquée à vos dimensions, par exemple (Lt + 2) / 2, et pour chaque modèle la page
+           du catalogue. Vous vérifiez d'un coup d'œil.</p>
+      </div>
+      <div class="adv">
+        <span class="adv-mark mono">BARRES</span>
+        <h3>Le vrai nombre de barres</h3>
+        <p>Les pièces sont placées sur vos barres (6,4 m par défaut, modifiable), largeur de lame comprise.
+           Diviser les mètres par 6,4 sous-estime la commande ; Debromp compte les barres que vous
+           couperez réellement.</p>
+      </div>
+      <div class="adv">
+        <span class="adv-mark mono">PARCLOSES</span>
+        <h3>Parcloses selon le vitrage</h3>
+        <p>La parclose donnée par le tableau de vitrage du catalogue pour l'épaisseur choisie, une
+           estimation pour la commande, et un écran dédié pour la coupe après assemblage&nbsp;: vous mesurez
+           X et Y sur le châssis monté.</p>
+      </div>
+      <div class="adv">
+        <span class="adv-mark mono">LISTE DES PRODUITS</span>
+        <h3>Joints, accessoires, vitrage</h3>
+        <p>Joints en mètres, accessoires en unités avec leur référence, vitrage en m² et dimensions des
+           verres à commander. Couvre-joints, équerres et pinces suivent les règles du catalogue.</p>
+      </div>
+      <div class="adv">
+        <span class="adv-mark mono">PROJETS</span>
+        <h3>Un projet par client</h3>
+        <p>Tous les châssis d'un chantier dans un projet, une liste des produits pour tout le projet, une
+           fiche technique PDF au format A4 et un fichier projet que l'on rouvre sur un autre appareil.</p>
+      </div>
+      <div class="adv">
+        <span class="adv-mark mono">COMPOSÉS</span>
+        <h3>Châssis composés et mur-rideau</h3>
+        <p>Plusieurs modèles du catalogue réunis en un seul châssis, et le <a href="/exterieur/mur-rideau-s52">mur-rideau STRUGAL S52</a>
+           (CR, CRi, NT, SGi) calculé par trame, montants et traverses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="apercu">
+  <div class="wrap">
+    <div class="v3d-teaser">
+      <div class="v3d-teaser-copy">
+        <span class="kicker"><span class="dash"></span>Exemple réel · STRUGAL S70P, 2400 × 2150 mm</span>
+        <h2 class="v3d-title">La formule du catalogue, affichée à côté de chaque coupe.</h2>
+        <p>Pour un coulissant <a href="/coulissants/s70p">S70P</a> deux vantaux de 2400 × 2150 mm, Debromp donne le dormant 2783
+           à 2400 et 2150 mm coupé à 45°, l'ouvrant 4318 à 1201 mm — soit (2400 + 2) / 2 — et la chicane 2786
+           à 2083 mm coupée droite. Puis la liste des produits&nbsp;: 6 barres de 6,4 m, 49,30 m de joints,
+           43 accessoires et 4,268 m² de vitrage.</p>
+        <p>Les dessins des profilés, tirés des catalogues STRUGAL, accompagnent chaque référence à l'écran et
+           dans le PDF&nbsp;: l'atelier reconnaît la barre sans chercher.</p>
+      </div>
+      <div class="v3d-teaser-media">
+        <img src="/assets/debromp-debit-profils.webp" alt="Débit des profilés dans Debromp : profil, pièce, quantité, longueur, coupe et formule du catalogue, puis liste des produits (barres, joints, accessoires, vitrage)" width="1200" height="1066" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gammes-strugal">
+  <div class="wrap">
+    <article class="post">
+      <h2>Les gammes STRUGAL intégrées</h2>
+      <p>Debromp contient les données de fabrication des catalogues STRUGAL&nbsp;: profilés, parcloses, accessoires,
+         tableaux de vitrage et plus de 200 modèles de châssis. Les calculs sont contrôlés par des tests sur des cas de référence du catalogue.</p>
+      <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Famille</th><th>Gammes STRUGAL dans Debromp</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Coulissants</td><td><a href="/coulissants/s70p">S70P</a>, <a href="/coulissants/s86rp">S86RP</a>, <a href="/coulissants/s88r">S88R</a>, <a href="/coulissants/s88rp">S88RP</a>, <a href="/coulissants/s90r">S90R</a>, <a href="/coulissants/s90rp">S90RP</a>, <a href="/coulissants/s110p">S110P</a>, <a href="/coulissants/s125rp">S125RP</a>, <a href="/coulissants/s140rp">S140RP</a></td></tr>
+          <tr><td>Fenêtres et portes battantes</td><td><a href="/battants/s40">S40</a>, <a href="/battants/s46">S46</a>, <a href="/battants/s53rp">S53RP</a></td></tr>
+          <tr><td>Façade</td><td><a href="/exterieur/mur-rideau-s52">Mur-rideau S52</a> (CR, CRi, NT, SGi)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>Les fiches techniques de chaque système sont sur la page <a href="/catalogue-strugal">catalogue STRUGAL</a>. Toutes ces gammes
+         sont vendues en matière première par PROMPOLU, <a href="/distributeur-strugal-maroc">distributeur officiel STRUGAL au Maroc</a>.</p>
+
+      <h2>Debromp ou le calcul à la main&nbsp;?</h2>
+      <p>Ce qu'il faut regarder avant de choisir un logiciel de débitage aluminium, et ce que fait Debromp sur chaque point.</p>
+      <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Critère</th><th>Debromp</th><th>Calcul à la main ou sur tableur</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Formules de coupe</td><td>Celles du catalogue STRUGAL, affichées avec la page</td><td>Recopiées à la main, gamme par gamme</td></tr>
+          <tr><td>Nombre de barres</td><td>Pièces placées sur les barres, largeur de lame comprise</td><td>Souvent mètres ÷ 6,4, ce qui sous-estime</td></tr>
+          <tr><td>Parcloses</td><td>Selon le vitrage, coupe après assemblage</td><td>À retrouver dans le tableau de vitrage</td></tr>
+          <tr><td>Accessoires et joints</td><td>Référence par référence, avec les quantités</td><td>Souvent oubliés ou estimés</td></tr>
+          <tr><td>Donnée absente du catalogue</td><td>Signalée « information manquante à valider », jamais devinée</td><td>Supposée</td></tr>
+          <tr><td>Appareils</td><td>Windows 7 à 11, Mac (macOS 10.13 et plus), iPhone, Android</td><td>—</td></tr>
+          <tr><td>Connexion Internet</td><td>Non nécessaire sur Windows et Mac</td><td>—</td></tr>
+          <tr><td>Langues</td><td>Français et espagnol</td><td>—</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="comment">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Comment démarrer</h2>
+      <p>Pas de compte à créer, pas de connexion obligatoire&nbsp;: une licence par appareil, annuelle ou permanente.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h3>Téléchargez</h3>
+        <p>Windows ou Mac depuis cette page ; sur téléphone, ouvrez la version web et ajoutez-la à
+           l'écran d'accueil.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h3>Envoyez le code de l'appareil</h3>
+        <p>À la première ouverture, Debromp affiche le code de votre appareil, avec un bouton pour nous
+           l'envoyer sur WhatsApp.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3>Collez votre code d'activation</h3>
+        <p>Nous vous renvoyons un code d'activation, annuel ou permanent, valable sur cet appareil.
+           Debromp s'ouvre.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <h3>Calculez vos châssis</h3>
+        <p>Gamme, modèle, cotes, vitrage : le débit et la liste des produits s'affichent. Enregistrez le
+           projet en PDF pour l'atelier ou le fournisseur.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="limites">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Ce qu'il faut savoir</h2>
+      <p>Debromp est un outil de calcul et de production. Ce qu'il ne fait pas, autant le dire.</p>
+    </div>
+    <ul class="v3d-limits">
+      <li><b>Pas de prix ni de devis.</b> Debromp calcule les quantités et les coupes, pas les tarifs,
+          les marges ou la TVA. Pour le prix de la matière première, <a href="/contact">demandez un devis à PROMPOLU</a>.</li>
+      <li><b>Les gammes STRUGAL uniquement.</b> Les formules viennent des catalogues de fabrication
+          STRUGAL ; les profilés d'autres marques ne sont pas calculés.</li>
+      <li><b>Les parcloses se coupent sur le châssis monté.</b> La quantité affichée sert à la commande ;
+          la coupe se fait après assemblage, d'après la mesure du clair de vitrage.</li>
+      <li><b>Installation sans certificat.</b> Au premier lancement, Windows ou le Mac peut demander une
+          confirmation&nbsp;; la marche à suivre est sur <a href="https://cutter-hard.pages.dev/telecharger.html" target="_blank" rel="noopener">la page d'installation</a>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Questions fréquentes sur Debromp</h2>
+      <p>Ce que nous demandent les menuisiers avant d'installer le logiciel.</p>
+    </div>
+    <div class="faq">
+        <details class="faq-item">
+          <summary>Qu'est-ce que Debromp ?<span class="q-mark">+</span></summary>
+          <p class="faq-a">Debromp est un logiciel de débitage et de calcul de menuiserie aluminium développé par PROMPOLU, distributeur officiel STRUGAL à Fès et Sefrou. À partir de la gamme, du modèle et des cotes hors tout d'un châssis STRUGAL, il calcule la longueur, la quantité et la coupe de chaque profilé d'après la formule du catalogue, le nombre de barres à commander, les parcloses, les joints, les accessoires et la surface de vitrage, puis enregistre le projet en PDF.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Quelles gammes STRUGAL Debromp calcule-t-il ?<span class="q-mark">+</span></summary>
+          <p class="faq-a">Les coulissants S70P, S86RP, S88R, S88RP, S90R, S90RP, S110P, S125RP et S140RP, les fenêtres et portes battantes S40, S46 et S53RP, et le mur-rideau S52 en versions CR, CRi, NT et SGi : plus de 200 modèles du catalogue de fabrication STRUGAL, avec leurs profilés, parcloses, joints et accessoires.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Debromp fonctionne-t-il sur Mac, iPhone et Android ?<span class="q-mark">+</span></summary>
+          <p class="faq-a">Oui. Debromp s'installe sur Windows 7, 8, 8.1, 10 et 11 en 64 bits et sur Mac à partir de macOS 10.13, Intel comme Apple Silicon. Sur iPhone et Android, c'est la même application en version web : on l'ouvre dans Safari ou Chrome, puis on l'ajoute à l'écran d'accueil, sans passer par une boutique d'applications.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Faut-il une connexion Internet pour utiliser Debromp ?<span class="q-mark">+</span></summary>
+          <p class="faq-a">Non, sur Windows et Mac : le catalogue STRUGAL est intégré au logiciel et tous les calculs se font sur l'ordinateur. Les projets restent sur l'appareil, pas sur un serveur. Sur téléphone, la version web se charge depuis Internet.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Comment Debromp calcule-t-il le nombre de barres ?<span class="q-mark">+</span></summary>
+          <p class="faq-a">Il place les pièces de chaque profilé sur les barres de l'atelier, de 6,4 m par défaut, en tenant compte de la largeur de lame (6 mm par défaut) et des pertes en début et en fin de barre réglées dans les paramètres. Le résultat est le nombre de barres réellement coupées, plus juste que les mètres divisés par 6,4.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Comment sont calculées les parcloses ?<span class="q-mark">+</span></summary>
+          <p class="faq-a">La parclose est celle que le tableau de vitrage du catalogue STRUGAL donne pour l'épaisseur de verre choisie, et la quantité affichée est une estimation pour la commande. La coupe se fait sur le châssis assemblé : on mesure le clair de vitrage X et Y de chaque verre dans l'écran Parcloses, et Debromp applique la formule de la parclose utilisée.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Debromp fait-il les devis et les prix ?<span class="q-mark">+</span></summary>
+          <p class="faq-a">Non. Debromp est un logiciel technique et de production : il calcule les coupes, les barres et les quantités, pas les prix, les marges ni la TVA. Pour chiffrer la matière première, envoyez la liste des produits à PROMPOLU : le devis est gratuit.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Comment obtenir une licence Debromp ?<span class="q-mark">+</span></summary>
+          <p class="faq-a">Installez Debromp : à la première ouverture, il affiche le code de votre appareil. Envoyez-le à PROMPOLU sur WhatsApp au +212 668 378 538 ; vous recevez un code d'activation, annuel ou permanent, valable sur cet appareil. Il n'y a pas de compte à créer. Quand une nouvelle version sort, Debromp le signale ; elle s'installe par-dessus en gardant les projets et la licence.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Les calculs de Debromp sont-ils fiables ?<span class="q-mark">+</span></summary>
+          <p class="faq-a">Chaque cote vient d'une formule du catalogue STRUGAL, affichée à côté du résultat, et la page du catalogue est indiquée pour chaque modèle. Quand le catalogue ne donne pas une information, Debromp la signale comme information manquante à valider au lieu de la deviner. Le relevé sur site et le contrôle avant la coupe restent l'affaire du menuisier.</p>
+        </details>
+    </div>
+  </div>
+</section>
+
+<section id="licence" class="contact-section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Recevoir votre licence Debromp</h2>
+      <p>Installez Debromp, puis envoyez-nous le code de votre appareil sur WhatsApp&nbsp;: nous vous
+         répondons avec votre code d'activation et le tarif de la licence, annuelle ou permanente.</p>
+    </div>
+    <div class="hero-actions">
+      <a href="https://wa.me/212668378538?text=Bonjour%20PROMPOLU%2C%20je%20souhaite%20une%20licence%20Debromp." class="btn btn-solid" target="_blank" rel="noopener noreferrer">Demander une licence sur WhatsApp</a>
+      <a href="/contact" class="btn btn-outline">Nous écrire</a>
+    </div>
+  </div>
+</section>
+
+</main><nav class="page-directory section-pad" aria-label="Toutes les rubriques PROMPOLU">
+    <div><p class="directory-title">Nos gammes</p><a href="/coulissants">Systèmes coulissants →</a><a href="/battants">Fenêtres &amp; portes battantes →</a><a href="/agencement">Profilés d’agencement →</a><a href="/exterieur">Solutions extérieures →</a></div>
+    <div><p class="directory-title">Découvrir PROMPOLU</p><a href="/visualisation-3d">Visualisation 3D →</a><a href="/debromp">Logiciel de débitage aluminium →</a><a href="https://prompolu.com/ar/" target="_blank" rel="nofollow noopener noreferrer">Espace de réalité augmentée ↗</a><a href="/notre-activite">Notre activité →</a><a href="/showroom-sefrou">Showroom de Sefrou →</a><a href="/contact">Contact &amp; devis →</a></div>
+    <div><p class="directory-title">Conseils &amp; ressources</p><a href="/conseils/">Tous les guides techniques →</a><a href="/conseils/guide-choisir-systeme-coulissant-aluminium">Choisir un système coulissant →</a><a href="/conseils/coulissant-ou-battant-comment-choisir">Coulissant ou battant ? →</a><a href="/conseils/rupture-de-pont-thermique-aluminium">La rupture de pont thermique →</a><a href="/distributeur-strugal-maroc">Distributeur STRUGAL au Maroc →</a><a href="/catalogue-strugal">Catalogue STRUGAL (PDF) →</a><a href="/conseils/glossaire-menuiserie-aluminium">Glossaire de l’aluminium →</a><a href="/grossiste-aluminium-fes">Grossiste aluminium à Fès →</a><a href="/conseils/finitions-aluminium-thermolaquage-anodisation">Choisir une finition aluminium →</a></div>
+  </nav>
+  <div class="social-links" aria-label="Réseaux sociaux"><a href="https://www.instagram.com/prompolu/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>
+      <a href="https://www.tiktok.com/@prompolu" target="_blank" rel="noopener noreferrer" aria-label="TikTok">TikTok</a>
+      <a href="https://www.facebook.com/PROMPOLU/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">Facebook</a>
+      <a href="https://wa.me/212668378538" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">WhatsApp</a>
+    </div><footer class="site-footer"><a href="/" aria-label="Retour à l’accueil"><img src="/assets/logo-prompolu.png" alt="PROMPOLU ALUMINIUM" width="602" height="83" loading="lazy"></a><p>La qualité, notre meilleur profil.</p><span>© <span id="year">2026</span> PROMPOLU ALUMINIUM · Ste PROMPOLU SARL</span><a class="back-top" href="#top">En haut <span aria-hidden="true">↑</span></a></footer>
+
+  <script src="/assets/nav.js" defer></script><script src="/app.js" defer></script><script src="/assets/vendor/gsap.min.js" defer></script><script src="/assets/vendor/ScrollTrigger.min.js" defer></script><script src="/assets/vendor/SplitText.min.js" defer></script><script src="/assets/motion.js" defer></script><script src="/assets/analytics.js" defer></script></body>
+</html>

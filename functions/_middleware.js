@@ -36,7 +36,7 @@ const PUBLIC_PAGES = new Set([
   '/conseils/prix-fenetre-aluminium-maroc',
   '/conseils/s53rp-ou-s46',
   '/conseils/glossaire-menuiserie-aluminium',
-  '/visualisation-3d', '/showroom-sefrou', '/grossiste-aluminium-fes',
+  '/visualisation-3d', '/debromp', '/showroom-sefrou', '/grossiste-aluminium-fes',
   '/distributeur-strugal-maroc', '/catalogue-strugal',
   '/battants/s53rp',
   '/battants/s46',
