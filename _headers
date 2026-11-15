@@ -24,6 +24,9 @@
   Cache-Control: public, max-age=31536000, immutable
 /assets/products/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+# GSAP 3.15.1 (copied from the gsap skill); rename or re-version the folder when updating.
+/assets/vendor/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
 
 # Accueil : vidéo et photos (renommer le fichier pour forcer une mise à jour).
 /assets/home-hero.mp4

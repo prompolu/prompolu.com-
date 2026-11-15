@@ -1,2 +1,5 @@
 .wrangler/
 node_modules/
+
+# macOS / iCloud duplicate copies ("file 2.webp") must never be published
+* [0-9].*
