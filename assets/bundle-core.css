@@ -1517,3 +1517,18 @@ article.post table th,article.post table td{border-color:#d9d0c3}
   .debromp-hero .hero-actions .btn,.debromp-page .steps-actions .btn{flex:1 1 100%}
   .debromp-page a.btn[href^="https://cutter-hard"]{order:-1}
 }
+
+/* Pages whose hero reuses .hero-copy (Visualisation 3D): no home-page indent, wide column, image on top */
+.copy-hero .page-hero-grid{align-items:start}
+.copy-hero .hero-copy{margin:0;width:auto;padding:0;pointer-events:auto}
+.copy-hero .hero-title{font-size:clamp(42px,4.3vw,76px);max-width:none}
+.copy-hero .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.copy-hero .hero-note{font-size:14px;line-height:1.7;color:#4c4943;margin-top:18px;max-width:52ch}
+.copy-hero .hero-note a{color:var(--bronze-dark);text-decoration:underline;text-underline-offset:3px}
+.copy-hero .page-visual{margin-top:8px}
+.v3d-page .eyebrow,.v3d-page .adv-mark,.v3d-page .step-num,.v3d-page .kicker{color:var(--bronze-dark)}
+.v3d-page .page-directory a,.v3d-page .social-links a{min-height:24px;display:inline-flex;align-items:center}
+@media (max-width:640px){
+  .copy-hero .hero-title{font-size:11vw}
+  .copy-hero .hero-actions .btn{flex:1 1 100%}
+}
