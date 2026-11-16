@@ -79,3 +79,23 @@
   .copy-hero .hero-title{font-size:11vw}
   .copy-hero .hero-actions .btn{flex:1 1 100%}
 }
+
+/* Header with three menus (Nos gammes, Nos technologies, Nos guides).
+   Above 1280 px: compact spacing, no overlap with the logo (measured from 1300 to 1920 px). */
+@media(min-width:1281px){.desktop-nav{gap:18px}.desktop-nav a,.desktop-nav summary{font-size:13.5px}.desktop-nav summary{gap:4px}}
+/* 901–1280 px: five menu items no longer fit beside the logo, so the phone menu takes over earlier
+   (same rules as styles.css / navigation.css below 900 px). */
+@media(min-width:901px) and (max-width:1280px){
+ .site-header{grid-template-columns:minmax(0,1fr) auto auto;gap:20px}
+ .brand-group{max-width:400px}
+ .desktop-nav{display:none}
+ .menu-toggle{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;width:40px;height:44px;background:transparent;padding:5px;z-index:12}
+ .menu-toggle span{height:1.5px;background:var(--ink);width:24px;transition:transform .2s}
+ .home-page .site-header .menu-toggle span{background:#fff}
+ .menu-toggle[aria-expanded=true] span:first-child{transform:translateY(4.25px) rotate(45deg)}
+ .menu-toggle[aria-expanded=true] span:last-child{transform:translateY(-4.25px) rotate(-45deg)}
+ .mobile-nav{position:absolute;top:84px;left:var(--gutter);right:var(--gutter);background:var(--paper);border:1px solid var(--line);border-radius:15px;z-index:15;box-shadow:0 30px 45px #15171a20;padding:12px 20px 20px;display:flex;flex-direction:column;gap:0;max-height:calc(100dvh - 104px);overflow-y:auto}
+ .mobile-nav>a{padding:11px 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-size:19px}
+ .mobile-nav>a>span{font-size:11px;color:var(--bronze)}
+ .mobile-nav .button{margin-top:20px;align-self:flex-start;font-size:14px;color:#fff;border-bottom:0}
+}
