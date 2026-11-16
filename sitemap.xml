@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://prompolu.com/</loc>
-    <lastmod>2026-11-14</lastmod>
+    <lastmod>2026-11-16</lastmod>
   </url>
   <url>
     <loc>https://prompolu.com/coulissants</loc>
@@ -46,15 +46,29 @@
   </url>
   <url>
     <loc>https://prompolu.com/visualisation-3d</loc>
-    <lastmod>2026-11-11</lastmod>
+    <lastmod>2026-11-16</lastmod>
   </url>
   <url>
     <loc>https://prompolu.com/debromp</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-16</lastmod>
+    <image:image>
+      <image:loc>https://prompolu.com/assets/debromp-calculateur.webp</image:loc>
+    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://prompolu.com/assets/debromp-guide-poster.jpg</video:thumbnail_loc>
+      <video:title>Debromp — guide d'utilisation en vidéo</video:title>
+      <video:description>Prise en main de Debromp, logiciel de débitage aluminium STRUGAL : activer l'essai gratuit, créer un projet, ajouter un châssis, lire le débit, enregistrer la fiche technique PDF et couper les parcloses.</video:description>
+      <video:content_loc>https://prompolu.com/assets/debromp-guide.mp4</video:content_loc>
+      <video:duration>181</video:duration>
+      <video:publication_date>2026-11-15</video:publication_date>
+    </video:video>
   </url>
   <url>
     <loc>https://prompolu.com/ar-ma/debromp</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-16</lastmod>
+    <image:image>
+      <image:loc>https://prompolu.com/assets/debromp-calculateur.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://prompolu.com/showroom-sefrou</loc>
