@@ -32,7 +32,8 @@ function paint(p){
 }
 function frame(now){
  requestAnimationFrame(frame);const dt=last?Math.min(.1,(now-last)/1000):.016;last=now;
- if(!visible||document.hidden)return;
+ $('.header').classList.toggle('is-paper',scrollY>origin+distance+innerHeight-100);
+ if(document.hidden||scrollY<origin-innerHeight||scrollY>origin+distance+innerHeight)return;
  if(autoplay&&!staticMode){target=clamp(target+dt*.022);scrollTo({top:origin+target*distance,behavior:'instant'});if(target===1){autoplay=false;setPlay();}}
  else target=clamp((scrollY-origin)/distance);
  progress+=(target-progress)*(1-Math.exp(-dt*9));if(Math.abs(target-progress)<.00003)progress=target;
@@ -42,7 +43,6 @@ function frame(now){
   const t=performance.now();scene.render({p:progress,pointer});paint(progress);painted=progress;dirty=false;
   if(change&&performance.now()-t>32){if(++slow>32&&quality>.55){quality*=.85;scene.resize(stage.clientWidth,stage.clientHeight,quality);slow=0;dirty=true;}}
  }
- $('.header').classList.toggle('is-paper',scrollY>origin+distance+innerHeight-100);
 }
 for(const f of [{id:null,name:'Finitions du parcours',color:'#777'},...FINISHES]){
  const b=document.createElement('button');b.className='swatch';b.type='button';b.title=f.name;b.setAttribute('aria-label',f.name);b.setAttribute('aria-pressed',String(f.id===null));b.style.setProperty('--color',f.color);
@@ -60,7 +60,6 @@ addEventListener('wheel',()=>{if(autoplay){autoplay=false;setPlay();}},{passive:
 addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;pointerAim.x=(e.clientX/innerWidth-.5)*2;pointerAim.y=(e.clientY/innerHeight-.5)*2;},{passive:true});
 addEventListener('keydown',e=>{if(e.target.closest('input,select,button,a,textarea')||scrollY>distance)return;if(e.code==='ArrowRight'){e.preventDefault();goto(progressFor(clamp(active+1,0,PRODUCTS.length-1)));}if(e.code==='ArrowLeft'){e.preventDefault();goto(progressFor(clamp(active-1,0,PRODUCTS.length-1)));}});
 addEventListener('resize',measure,{passive:true});document.fonts.ready.then(measure);
-new IntersectionObserver(([e])=>{visible=e.isIntersecting;dirty=true;},{rootMargin:'100px'}).observe(journey);
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();staticView(true);$('#static-toggle').textContent='Recharger la 3D';});
 reduced.addEventListener('change',e=>{if(e.matches)staticView(true);});
 async function boot(){
