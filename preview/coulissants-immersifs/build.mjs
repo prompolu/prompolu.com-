@@ -1,0 +1,15 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {PRODUCTS} from './catalogue.js';
+import {build} from 'esbuild';
+const dir=path.dirname(fileURLToPath(import.meta.url));
+const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
+let html=await readFile(path.join(dir,'index.html'),'utf8');
+const rail=PRODUCTS.map((p,i)=>`<button type="button" data-visit="${i}"${i===0?' aria-current="step"':''} aria-label="Voir ${escape(p.name)}">${escape(p.id)}</button>`).join('');
+const cards=PRODUCTS.map((p,i)=>`<article class="product-card" data-system="${p.id}"><div class="card-meta"><span>STRUGAL</span><span>${p.thermal?'Rupture thermique':'Sans rupture thermique'}</span></div><figure><img src="../../assets/products/cutouts/${p.slug}.webp" alt="Section du système aluminium STRUGAL ${escape(p.name)}" width="700" height="588" loading="lazy" decoding="async"></figure><h3>${escape(p.name)}</h3><p class="family">${escape(p.family)}</p><p class="description">${escape(p.description)}</p><dl class="card-specs"><div><dt>Vitrage jusqu’à</dt><dd>${p.glass} mm</dd></div><div><dt>${p.weight?'Poids max / ouvrant':'Configuration'}</dt><dd>${p.weight||'2 à 4 vantaux'}</dd></div></dl><div class="card-links"><button type="button" data-visit="${i}">Voir en 3D</button><a href="https://prompolu.com/coulissants/${p.slug}" target="_blank" rel="noopener">Fiche du système</a></div></article>`).join('\n');
+html=html.replace(/<!-- RAIL -->[\s\S]*?<!-- \/RAIL -->/,`<!-- RAIL -->${rail}<!-- /RAIL -->`).replace(/<!-- CARDS -->[\s\S]*?<!-- \/CARDS -->/,`<!-- CARDS -->${cards}<!-- /CARDS -->`);
+await writeFile(path.join(dir,'index.html'),html);
+await build({entryPoints:[path.join(dir,'experience.js')],bundle:true,minify:true,format:'iife',target:['es2022'],outfile:path.join(dir,'experience.bundle.js'),logLevel:'info'});
+const bundle=path.join(dir,'experience.bundle.js');
+await writeFile(bundle,(await readFile(bundle,'utf8')).replace(/[\t ]+$/gm,''));
