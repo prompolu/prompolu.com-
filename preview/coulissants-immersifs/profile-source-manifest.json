@@ -1,0 +1,223 @@
+[
+  {
+    "section": "s70p-side",
+    "file": "fabrication-s70p.pdf",
+    "sha256": "0f53b75eec98a21c0b863225304b31ebebe67655e062e3785c0ca18bcf879f0d",
+    "page": 36,
+    "pdfPointCrop": [
+      104,
+      388,
+      403,
+      594
+    ],
+    "components": 2
+  },
+  {
+    "section": "s70p-bottom",
+    "file": "fabrication-s70p.pdf",
+    "sha256": "0f53b75eec98a21c0b863225304b31ebebe67655e062e3785c0ca18bcf879f0d",
+    "page": 51,
+    "pdfPointCrop": [
+      200,
+      310,
+      410,
+      620
+    ],
+    "components": 2
+  },
+  {
+    "section": "s70r-side",
+    "file": "s70r.pdf",
+    "sha256": "a0af94c9b849f71905f13d898a77dfdecb32e576c0fd79a6d9896a48ebc7cd06",
+    "page": 1,
+    "pdfPointCrop": [
+      793,
+      500,
+      1023,
+      720
+    ],
+    "components": 2
+  },
+  {
+    "section": "s86rp-side",
+    "file": "s86rp-rolltec.pdf",
+    "sha256": "b7ce75e939e4189e8dc6ead28bec394082fdac9f3d5c7a5979e3722dd67c86d6",
+    "page": 2,
+    "pdfPointCrop": [
+      180,
+      536,
+      475,
+      754
+    ],
+    "components": 4
+  },
+  {
+    "section": "s88r-side",
+    "file": "fabrication-s88r.pdf",
+    "sha256": "d908eb8790dbfffcec4f64ac360f23e150cde39da9a6d5895a05f7f4901b36e4",
+    "page": 55,
+    "pdfPointCrop": [
+      100,
+      175,
+      420,
+      623
+    ],
+    "components": 2
+  },
+  {
+    "section": "s88r-bottom",
+    "file": "fabrication-s88r.pdf",
+    "sha256": "d908eb8790dbfffcec4f64ac360f23e150cde39da9a6d5895a05f7f4901b36e4",
+    "page": 91,
+    "pdfPointCrop": [
+      150,
+      330,
+      474,
+      650
+    ],
+    "components": 2
+  },
+  {
+    "section": "s88rp-side",
+    "file": "s88rp.pdf",
+    "sha256": "0d60ec9b24666e0c23251a7643bd21f3f7ec19358b6941fda36668e6cd408b73",
+    "page": 1,
+    "pdfPointCrop": [
+      900,
+      537,
+      1115,
+      720
+    ],
+    "components": 4
+  },
+  {
+    "section": "s90p-side",
+    "file": "fabrication-s90r.pdf",
+    "sha256": "223cec623b448e55e53c626dfa47628f5020debbdcdbfbb4bcecc34c6724bf90",
+    "page": 42,
+    "pdfPointCrop": [
+      180,
+      370,
+      508,
+      635
+    ],
+    "components": 2
+  },
+  {
+    "section": "s90p-bottom",
+    "file": "fabrication-s90r.pdf",
+    "sha256": "223cec623b448e55e53c626dfa47628f5020debbdcdbfbb4bcecc34c6724bf90",
+    "page": 44,
+    "pdfPointCrop": [
+      255,
+      350,
+      518,
+      680
+    ],
+    "components": 2
+  },
+  {
+    "section": "s90r-side",
+    "file": "fabrication-s90r.pdf",
+    "sha256": "223cec623b448e55e53c626dfa47628f5020debbdcdbfbb4bcecc34c6724bf90",
+    "page": 38,
+    "pdfPointCrop": [
+      195,
+      350,
+      495,
+      610
+    ],
+    "components": 2
+  },
+  {
+    "section": "s90r-bottom",
+    "file": "fabrication-s90r.pdf",
+    "sha256": "223cec623b448e55e53c626dfa47628f5020debbdcdbfbb4bcecc34c6724bf90",
+    "page": 40,
+    "pdfPointCrop": [
+      245,
+      390,
+      505,
+      669
+    ],
+    "components": 4
+  },
+  {
+    "section": "s110p-side",
+    "file": "fabrication-s110p.pdf",
+    "sha256": "7f899edc4af1d66d6b72a50b3530c370d203a29625c11624c1b983874b0bbdee",
+    "page": 48,
+    "pdfPointCrop": [
+      50,
+      297,
+      458,
+      630
+    ],
+    "components": 3
+  },
+  {
+    "section": "s110p-bottom",
+    "file": "fabrication-s110p.pdf",
+    "sha256": "7f899edc4af1d66d6b72a50b3530c370d203a29625c11624c1b983874b0bbdee",
+    "page": 51,
+    "pdfPointCrop": [
+      145,
+      295,
+      480,
+      710
+    ],
+    "components": 5
+  },
+  {
+    "section": "s125rp-side",
+    "file": "fabrication-s125rp.pdf",
+    "sha256": "1f5084b43a1854d5eb2e07713fbedd79e36f39999c1e237b7abbc6871d6efb4e",
+    "page": 52,
+    "pdfPointCrop": [
+      75,
+      285,
+      487,
+      662
+    ],
+    "components": 4
+  },
+  {
+    "section": "s125rp-bottom",
+    "file": "fabrication-s125rp.pdf",
+    "sha256": "1f5084b43a1854d5eb2e07713fbedd79e36f39999c1e237b7abbc6871d6efb4e",
+    "page": 61,
+    "pdfPointCrop": [
+      94,
+      270,
+      468,
+      691
+    ],
+    "components": 4
+  },
+  {
+    "section": "s140rp-side",
+    "file": "fabrication-s140rp.pdf",
+    "sha256": "5eb2f7917ae6f5468f652f7385609cf2510b5ca12ecffdafd0cf33519c071f75",
+    "page": 62,
+    "pdfPointCrop": [
+      108,
+      245,
+      430,
+      645
+    ],
+    "components": 4
+  },
+  {
+    "section": "s140rp-bottom",
+    "file": "fabrication-s140rp.pdf",
+    "sha256": "5eb2f7917ae6f5468f652f7385609cf2510b5ca12ecffdafd0cf33519c071f75",
+    "page": 70,
+    "pdfPointCrop": [
+      80,
+      441,
+      465,
+      628
+    ],
+    "components": 3
+  }
+]

@@ -1,6 +1,7 @@
 import {PRODUCTS,clamp,smooth,productAt,progressFor} from './catalogue.js';
 import {createScene} from './experience-scene.js';
 import {createInspector} from './inspection.js';
+import {PROFILES} from './catalogue-section.js';
 const root=document.documentElement,$=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const journey=$('.journey'),stage=$('.stage'),canvas=$('#scene'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let scene=null,staticMode=false,ready=false,progress=0,target=0,last=0,painted=-1,active=-1,autoplay=false,quality=1,slow=0,origin=0,distance=1,dirty=true;
@@ -46,12 +47,20 @@ $('#autoplay').addEventListener('click',()=>{if(progress>.99)goto(0);autoplay=!a
 function showInspection(index=active,view=inspectionView){
  inspectionIndex=clamp(index,0,PRODUCTS.length-1);inspectionView=view;autoplay=false;setPlay();
  const p=PRODUCTS[inspectionIndex];$('#inspection-title').textContent=p.name;$('#inspection-configuration').textContent=p.configuration;$('#inspection-count').textContent=`${inspectionIndex+1} / ${PRODUCTS.length}`;
+ const source=PROFILES[p.id],section=view==='corner'||view==='profile';
+ inspection.classList.toggle('no-source-geometry',section&&!source);
+ $('#inspection-geometry-source').textContent=source?.reference||'S90RP · fiche commerciale disponible ; sections de fabrication manquantes';
+ $('#inspection-fidelity').textContent=section?(source?(source.completeCorner?'Contours aluminium repris des sections latérale et inférieure du catalogue.':'Section latérale reprise du catalogue. Le seuil n’est pas reconstitué sans son dessin.'):'La géométrie S90RP reste à documenter. La référence catalogue est affichée en attendant ses plans.'):'Vue d’ensemble provisoire : les assemblages et la quincaillerie restent à vérifier sur les fichiers du fabricant.';
+ $('[data-inspection-view="corner"]').textContent=source?(source.completeCorner?'Coupe d’angle':'Profil latéral'):'Référence catalogue';
+ if(section&&source)$('#inspection-configuration').textContent=source.completeCorner?'Profils latéral et inférieur · '+(source.profiles?.join(' / ')||'sections du catalogue'):'Échantillon du profil latéral';
  const img=$('#inspection-reference-image'),reference=$(`.product-card[data-system="${p.id}"] img`);img.src=reference.currentSrc||reference.src;img.alt=`Section du profilé STRUGAL ${p.name}`;
- $('#inspection-source').href=p.source;const list=$('#inspection-features');list.replaceChildren(...p.details.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
- $$('[data-inspection-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.inspectionView===view)));$('.inspection-opening').hidden=view==='corner';
+ $('#inspection-source').href=p.source;const list=$('#inspection-features');
+ const details=section&&source?[source.completeCorner?'Profils latéral et inférieur issus de leurs dessins respectifs':'Profil latéral uniquement : dessin du seuil à compléter',`Vitrage de ${source.glass} mm représenté`,source.profiles?`Références de profils : ${source.profiles.join(', ')}`:'Chambres, rainures et poches de retenue reprises du tracé']:p.details;
+ list.replaceChildren(...details.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
+ $$('[data-inspection-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.inspectionView===view)));$('.inspection-opening').hidden=section;
  if(!inspection.open)inspection.showModal();
  requestAnimationFrame(()=>{
-  try{inspector||=createInspector($('#inspection-canvas'));inspector.resume();inspector.show(p,view);$('#inspection-opening').value=view==='centre'?'0':'35';}
+  try{if(section&&!source){inspector?.pause();return;}inspector||=createInspector($('#inspection-canvas'));inspector.resume();inspector.show(p,view);$('#inspection-opening').value=view==='centre'?'0':'35';}
   catch(e){console.warn('Vue de détail indisponible',e);inspection.classList.add('no-inspector');}
  });
 }
@@ -81,4 +90,6 @@ async function boot(){
 }
 window.__preview={goto:p=>goto(p),visit:i=>goto(progressFor(i)),inspect:(i,v)=>showInspection(i,v),get inspector(){return inspector;},get progress(){return progress;},get active(){return PRODUCTS[active];},get ready(){return ready;},get scene(){return scene;},get static(){return staticMode;},error:null};
 measure();product(0);requestAnimationFrame(frame);
-if(reduced.matches||navigator.connection?.saveData)staticView(true);else boot();
+const initialInspection=new URLSearchParams(location.search).get('inspect'),initialIndex=PRODUCTS.findIndex(p=>p.id===initialInspection);
+const openInitialInspection=()=>{if(initialIndex>=0)showInspection(initialIndex,'corner');};
+if(reduced.matches||navigator.connection?.saveData){staticView(true);openInitialInspection();}else boot().then(openInitialInspection);

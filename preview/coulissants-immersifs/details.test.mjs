@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {PRODUCTS,STATIONS,openingAt,travelAt} from './catalogue.js';
+import {PROFILES,profileExtrusion} from './catalogue-section.js';
 globalThis.window={};
 const {createWindow,createCorner}=await import('./model.js');
 const material=new THREE.MeshStandardMaterial();
@@ -27,18 +28,39 @@ test('camera corridor clears each moving sash at every threshold crossing',()=>{
  }
 });
 
-test('all catalogue cutaways have real chamber walls and finite, indexed geometry',()=>{
+test('catalogue detail samples use ten independent source sections and expose the missing S90RP source',()=>{
  for(const p of PRODUCTS){
-  const corner=createCorner(p,mats);let coreVertices=0;
-  assert.equal(corner.info.ntr,p.tracks,p.id);
+  const corner=createCorner(p,mats);
+  if(p.id==='S90RP'){assert.equal(corner,null);continue;}
+  assert.equal(corner.sourceBased,true,p.id);
+  assert.equal(corner.info.source,PROFILES[p.id]);
   corner.group.traverse(m=>{
    if(!m.isMesh)return;
    const pos=m.geometry.attributes.position;
    assert.ok([...pos.array].every(Number.isFinite),p.id+' positions');
    assert.ok([...m.geometry.attributes.normal.array].every(Number.isFinite),p.id+' normals');
-   assert.ok([...m.geometry.index.array].every(i=>i<pos.count),p.id+' indices');
-   if(m.userData.component==='alu_core')coreVertices+=pos.count;
+   if(m.geometry.index)assert.ok([...m.geometry.index.array].every(i=>i<pos.count),p.id+' indices');
   });
-  assert.ok(coreVertices>0,p.id+' has open chamber interiors');
  }
+ assert.equal(Object.values(PROFILES).filter(p=>p.completeCorner).length,7);
+ assert.equal(Object.values(PROFILES).filter(p=>!p.completeCorner).length,3);
+});
+
+test('source section extrusion retains every probed air chamber and sawn aluminium face',()=>{
+ const doubleSided=new THREE.MeshBasicMaterial({side:THREE.DoubleSide});
+ let holes=0,solids=0;
+ for(const [system,source]of Object.entries(PROFILES))for(const section of [source.side,source.bottom].filter(Boolean))for(const profiles of Object.values(section))for(const profile of profiles){
+  const geometry=profileExtrusion(profile,100),mesh=new THREE.Mesh(geometry,[doubleSided,doubleSided,doubleSided]);
+  mesh.updateMatrixWorld();
+  const ray=new THREE.Raycaster();
+  for(const [u,z]of profile.holeProbes){
+   ray.set(new THREE.Vector3(u*.001,.101,z*.001),new THREE.Vector3(0,-1,0));
+   assert.equal(ray.intersectObject(mesh).length,0,system+' chamber stays hollow');holes++;
+  }
+  const [u,z]=profile.solidProbe;ray.set(new THREE.Vector3(u*.001,.101,z*.001),new THREE.Vector3(0,-1,0));
+  const hit=ray.intersectObject(mesh)[0];assert.ok(hit,system+' aluminium cap exists');
+  assert.ok(Math.abs(hit.distance-.001)<.00001,system+' cap at original extrusion end');solids++;
+  geometry.dispose();
+ }
+ assert.ok(holes>50);assert.ok(solids>40);
 });

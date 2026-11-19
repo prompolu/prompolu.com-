@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import './window-geometry.js';
+import {createCatalogueSection} from './catalogue-section.js';
 function geometry(data){
  const g=new THREE.BufferGeometry(),pos=Float32Array.from(data.pos,x=>x*.001),uv=new Float32Array(pos.length/3*2);
  for(let i=0;i<pos.length/3;i++){uv[i*2]=(pos[i*3]+pos[i*3+2])*3;uv[i*2+1]=pos[i*3+1]*3;}
@@ -26,6 +27,5 @@ export function createWindow(product,mats){
  return {group,fixed,leaves,passX:(clearLeft+clearRight)/2,clearLeft,clearRight,groundOffset:b.S.seuil==='encastre'?-b.S.Ff*.001:0,info:b,setOpen(t){leaves.forEach(l=>{if(l.travel){l.group.position.x=l.travel*t;l.group.position.y=b.levage?Math.min(1,t*4)*.006:0;if(l.handle)l.handle.rotation.z=l.angle*Math.min(1,t*4);}});}};
 }
 export function createCorner(product,mats){
- const b=window.Coulissant.buildCorner({system:product.id,tracks:product.tracks,profile:product.profile,noeud20:product.noeud20,drainage:product.drainage});
- return {group:part(b.P.static.m,mats),info:b};
+ return createCatalogueSection(product,mats);
 }

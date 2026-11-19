@@ -32,15 +32,20 @@ export function createInspector(canvas){
  let object=null,model=null,current=null,mode='corner',opening=.35;
  const caches=new Map();
  function obtain(p,view){
-  const k=p.id+(view==='corner'?':corner':':window');
-  if(!caches.has(k))caches.set(k,view==='corner'?createCorner(p,cutMats):createWindow(p,mats));
+  const section=view==='corner'||view==='profile',k=p.id+(section?':corner':':window');
+  if(!caches.has(k))caches.set(k,section?createCorner(p,cutMats):createWindow(p,mats));
   return caches.get(k);
  }
  function show(p,view=mode){
   current=p;mode=view;opening=view==='centre'?0:.35;if(object)scene.remove(object);model=obtain(p,view);object=model.group;scene.add(object);
-  object.position.set(0,0,0);object.rotation.set(0,0,0);controls.reset();
-  if(view==='corner'){
-   object.position.set(-.16,-.15,0);controls.target.set(0,0,0);camera.position.set(.58,.46,.65);controls.minDistance=.22;controls.maxDistance=1.8;
+  object.position.set(0,0,0);object.rotation.set(0,0,0);controls.reset();camera.up.set(0,1,0);camera.far=50;
+  if(view==='corner'||view==='profile'){
+   const w=model.width||.32,h=model.height||.32;
+   object.position.set(-w*.46,-h*(canvas.clientWidth<550?.62:.55),0);controls.target.set(0,0,0);camera.position.set(.62,.45,.86);controls.minDistance=.18;controls.maxDistance=1.8;
+   if(view==='profile'){
+    const points=Object.values(model.info.source.side).flat().flatMap(p=>p.outer),x=(Math.min(...points.map(p=>p[0]))+Math.max(...points.map(p=>p[0])))*.0005+object.position.x;
+    const y=object.position.y+h;camera.up.set(0,0,-1);controls.target.set(x,y,0);camera.position.set(x,y+.40,.00001);camera.far=.50;controls.minDistance=.20;controls.maxDistance=.46;
+   }
   }else{
    model.setOpen(view==='centre'?0:opening);
    if(view==='overview'){
@@ -55,7 +60,7 @@ export function createInspector(canvas){
  }
  function render(){renderer.render(scene,camera);}
  function resize(){const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();render();}
- function setOpening(value){opening=value;if(model&&mode!=='corner'){model.setOpen(value);render();}}
+ function setOpening(value){opening=value;if(model&&mode!=='corner'&&mode!=='profile'){model.setOpen(value);render();}}
  function pause(){controls.enabled=false;}
  function resume(){controls.enabled=true;resize();}
  return {show,resize,pause,resume,setOpening,renderer,scene,camera,get mode(){return mode;},get model(){return model;}};
