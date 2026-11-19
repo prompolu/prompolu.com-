@@ -1,13 +1,13 @@
 import * as THREE from 'three';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {orangePeel,brushed,groundedSky,roadStrip} from './environment.js';
+import {orangePeel,groundedSky,roadStrip} from './environment.js';
 import {createWindow} from './model.js';
 import {STATIONS,FINISHES,clamp,smooth,travelAt,openingAt} from './catalogue.js';
 const YAW=-1.4137,SUN=new THREE.Vector3(.802,.108,.587).normalize();
-function materials(finish,peel,brush){
- const metal=['silver','bronze'].includes(finish.id);
- const alu=new THREE.MeshStandardMaterial({color:finish.color,metalness:metal?1:.12,roughness:metal?.28:.38,normalMap:metal?brush.normal:peel,normalScale:new THREE.Vector2(.075,.075),envMapIntensity:1.1});
+function materials(finish,peel){
+ // RAL 9005 givré: fine-grain, matte powder coating on every frame and sash.
+ const alu=new THREE.MeshStandardMaterial({name:'RAL 9005 givré',color:finish.color,metalness:.05,roughness:.72,normalMap:peel,normalScale:new THREE.Vector2(.22,.22),envMapIntensity:1});
  const glass=new THREE.MeshPhysicalMaterial({color:'#e4efec',roughness:.025,metalness:0,transparent:true,opacity:.075,depthWrite:false,side:THREE.DoubleSide,envMapIntensity:1.7,ior:1.52});
  glass.onBeforeCompile=s=>{s.fragmentShader=s.fragmentShader.replace('#include <opaque_fragment>',`diffuseColor.a = .045 + .40 * pow(1. - abs(dot(normalize(vViewPosition), normal)), 4.);\n#include <opaque_fragment>`);};
  glass.customProgramCacheKey=()=> 'pov-fresnel-glass-v1';
@@ -25,7 +25,7 @@ export async function createScene(canvas,{mobile=false,onProgress=()=>{}}={}){
  const env=pmrem.fromEquirectangular(hdr);scene.environment=env.texture;scene.environmentIntensity=1.1;pmrem.dispose();hdr.dispose();
  plate.colorSpace=THREE.NoColorSpace;plate.generateMipmaps=false;plate.minFilter=THREE.LinearFilter;
  const sky=groundedSky(plate);scene.add(sky);const world=new THREE.Group();world.rotation.y=YAW;scene.add(world);world.add(roadStrip({color,normal,arm},85));
- const peel=orangePeel(),brush=brushed(),palettes=Object.fromEntries(FINISHES.map(f=>[f.id,materials(f,peel,brush)])),objects=[];
+ const peel=orangePeel(),palettes=Object.fromEntries(FINISHES.map(f=>[f.id,materials(f,peel)])),objects=[];
  const plinthMat=new THREE.MeshStandardMaterial({color:'#272a2b',roughness:.48,metalness:.55});
  for(const [i,p]of STATIONS.entries()){
   const w=createWindow(p,palettes[p.finish]);w.group.position.set(0,.035,p.z);world.add(w.group);objects.push(w);
@@ -58,8 +58,7 @@ export async function createScene(canvas,{mobile=false,onProgress=()=>{}}={}){
   const pos=world.localToWorld(new THREE.Vector3(0,0,p<.2?0:z));sky.position.set(pos.x,1.7,pos.z);renderer.toneMappingExposure=.92+.1*smooth(.6,1,p);renderer.render(scene,camera);lastP=p;
  }
  function resize(w,h,quality=1){ratio=Math.min(devicePixelRatio||1,mobile?1.25:1.5,Math.sqrt((mobile?.85e6:1.65e6)/Math.max(1,w*h)))*quality;renderer.setPixelRatio(ratio);renderer.setSize(w,h,false);camera.aspect=w/Math.max(1,h);camera.updateProjectionMatrix();lastP=-1;}
- function setFinish(id){objects.forEach((o,i)=>o.group.traverse(m=>{if(m.isMesh&&m.userData.finish)m.material=palettes[id||STATIONS[i].finish].alu;}));lastP=-1;}
  function project(point,index=0){return new THREE.Vector3(...point).add(objects[index].group.position).applyMatrix4(world.matrixWorld).project(camera);}
  resize(canvas.clientWidth||innerWidth,canvas.clientHeight||innerHeight);place(0);await renderer.compileAsync(scene,camera);onProgress(.96);render({p:0});
- return {render,resize,setFinish,project,renderer,objects,scene,camera,get info(){return {drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,pixelRatio:ratio};}};
+ return {render,resize,project,renderer,objects,scene,camera,get info(){return {drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,pixelRatio:ratio};}};
 }

@@ -1,4 +1,4 @@
-import {PRODUCTS,FINISHES,clamp,smooth,productAt,progressFor} from './catalogue.js';
+import {PRODUCTS,clamp,smooth,productAt,progressFor} from './catalogue.js';
 import {createScene} from './experience-scene.js';
 const root=document.documentElement,$=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const journey=$('.journey'),stage=$('.stage'),canvas=$('#scene'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -43,10 +43,6 @@ function frame(now){
   const t=performance.now();scene.render({p:progress,pointer});paint(progress);painted=progress;dirty=false;
   if(change&&performance.now()-t>32){if(++slow>32&&quality>.55){quality*=.85;scene.resize(stage.clientWidth,stage.clientHeight,quality);slow=0;dirty=true;}}
  }
-}
-for(const f of [{id:null,name:'Finitions du parcours',color:'#777'},...FINISHES]){
- const b=document.createElement('button');b.className='swatch';b.type='button';b.title=f.name;b.setAttribute('aria-label',f.name);b.setAttribute('aria-pressed',String(f.id===null));b.style.setProperty('--color',f.color);
- b.addEventListener('click',()=>{scene?.setFinish(f.id);$$('.swatch').forEach(n=>n.setAttribute('aria-pressed',String(n===b)));$('#finish-name').textContent=f.name+(f.detail?` · ${f.detail}`:'');dirty=true;});$('#finish-swatches').append(b);
 }
 $$('[data-visit]').forEach(b=>b.addEventListener('click',()=>{if(staticMode&&scene)staticView(false);goto(progressFor(Number(b.dataset.visit)));}));
 $$('[data-start]').forEach(b=>b.addEventListener('click',()=>{if(staticMode){$('#systemes').scrollIntoView({behavior:reduced.matches?'instant':'smooth'});return;}goto(.2);}));

@@ -14,7 +14,7 @@ To edit/rebuild, run `npm ci` and `npm run build` in this folder. Three.js 0.170
 
 ## Controls and accessibility
 
-Scroll or use automatic playback. The product rail and catalogue's “Voir en 3D” buttons jump to individual bays. Left/right arrow keys change the current system when focus is outside a control. Finish buttons recolour the scene. “Sans animation”, reduced-motion and data-saver preferences expose a static presentation. The server-rendered catalogue remains available with JavaScript disabled.
+Scroll or use automatic playback. The product rail and catalogue's “Voir en 3D” buttons jump to individual bays. Left/right arrow keys change the current system when focus is outside a control. Every window, including the intermediate portals, uses the same RAL 9005 givré fine-grain matte black powder coating. “Sans animation”, reduced-motion and data-saver preferences expose a static presentation. The server-rendered catalogue remains available with JavaScript disabled.
 
 Only visible or changed frames render; geometry and materials are shared, glass uses Fresnel transparency, the shadow frustum is fitted once, and resolution adapts to render cost. No post-processing chain or glass transmission render is used.
 
