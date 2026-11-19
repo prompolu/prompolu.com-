@@ -5,14 +5,15 @@ import {orangePeel,groundedSky,roadStrip} from './environment.js';
 import {createWindow} from './model.js';
 import {STATIONS,FINISHES,clamp,smooth,travelAt,openingAt} from './catalogue.js';
 const YAW=-1.4137,SUN=new THREE.Vector3(.802,.108,.587).normalize();
-function materials(finish,peel){
+export function materials(finish,peel){
  // RAL 9005 givré: fine-grain, matte powder coating on every frame and sash.
  const alu=new THREE.MeshStandardMaterial({name:'RAL 9005 givré',color:finish.color,metalness:.05,roughness:.72,normalMap:peel,normalScale:new THREE.Vector2(.22,.22),envMapIntensity:1});
  const glass=new THREE.MeshPhysicalMaterial({color:'#e4efec',roughness:.025,metalness:0,transparent:true,opacity:.075,depthWrite:false,side:THREE.DoubleSide,envMapIntensity:1.7,ior:1.52});
  glass.onBeforeCompile=s=>{s.fragmentShader=s.fragmentShader.replace('#include <opaque_fragment>',`diffuseColor.a = .045 + .40 * pow(1. - abs(dot(normalize(vViewPosition), normal)), 4.);\n#include <opaque_fragment>`);};
  glass.customProgramCacheKey=()=> 'pov-fresnel-glass-v1';
  const black=new THREE.MeshStandardMaterial({color:'#111315',roughness:.82}),steel=new THREE.MeshStandardMaterial({color:'#9b9d9e',metalness:1,roughness:.25});
- return {alu,alu_ext:alu,verre:glass,quinc:alu,polyamide:black,joint:black,brosse:black,intercalaire:steel,intercalaire_noir:black,verre_chant:glass,inox:steel,chambre:black};
+ const core=new THREE.MeshStandardMaterial({name:'Aluminium brut intérieur',color:'#91999b',metalness:.85,roughness:.4});
+ return {alu,alu_ext:alu,alu_core:core,verre:glass,quinc:alu,polyamide:black,joint:black,brosse:black,intercalaire:steel,intercalaire_noir:black,verre_chant:glass,inox:steel,chambre:black};
 }
 export async function createScene(canvas,{mobile=false,onProgress=()=>{}}={}){
  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance',stencil:false});
@@ -28,11 +29,10 @@ export async function createScene(canvas,{mobile=false,onProgress=()=>{}}={}){
  const peel=orangePeel(),palettes=Object.fromEntries(FINISHES.map(f=>[f.id,materials(f,peel)])),objects=[];
  const plinthMat=new THREE.MeshStandardMaterial({color:'#272a2b',roughness:.48,metalness:.55});
  for(const [i,p]of STATIONS.entries()){
-  const w=createWindow(p,palettes[p.finish]);w.group.position.set(0,.035,p.z);world.add(w.group);objects.push(w);
-  const base=new THREE.Mesh(new RoundedBoxGeometry(p.width+.28,.035,.52,2,.008),plinthMat);base.position.set(0,.017,p.z);base.receiveShadow=base.castShadow=true;world.add(base);
+  const w=createWindow(p,palettes[p.finish]);w.group.position.set(0,p.id==='S140RP'?.005+w.groundOffset:.035,p.z);world.add(w.group);objects.push(w);
+  const base=new THREE.Mesh(new RoundedBoxGeometry(p.width+.28,p.id==='S140RP'?.008:.035,.52,2,.004),plinthMat);base.position.set(0,p.id==='S140RP'?-.008:.017,p.z);base.receiveShadow=base.castShadow=true;world.add(base);
   if(i%3===0)await new Promise(r=>setTimeout(r,0));
  }
- for(let i=0;i<STATIONS.length-1;i++){const portal=objects[i].fixed.clone();portal.position.set(0,.035,STATIONS[i].z-2.6);world.add(portal);}
  onProgress(.76);
  const sun=new THREE.DirectionalLight('#ffdaa9',3.1);sun.castShadow=true;sun.shadow.mapSize.set(mobile?2048:4096,mobile?512:1024);sun.shadow.bias=-.00018;sun.shadow.normalBias=.007;
  scene.add(sun,sun.target,new THREE.HemisphereLight('#b6cce5','#705642',.3));

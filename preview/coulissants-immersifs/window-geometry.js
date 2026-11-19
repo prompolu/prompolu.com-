@@ -23,6 +23,7 @@
  *  Les masses vues non publiees sont reconstituees (aspect, pas DXF).
  *  Autonome : ne partage rien avec pergola.js, gardecorps.js, battants.js.
  * ===================================================================== */
+import {ShapeUtils, Vector2} from 'three';
 (function (global) {
 'use strict';
 const MM = 0.001;
@@ -157,6 +158,28 @@ function sweep(mesh, poly, O, t, n, e, L, cutA, cutB, caps){
 /* prisme : polygone (x,y) dans le plan (a,b), epaisseur le long de t,
    centre en C */
 function prism(mesh, poly, C, a, b, t, len){ sweep(mesh, poly, C, t, a, b, len, null, null, true); }
+/* Open profile chambers for the catalogue cutaway. Unlike dark end-face decals,
+   these have actual openings and interior walls, so they remain hollow on orbit. */
+function hollowSweep(mesh,core,poly,voids,O,t,n,e,L,cutA,cutB){
+  const inside=(p)=>{
+    let yes=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){
+      const a=poly[i],b=poly[j];
+      if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])yes=!yes;
+    }return yes;
+  };
+  const holes=voids.map(([u0,u1,v0,v1])=>[[u0,v0],[u1,v0],[u1,v1],[u0,v1]]).filter(h=>h.every(inside)&&h.every((p,i)=>inside([(p[0]+h[(i+1)%4][0])/2,(p[1]+h[(i+1)%4][1])/2])));
+  if(!holes.length){sweep(mesh,poly,O,t,n,e,L,cutA,cutB);return;}
+  const P=(p,s)=>add(add(add(O,sc(t,s)),sc(n,p[0])),sc(e,p[1]));
+  const lo=p=>-L/2+(cutA?cutA(p[0],p[1]):0),hi=p=>L/2-(cutB?cutB(p[0],p[1]):0);
+  for(const [k,ring]of [poly,...holes].entries())for(let i=0;i<ring.length;i++){
+    const a=ring[i],b=ring[(i+1)%ring.length],sign=(area2(ring)>0?1:-1)*(k?-1:1);
+    const normal=sc(add(sc(n,b[1]-a[1]),sc(e,a[0]-b[0])),sign);
+    const dest=k?core:mesh;
+    dest.tri(P(a,lo(a)),P(b,lo(b)),P(b,hi(b)),normal);dest.tri(P(a,lo(a)),P(b,hi(b)),P(a,hi(a)),normal);
+  }
+  const points=[poly,...holes].flat(),tris=ShapeUtils.triangulateShape(poly.map(p=>new Vector2(...p)),holes.map(h=>h.map(p=>new Vector2(...p))));
+  for(const q of tris){mesh.tri(P(points[q[0]],hi(points[q[0]])),P(points[q[1]],hi(points[q[1]])),P(points[q[2]],hi(points[q[2]])),t);mesh.tri(P(points[q[0]],lo(points[q[0]])),P(points[q[1]],lo(points[q[1]])),P(points[q[2]],lo(points[q[2]])),sc(t,-1));}
+}
 function box(mesh, c, s){ /* boite alignee, centre c, tailles s */
   prism(mesh, [[-s[0]/2,-s[1]/2],[s[0]/2,-s[1]/2],[s[0]/2,s[1]/2],[-s[0]/2,s[1]/2]], c, X, Y, Z, s[2]);
 }
@@ -309,13 +332,13 @@ function splitRPT(poly, pw, umax, rec){
 /* ================= construction ================= */
 function build(o){
   const key = SYSTEMS[o.system] ? o.system : 'S90RP';
-  const S = Object.assign({}, SYSTEMS[key]);
+  const S = Object.assign({}, SYSTEMS[key], o.profile || {});
   const W=o.width*1000, H=o.height*1000;           /* mm en interne */
   const leaves=o.leaves, levage = S.man==='levage' || (S.levageOpt && o.levage);
   if(levage && S.man!=='levage'){ S.man='levage'; S.seuil='levage'; }
   if(S.c20 && o.noeud20) S.C=20;
   const rpt = S.pf>0;
-  const three = S.rails3 && leaves===3;
+  const three = (S.rails3 || o.tracks===3) && leaves===3;
   const D = three ? Math.round(S.D*1.45) : S.D;
   S.D = D;
   const ntr = three ? 3 : 2;
@@ -391,9 +414,9 @@ function build(o){
     }
   }
   /* seuil encastre de l'Infinity : grille de drainage exterieure */
-  if(S.seuil==='encastre'){
+  if(S.seuil==='encastre' || o.drainage){
     const z0=-D/2-2, depth=170, top=S.Ff;
-    grille(st, -W/2, W/2, z0, depth, top);
+    grille(st, -W/2, W/2, z0, depth, o.drainage?2:top);
   }
 
   /* ---------- vantaux ---------- */
@@ -477,17 +500,19 @@ function build(o){
     const gx0=xl+FL-rbFor(FL)+1.5, gx1=xr-FR+rbFor(FR)-1.5;
     const gy0=yb+Fb-rbFor(Fb)+1.5, gy1=yt-Ft+rbFor(Ft)-1.5;
     const gw=gx1-gx0, gh=gy1-gy0, gcx=(gx0+gx1)/2, gcy=(gy0+gy1)/2;
-    for(const s of [-1,1]){
+    for(const s of (S.singleGlass?[0]:[-1,1])){
       const z=zc+s*(g/2-tp/2);
-      box(part.get('verre'), [gcx,gcy,z], [gw,gh,tp]);
+      box(part.get('verre'), [gcx,gcy,z], [gw,gh,S.singleGlass?g:tp]);
     }
     /* intercalaire (vu en biais derriere le joint) */
     const spH=Math.min(16, Math.max(rbFor(FL),rbFor(Ft))+2), spT=g-2*tp-0.4;
     const spMat = rpt ? 'intercalaire_noir' : 'intercalaire';
+    if(!S.singleGlass){
     box(part.get(spMat), [gcx, gy1-spH/2, zc], [gw, spH, spT]);
     box(part.get(spMat), [gcx, gy0+spH/2, zc], [gw, spH, spT]);
     box(part.get(spMat), [gx0+spH/2, gcy, zc], [spH, gh-2*spH, spT]);
     box(part.get(spMat), [gx1-spH/2, gcy, zc], [spH, gh-2*spH, spT]);
+    }
     /* joints EPDM sur les deux faces (levre de 2,5 mm sur le verre) */
     const vx0=xl+FL, vx1=xr-FR, vy0=yb+Fb, vy1=yt-Ft;
     for(const s of [-1,1]){
@@ -499,6 +524,10 @@ function build(o){
     }
     /* ---------- quincaillerie ---------- */
     const dirMove = moving[i];
+    // Reinforcement shown as an optional centre-stile rib in the S88R catalogue.
+    if(o.reinforced)for(const [kind,x,dir]of [[kl,xl,1],[kr,xr,-1]])if(kind==='meet'){
+      prism(part.get(matExt),rrect(16,26,1.5,3),[x+dir*9,(yb+yt)/2,zc+sd/2+12],X,Z,Y,legH-8);
+    }
     const hy = Math.min(1050, (yb+yt)/2);
     let hx, hStile=handles[i];
     if(hStile){
@@ -519,6 +548,11 @@ function build(o){
     if(dirMove!==undefined) part.travel = dirMove*(legW - EMB - Fi - 40);
     part.zc=zc; part.x=[xl,xr];
     P.leaves.push(part);
+  }
+  // Three-track cascade: both sliding leaves stack beside the last leaf.
+  if(three){
+    const last=P.leaves[2];
+    for(const [i,lf]of P.leaves.entries())if(i<2)lf.travel=Math.max(0,last.x[0]-lf.x[0]-(2-i)*18);
   }
   /* butee : le vantail qui s'ouvre s'arrete avant la poignee du vantail
      sur lequel il passe (2 vantaux), comme les butees en atelier       */
@@ -623,12 +657,15 @@ function framePartsOf(prof, S, rpt){
 
 function buildCorner(o){
   const key = SYSTEMS[o.system] ? o.system : 'S90RP';
-  const S = Object.assign({}, SYSTEMS[key]);
+  const S = Object.assign({}, SYSTEMS[key], o.profile || {});
+  if(S.c20 && o.noeud20) S.C=20;
   const levage = S.man==='levage' || (S.levageOpt && o.levage);
   if(levage && S.man!=='levage'){ S.man='levage'; S.seuil='levage'; }
+  const ntr=o.tracks===3?3:2;
+  if(ntr===3)S.D=Math.round(S.D*1.45);
   const rpt=S.pf>0, D=S.D, L=320;
   const lipT = S.cadre==='tubulaire'?4.5:LIPT;
-  const span=D-2*lipT-6, pitch=span/2, tracks=[-span/2+pitch*0.5, -span/2+pitch*1.5];
+  const span=D-2*lipT-6, pitch=span/ntr, tracks=Array.from({length:ntr},(_,i)=>-span/2+pitch*(i+.5));
   const sd=Math.min(S.sd,pitch-3), g=Math.min(S.g,sd-9), tp=Math.min(S.tp,g/3);
   const Fs = S.Fv+EMB, FsH = S.cacheH ? EMB+HID : Fs;
   const P={static:new Part(), leaves:[], wall:null}, st=P.static;
@@ -637,12 +674,10 @@ function buildCorner(o){
   const sl= S.seuil==='std' ? fr : S.seuil==='encastre' ? frameProfile(S,tracks,'encastre',!!S.cacheH) : sillProfile(S,tracks);
   const mitred=S.joint==='onglet', sillMitre=mitred && S.seuil==='std';
   const mit=u=>u+0.2, cope=(u,v)=>extent([fr.poly],v)+0.05;
-  const ch=st.get('chambre');
+  const core=q=>q.mat==='polyamide'?st.get(q.mat):st.get('alu_core');
   /* dormant : montant gauche et seuil, scies net en bout */
-  for(const q of framePartsOf(fr,S,rpt)) sweep(st.get(q.mat), q.poly, [0,L/2,0], Y, X, Z, L, sillMitre?mit:null, null);
-  for(const q of framePartsOf(sl,S,rpt)) sweep(st.get(q.mat), q.poly, [L/2,0,0], X, Y, Z, L, sillMitre?mit:cope, null);
-  chamberQuads(ch, frameChambers(S,fr,tracks,rpt), [0,L,0], X, Z, Y);
-  chamberQuads(ch, frameChambers(S,sl,S.seuil==='std'?tracks:[],rpt), [L,0,0], Y, Z, X);
+  for(const q of framePartsOf(fr,S,rpt)) hollowSweep(st.get(q.mat),core(q),q.poly,frameChambers(S,fr,tracks,rpt),[0,L/2,0],Y,X,Z,L,sillMitre?mit:null,null);
+  for(const q of framePartsOf(sl,S,rpt)) hollowSweep(st.get(q.mat),core(q),q.poly,frameChambers(S,sl,S.seuil==='std'?tracks:[],rpt),[L/2,0,0],X,Y,Z,L,sillMitre?mit:cope,null);
   if(S.seuil!=='std'){
     for(const zc of tracks){
       const e0=extent([fr.poly],zc);
@@ -650,9 +685,9 @@ function buildCorner(o){
       sweep(st.get('inox'), rp, [(e0+L)/2,0,0], X, Y, Z, L-e0);
     }
   }
-  if(S.seuil==='encastre'){
+  if(S.seuil==='encastre' || o.drainage){
     const z0=-D/2-2, depth=170, top=S.Ff;
-    grille(st, 0, L, z0, depth, top);
+    grille(st, 0, L, z0, depth, o.drainage?2:top);
   }
   /* joints de levre sur le montant */
   for(const side of [-1,1]){
@@ -661,7 +696,7 @@ function buildCorner(o){
     sweep(st.get('joint'), side<0?q:q.slice().reverse(), [0,(S.Ff+L)/2,0], Y, X, Z, L-S.Ff);
   }
   /* vantail interieur (celui qui coulisse le long du montant) */
-  const zc=tracks[1];
+  const zc=tracks[ntr-1];
   const xl=S.Ff-EMB, yb=sl.uw+TR+2;
   const FL=Fs, Fb=FsH+(S.seuil==='levage'?14:0), rbF=F=>Math.min(14,F-5);
   const xR=L-18, yT=L-18;
@@ -673,24 +708,24 @@ function buildCorner(o){
   };
   const Ls=sashParts(FL), Bs=sashParts(Fb);
   const mitV=mitred;
-  for(const q of Ls.parts) sweep(st.get(q.mat), q.poly, [xl,(yb+yT)/2,zc], Y, X, Z, yT-yb, mitV?mit:null, null);
+  for(const q of Ls.parts) hollowSweep(st.get(q.mat),core(q),q.poly,sashChambers(FL,rbF(FL),sd,rpt,Ls.pw),[xl,(yb+yT)/2,zc],Y,X,Z,yT-yb,mitV?mit:null,null);
   const copeL=(u,v)=>extent([Ls.pr.poly],v)+0.15;
-  for(const q of Bs.parts) sweep(st.get(q.mat), q.poly, [(xl+xR)/2,yb,zc], X, Y, Z, xR-xl, mitV?mit:copeL, null);
-  chamberQuads(ch, sashChambers(FL,rbF(FL),sd,rpt,Ls.pw), [xl,yT,zc], X, Z, Y);
-  chamberQuads(ch, sashChambers(Fb,rbF(Fb),sd,rpt,Bs.pw), [xR,yb,zc], Y, Z, X);
+  for(const q of Bs.parts) hollowSweep(st.get(q.mat),core(q),q.poly,sashChambers(Fb,rbF(Fb),sd,rpt,Bs.pw),[(xl+xR)/2,yb,zc],X,Y,Z,xR-xl,mitV?mit:copeL,null);
   /* double vitrage, scie avec le vantail */
   const gx0=xl+FL-rbF(FL)+1.5, gy0=yb+Fb-rbF(Fb)+1.5;
   const gw=xR-gx0, gh=yT-gy0;
-  for(const s of [-1,1]){
+  for(const s of (S.singleGlass?[0]:[-1,1])){
     const z=zc+s*(g/2-tp/2);
-    box(st.get('verre'), [gx0+gw/2, gy0+gh/2, z], [gw, gh, tp]);
+    box(st.get('verre'), [gx0+gw/2, gy0+gh/2, z], [gw, gh, S.singleGlass?g:tp]);
     /* chant vert du verre sur les faces sciees */
-    box(st.get('verre_chant'), [xR+0.05, gy0+gh/2, z], [0.12, gh, tp-0.05]);
-    box(st.get('verre_chant'), [gx0+gw/2, yT+0.05, z], [gw, 0.12, tp-0.05]);
+    box(st.get('verre_chant'), [xR+0.05, gy0+gh/2, z], [0.12, gh, (S.singleGlass?g:tp)-0.05]);
+    box(st.get('verre_chant'), [gx0+gw/2, yT+0.05, z], [gw, 0.12, (S.singleGlass?g:tp)-0.05]);
   }
   const spH=16, spT=g-2*tp-0.4, spM=rpt?'intercalaire_noir':'intercalaire';
-  box(st.get(spM), [gx0+gw/2, gy0+spH/2, zc], [gw, spH, spT]);
-  box(st.get(spM), [gx0+spH/2, gy0+spH+(gh-spH)/2, zc], [spH, gh-spH, spT]);
+  if(!S.singleGlass){
+    box(st.get(spM), [gx0+gw/2, gy0+spH/2, zc], [gw, spH, spT]);
+    box(st.get(spM), [gx0+spH/2, gy0+spH+(gh-spH)/2, zc], [spH, gh-spH, spT]);
+  }
   /* mastic de scellement (noir) sous l'intercalaire */
   box(st.get('joint'), [gx0+gw/2, gy0+1.5, zc], [gw, 3, spT]);
   box(st.get('joint'), [gx0+1.5, gy0+3+(gh-3)/2, zc], [3, gh-3, spT]);
@@ -701,7 +736,7 @@ function buildCorner(o){
     box(st.get('joint'), [vx0+b/2-0.6, (vy0+yT)/2, z], [b, yT-vy0, 2.5]);
   }
   const anchors={corner:[0,0,0], meet:[L/2*MM,L/2*MM,0], sill:[0,0,0]};
-  return {P,S,key,W:L,H:L,D,anchors,sd,g,rpt,levage,ntr:2,Fs,Fi:S.C/2,corner:true};
+  return {P,S,key,W:L,H:L,D,anchors,sd,g,rpt,levage,ntr,Fs,Fi:S.C/2,corner:true};
 }
 
 /* poignees, cote interieur. Renvoie la geometrie de la partie mobile
@@ -753,6 +788,7 @@ function materialDefs(finish, finishExt, tint){
     intercalaire:{name:'intercalaire', pbrMetallicRoughness:{baseColorFactor:[0.62,0.63,0.64,1],metallicFactor:0.9,roughnessFactor:0.38}},
     intercalaire_noir:{name:'intercalaire_noir', pbrMetallicRoughness:{baseColorFactor:[0.03,0.03,0.035,1],metallicFactor:0,roughnessFactor:0.55}},
     chambre:{name:'chambre', pbrMetallicRoughness:{baseColorFactor:[0.05,0.05,0.052,1],metallicFactor:0.3,roughnessFactor:0.75}},
+    alu_core:{name:'alu_core', pbrMetallicRoughness:{baseColorFactor:[0.55,0.58,0.60,1],metallicFactor:0.85,roughnessFactor:0.4}},
     verre_chant:{name:'verre_chant', pbrMetallicRoughness:{baseColorFactor:[0.16,0.36,0.30,1],metallicFactor:0,roughnessFactor:0.15}},
     inox:{name:'inox', pbrMetallicRoughness:{baseColorFactor:[0.66,0.66,0.67,1],metallicFactor:1,roughnessFactor:0.24}},
     quinc: dark ? {name:'quinc', pbrMetallicRoughness:{baseColorFactor:[0.022,0.022,0.024,1],metallicFactor:0.2,roughnessFactor:0.38},
@@ -886,7 +922,7 @@ function toGLB(B, finish, finishExt, tint, opening){
 }
 
 global.Coulissant = {
-  SYSTEMS, NAMES, AR_FAMILY, build,
+  SYSTEMS, NAMES, AR_FAMILY, build, buildCorner,
   label: k => NAMES[k] || k,
   /* capacite par vantail (fiche STRUGAL) ; null = non publiee */
   capacity(k, levage){
