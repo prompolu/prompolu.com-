@@ -1,6 +1,6 @@
 # PROMPOLU ALUMINIUM
 
-> Entreprise fassie, distributeur et showroom officiel STRUGAL (showroom et point de distribution à Sefrou, magasin historique à Fès). Fournit aux menuisiers et fabricants des profilés et systèmes aluminium en matière première : coulissants, fenêtres et portes battantes, agencement intérieur, garde-corps, volets roulants, pergolas et bardage aluminium. Plus de 18 ans d'expérience.
+> Entreprise fassie, distributeur et showroom officiel STRUGAL (showroom et point de distribution à Sefrou, magasin historique à Fès). Fournit aux menuisiers et fabricants des profilés et systèmes aluminium en matière première : coulissants, fenêtres et portes battantes, agencement intérieur, garde-corps, volets roulants, pergolas et bardage aluminium. Deux magasins, à Fès et à Sefrou.
 
 PROMPOLU ne fabrique pas d'ouvrages finis : c'est un grossiste/distributeur de matière première aluminium destiné aux menuisiers, fabricants et architectes. PROMPOLU vend aussi aux particuliers, au magasin de Fès et au showroom de Sefrou, et livre partout au Maroc. Il vend aussi des tubes en aluminium, et le devis est gratuit.
 
@@ -122,3 +122,9 @@ Chaque fiche donne les caractéristiques publiées par STRUGAL (guide des systè
 - Formulaire de demande de devis : https://prompolu.com/contact#formulaire
 - Le formulaire n'envoie rien automatiquement : il compose un message que le visiteur expédie lui-même par WhatsApp (+212 668 378 538) ou par e-mail (PROMPOLU@LIVE.FR).
 - Informations utiles à fournir : référence du système, quantités, finition, ville de livraison ou retrait, échéance de chantier.
+
+## Préparer une commande
+
+- [Accessoires et quincaillerie aluminium](https://prompolu.com/accessoires-aluminium): identifier une pièce, vérifier sa compatibilité et demander un devis.
+- [Tubes et profilés aluminium](https://prompolu.com/tubes-profiles-aluminium): section, épaisseur, longueur et finition nécessaires au chiffrage.
+- [Confidentialité et informations sur le site](https://prompolu.com/confidentialite): éditeur, demandes par messagerie, statistiques facultatives et choix.

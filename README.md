@@ -25,3 +25,9 @@ le rendu mobile ou les Core Web Vitals. Aucun message n'est envoyé.
 
 Les données S125RP citées renvoient à STRUGAL Maroc. Valider ensemble la version,
 la quincaillerie et les dimensions avant toute fabrication.
+
+## Mise en œuvre SEO locale
+
+Les pages `/accessoires-aluminium` et `/tubes-profiles-aluminium` aident à préparer une commande. `/confidentialite` décrit les échanges et les choix de mesure. Les demandes acceptent `magasin=fes` ou `magasin=sefrou` sans remplacer un choix déjà saisi. Le registre interne des corrections externes et de la mesure est dans `LISEZ-MOI-SEO.md` (non public).
+
+Les événements Analytics ne représentent pas une demande reçue ; ils sont bloqués sans consentement. Les tests couvrent les destinations de devis, les références contrôlées et le retrait du consentement. Après modification des CSS sources, exécuter `node tools/build-css.mjs`.
