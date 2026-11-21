@@ -12,9 +12,9 @@ const fileFor = (url) => {
   return path.endsWith('/') ? path.slice(1) + 'index.html' : path.slice(1) + '.html';
 };
 
-test('all 48 public sitemap destinations match existing pages and self canonicals', () => {
-  assert.equal(locations.length, 48);
-  assert.equal(new Set(locations).size, 48);
+test('all 51 public sitemap destinations match existing pages and self canonicals', () => {
+  assert.equal(locations.length, 51);
+  assert.equal(new Set(locations).size, 51);
   const titles = new Set();
   const organizationDescriptions = new Set();
   for (const location of locations) {
@@ -51,7 +51,7 @@ test('all 48 public sitemap destinations match existing pages and self canonical
       }
     }
   }
-  assert.equal(titles.size, 48);
+  assert.equal(titles.size, 51);
   assert.equal(organizationDescriptions.size, 1);
   assert.doesNotMatch(read('llms.txt'), /https:\/\/prompolu\.com\/[^\s)]*\.html/);
 });

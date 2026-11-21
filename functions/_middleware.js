@@ -38,6 +38,7 @@ const PUBLIC_PAGES = new Set([
   '/conseils/glossaire-menuiserie-aluminium',
   '/visualisation-3d', '/debromp', '/showroom-sefrou', '/grossiste-aluminium-fes',
   '/distributeur-strugal-maroc', '/catalogue-strugal',
+  '/accessoires-aluminium', '/tubes-profiles-aluminium', '/confidentialite',
   '/battants/s53rp',
   '/battants/s46',
   '/coulissants/s86rp',

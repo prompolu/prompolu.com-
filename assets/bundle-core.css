@@ -1552,3 +1552,14 @@ article.post table th,article.post table td{border-color:#d9d0c3}
  .mobile-nav>a>span{font-size:11px;color:var(--bronze)}
  .mobile-nav .button{margin-top:20px;align-self:flex-start;font-size:14px;color:#fff;border-bottom:0}
 }
+.local-actions{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}
+.local-actions .button{min-height:48px;display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.branch-choice{padding:24px;border:1px solid var(--line);border-radius:14px;background:var(--panel);margin:30px 0}
+.post .source-note{border-left:3px solid var(--bronze-dark);padding:12px 22px;background:var(--panel);margin:28px 0}
+.site-footer .footer-resources{flex-basis:100%;display:flex;flex-wrap:wrap;gap:12px 24px;padding:18px 0;font:400 13px/1.6 var(--body)}
+.consent-bar a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:640px){.local-actions .button{flex:1 1 100%}.branch-choice{padding:18px}}
+
+.procurement-links{padding:34px 0;border-top:1px solid var(--line)}
+.procurement-links h2{font:400 clamp(28px,3vw,42px)/1.2 var(--display);margin-bottom:14px}
+.procurement-links p{max-width:80ch;line-height:1.8;color:#4c4943}.procurement-links a{color:var(--bronze-dark);text-decoration:underline}

@@ -9,10 +9,11 @@
   var ID_MESURE = 'G-EF8H28NFLQ';   // ID de mesure Google Analytics 4 de prompolu.com
   var CLE = 'prompolu_consentement';
   var chargee = false;
+  var accord = false;
 
   // --- Consent Mode : rien n'est stocké tant que le visiteur n'a pas accepté ---
   window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
+  function gtag() { window.dataLayer.push(arguments); }
   window.gtag = gtag;
 
   gtag('consent', 'default', {
@@ -46,19 +47,22 @@
   }
 
   function accorder() {
+    accord = true;
+    window['ga-disable-' + ID_MESURE] = false;
     gtag('consent', 'update', { analytics_storage: 'granted' });
     charger();
   }
 
   // --- Bandeau de consentement ---
   function bandeau() {
+    if (document.querySelector('.consent-bar')) return;
     var b = document.createElement('div');
     b.className = 'consent-bar';
     b.setAttribute('role', 'dialog');
     b.setAttribute('aria-label', 'Consentement aux statistiques de visite');
     b.innerHTML =
       '<p>Nous utilisons des statistiques de visite pour comprendre comment notre site est consulté. ' +
-      'Aucune donnée n\'est utilisée à des fins publicitaires.</p>' +
+      'Aucune donnée n\'est utilisée à des fins publicitaires. <a href="/confidentialite">Confidentialité et choix</a>.</p>' +
       '<div class="consent-actions">' +
         '<button type="button" class="consent-no">Refuser</button>' +
         '<button type="button" class="consent-yes">Accepter</button>' +
@@ -73,6 +77,22 @@
     });
   }
 
+  function reinitialiser() {
+    accord = false;
+    window['ga-disable-' + ID_MESURE] = true;
+    gtag('consent', 'update', { analytics_storage: 'denied' });
+    try { localStorage.removeItem(CLE); } catch (e) {}
+    // Retirer les cookies GA déjà déposés, sans toucher aux autres cookies.
+    (document.cookie || '').split(';').forEach(function (part) {
+      var nom = part.trim().split('=')[0];
+      if (!/^_ga(?:_|$)/.test(nom)) return;
+      ['', '; domain=' + location.hostname, '; domain=.prompolu.com'].forEach(function (domaine) {
+        document.cookie = nom + '=; Max-Age=0; path=/' + domaine + '; SameSite=Lax';
+      });
+    });
+    bandeau();
+  }
+
   var choix = lire();
   if (choix === 'oui') {
     accorder();
@@ -81,25 +101,49 @@
     else document.addEventListener('DOMContentLoaded', bandeau);
   }
 
-  // --- Suivi des prises de contact (les vraies conversions) ---
-  // Les événements sont poussés dans dataLayer même si la bibliothèque n'est pas
-  // chargée : sans consentement, ils restent simplement sans effet.
+  // Actions de contact, pas messages reçus ni commandes. Ne pas conserver les
+  // clics avant consentement pour les rejouer lors d'une acceptation ultérieure.
+  var references = ['A200 4FH2', 'A400K', 'S40', 'S45C', 'S46', 'S47', 'S52', 'S53RP+', 'S70P', 'S70R', 'S86RP', 'S88R', 'S88RP', 'S88RP Prime', 'S88RP élevable', 'S90P', 'S90R', 'S90RP', 'S110P', 'S125RP', 'S140RP', 'Bardage aluminium', 'Garde-corps', 'Habillage extérieur', 'Pergola', 'Pergolas', 'Volets roulants', 'Accessoires aluminium', 'Tubes aluminium'];
+  function referenceSure(valeur) {
+    var ref = (valeur || '').replace(/ \(catalogue de fabrication\)$/, '');
+    return references.indexOf(ref) > -1 ? ref : 'autre';
+  }
+  function magasinSure(valeur) {
+    return valeur === 'fes' || valeur === 'sefrou' ? valeur : 'a_preciser';
+  }
+  function suivre(nom, contexte) {
+    if (!accord) return;
+    contexte = contexte || {};
+    gtag('event', nom, {
+      page: location.pathname,
+      product_reference: referenceSure(contexte.reference),
+      magasin: magasinSure(contexte.magasin),
+      emplacement: contexte.emplacement || 'contenu'
+    });
+  }
+  window.prompoluTrack = suivre;
   function suivi() {
     document.addEventListener('click', function (e) {
+      var choix = e.target.closest && e.target.closest('[data-consent-reset]');
+      if (choix) { reinitialiser(); return; }
       var a = e.target.closest && e.target.closest('a');
       if (!a || !a.href) return;
-      var h = a.getAttribute('href') || '';
+      var url;
+      try { url = new URL(a.href, location.href); } catch (e) { return; }
       var nom = null;
-
-      if (h.indexOf('tel:') === 0) nom = 'clic_telephone';
-      else if (h.indexOf('wa.me') > -1) nom = 'clic_whatsapp';
-      else if (h.indexOf('mailto:') === 0) nom = 'clic_email';
-      else if (a.matches('.cta, .header-quote, .menu-quote, .mcb-quote')) nom = 'clic_demander_devis';
+      if (url.protocol === 'tel:') nom = 'clic_telephone';
+      else if (url.hostname === 'wa.me') nom = 'clic_whatsapp';
+      else if (url.protocol === 'mailto:') nom = 'clic_email';
+      else if (url.origin === location.origin && url.pathname.replace(/\.html$/, '') === '/contact') {
+        nom = url.hash === '#formulaire' || url.searchParams.has('systeme') ? 'clic_demander_devis' : 'clic_contact';
+      } else if (url.hostname === 'maps.google.com' || url.hostname === 'www.google.com' && url.pathname.indexOf('/maps') === 0) nom = 'clic_itineraire';
 
       if (nom) {
-        gtag('event', nom, {
-          page: location.pathname,
-          libelle: (a.textContent || '').trim().slice(0, 60)
+        var branche = location.pathname.indexOf('sefrou') > -1 ? 'sefrou' : location.pathname.indexOf('fes') > -1 ? 'fes' : '';
+        suivre(nom, {
+          reference: url.searchParams.get('systeme'),
+          magasin: url.searchParams.get('magasin') || a.getAttribute('data-magasin') || branche,
+          emplacement: a.closest('header') ? 'entete' : a.closest('.mobile-nav') ? 'menu' : a.closest('.mobile-cta-bar') ? 'barre_mobile' : a.closest('.page-hero') ? 'accroche' : 'contenu'
         });
       }
     });

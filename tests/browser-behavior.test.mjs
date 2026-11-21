@@ -158,3 +158,12 @@ test('email prepares a draft with the edited product, and form submit never send
   form.emit('submit', { preventDefault() { prevented = true; } });
   assert.ok(prevented);
 });
+
+test('branch-aware quotes retain an allowed branch and include it in the message', () => {
+  const { document, fields, opened } = quoteForm('?systeme=Accessoires%20aluminium&magasin=sefrou');
+  assert.equal(fields.magasin.value, 'sefrou');
+  fields.nom.value = 'Atelier de test'; fields.telephone.value = '0600000000';
+  document.elements.qfWhatsapp.emit('click');
+  assert.match(new URL(opened[0][0]).searchParams.get('text'), /Magasin souhaité : Sefrou/);
+  assert.equal(quoteForm('?magasin=arbitrary').fields.magasin.value, '');
+});

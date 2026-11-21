@@ -21,6 +21,9 @@
   if (reference && systeme && !systeme.value.trim()) {
     systeme.value = reference.replace(/[\u0000-\u001F\u007F]/g, '').trim().slice(0, 80);
   }
+  var magasin = champ('magasin');
+  var branche = new URLSearchParams(window.location.search).get('magasin');
+  if (magasin && !magasin.value && ['fes', 'sefrou'].indexOf(branche) > -1) magasin.value = branche;
 
   function valeur(nom) {
     var el = champ(nom);
@@ -55,6 +58,7 @@
     l.push('');
     l.push('Nom / entreprise : ' + valeur('nom'));
     if (valeur('ville'))     l.push('Ville : ' + valeur('ville'));
+    if (valeur('magasin'))   l.push('Magasin souhaité : ' + (valeur('magasin') === 'fes' ? 'Fès' : 'Sefrou'));
     l.push('Téléphone : ' + valeur('telephone'));
     if (valeur('email'))     l.push('Email : ' + valeur('email'));
     l.push('');
@@ -73,8 +77,8 @@
   }
 
   function suivre(nom) {
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', nom, { page: location.pathname });
+    if (typeof window.prompoluTrack === 'function') {
+      window.prompoluTrack(nom, { reference: valeur('systeme'), magasin: valeur('magasin'), emplacement: 'formulaire' });
     }
   }
 
